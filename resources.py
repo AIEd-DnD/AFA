@@ -36,7 +36,18 @@ This is the student's response: {Students_response}
 
 """
 
-tools = """
+recipes = {"Default":"recipe 1 content",
+           "recipe 2":"recipe 2 content",
+           "recipe 3":"recipe 3 content",
+           "recipe 4":"recipe 4 content",
+           "recipe 5":"recipe 5 content",
+           "recipe 6":"recipe 6 content",
+           "recipe 7":"recipe 7 content",
+           "recipe 8":"recipe 8 content",
+           "recipe 9":"recipe 9 content"
+           }
+
+tools = [
   {
         "type": "function",
         "function": {
@@ -89,5 +100,8 @@ tools = """
             }
         }
       }
+]
 
+GED_GEC_errors = """
+VERB - 
 """

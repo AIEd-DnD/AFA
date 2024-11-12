@@ -51,8 +51,6 @@ Example response:
 
     return prompt
 
-
-
 openai.api_key = st.secrets["api"]["key"]
 def get_completion(prompt, model="gpt-4o-mini", temperature=0):
  messages = [{"role": "user", "content": prompt}]
@@ -64,10 +62,17 @@ def get_completion(prompt, model="gpt-4o-mini", temperature=0):
  return response.choices[0].message.content
 
 #Norman's function to assemble prompt
-def assemble_prompt(rsrc.base_prompt, student_answer, suggested_answer=" ", rubrics=" ", error_tags=" "):
-   pass
+def assemble_prompt(rsrc.base_prompt, student_answer, recipe=rsrc.recipes["Default"], suggested_answer=" ", rubrics=" ", error_tags=" "):
+   assembled_prompt = rsrc.base_prompt.format(
+     Model_answer=suggested_answer, 
+     Rubrics=rubrics, 
+     Error_types=error_tags, 
+     Instructions=recipe,
+     Students_response=student_answer 
+     )
    
-
+   return assembled_prompt
+   
 #Norman's function to send to LLM to get annotations
 def get_annotations(assembled_prompt):
    response = client.chat.completions.create(
