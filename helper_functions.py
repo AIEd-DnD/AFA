@@ -1,5 +1,13 @@
 import streamlit as st
 import openai
+import resources as rsrc
+import os
+from dotenv import load_dotenv
+
+load_dotenv('.env')
+openai_api_key = os.getenv("OPENAI_API_KEY")
+client = openai.OpenAI(api_key=openai_api_key)
+
 
 # Function to create final prompt with error list & student text
 def create_prompt(errors_dict, suggested_answer, student_input):
@@ -55,4 +63,18 @@ def get_completion(prompt, model="gpt-4o-mini", temperature=0):
  )
  return response.choices[0].message.content
 
+#Norman's function to assemble prompt
+def assemble_prompt(rsrc.base_prompt, student_answer, suggested_answer=" ", rubrics=" ", error_tags=" "):
+   pass
+   
 
+#Norman's function to send to LLM to get annotations
+def get_annotations(assembled_prompt):
+   response = client.chat.completions.create(
+     model="gpt-4o-2024-08-06",
+     temperature = 0.2,
+     max_tokens = 4000,
+     tools = rsrc.tools,
+     messages = [{"role": "user", "content": assembled_prompt}]
+   )
+   print(response)
