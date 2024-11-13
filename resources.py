@@ -7,7 +7,7 @@ You are a diligent teacher identifying errors in a {Level} student response to g
 Your objectives are:
 1. Use the provided list of error tags, model answer or rubrics to carefully analyze the student's response.
 3. Identify and return any errors found in the student response.
-4. The feedback should follow the additional instructions: {Instructions}.
+4. The feedback should follow the additional instructions: <Instructions>{Instructions}</Instructions>.
 </objective>
 
 
@@ -102,6 +102,24 @@ tools = [
       }
 ]
 
-GED_GEC_errors = """
-VERB - 
+biology_errors = """
+Misconception of Process - Fundamental misunderstanding of the biological process (e.g., thinking photosynthesis occurs at night),  
+Incomplete Explanation - Provides an incomplete or partial elaboration of a biological concept,  
+Incorrect Sequence - Describes a biological process in the wrong order (e.g., incorrect stages of mitosis or meiosis),  
+Lack of Specificity - Uses vague language or fails to specify key details (e.g., not mentioning ‘active transport’ when describing how ions move through membranes),  
+Wrong Function - Assigns the wrong function to an organ, structure, or cell component (e.g., stating that the liver filters blood like the kidneys),  
+Overgeneralization - Applies a concept too broadly (e.g., assuming all organisms undergo respiration the same way),  
+Confusion Between Terms - Confuses two related but distinct biological terms (e.g., meiosis vs. mitosis, genotype vs. phenotype),  
+Mislabeling - Mislabels a diagram, graph, or biological structure (e.g., labeling an artery as a vein in a circulatory system diagram),  
+Wrong Unit of Measurement - Uses the wrong unit to express a biological quantity (e.g., using kilograms instead of grams for body mass),  
+Misinterpretation of Graphs - Misreads or misinterprets data from a biological graph or chart (e.g., mixing up dependent and independent variables in experimental results),  
+Incorrect Calculation - Makes an error in a biological calculation (e.g., calculating magnification incorrectly in microscopy),  
+Incorrect Cause-Effect - Incorrectly explains the cause and effect in biological processes (e.g., stating that heart rate slows during exercise instead of increasing),  
+Failure to Link Concepts - Fails to connect related concepts (e.g., not linking the role of enzymes to digestion in the stomach),  
+Misunderstanding of Scale - Misunderstands biological scales (e.g., confusing cell sizes with organism sizes or misrepresenting the scale of ecosystems),  
+Overcomplication - Provides an overly complex explanation where a simpler, more direct one is correct,  
+Misidentification - Identifies the wrong species, tissue, or cell type in a question (e.g., confusing plant cells for animal cells in a diagram),  
+Irrelevant Information - Includes irrelevant information that does not answer the question or address the biological concept,  
+Incomplete Comparison - Makes an incomplete comparison between biological concepts (e.g., not fully explaining differences between aerobic and anaerobic respiration),  
+Misuse of Terminology - Uses biological terminology incorrectly (e.g., using ‘diffusion’ instead of ‘osmosis’ in the context of water movement)
 """

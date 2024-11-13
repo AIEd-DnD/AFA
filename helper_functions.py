@@ -2,6 +2,7 @@ import streamlit as st
 import openai
 import resources as rsrc
 import os
+import json
 from dotenv import load_dotenv
 
 load_dotenv('.env')
@@ -51,7 +52,7 @@ Example response:
 
     return prompt
 
-openai.api_key = st.secrets["api"]["key"]
+#openai.api_key = st.secrets["api"]["key"]
 def get_completion(prompt, model="gpt-4o-mini", temperature=0):
  messages = [{"role": "user", "content": prompt}]
  response = openai.chat.completions.create( #originally was openai.chat.completions
@@ -62,8 +63,11 @@ def get_completion(prompt, model="gpt-4o-mini", temperature=0):
  return response.choices[0].message.content
 
 #Norman's function to assemble prompt
-def assemble_prompt(rsrc.base_prompt, student_answer, recipe=rsrc.recipes["Default"], suggested_answer=" ", rubrics=" ", error_tags=" "):
+def assemble_prompt(subject, level, question, student_answer, recipe=rsrc.recipes["Default"], suggested_answer=" ", rubrics=" ", error_tags=" "):
    assembled_prompt = rsrc.base_prompt.format(
+     Subject=subject,
+     Level=level,
+     Question=question,
      Model_answer=suggested_answer, 
      Rubrics=rubrics, 
      Error_types=error_tags, 
@@ -82,4 +86,16 @@ def get_annotations(assembled_prompt):
      tools = rsrc.tools,
      messages = [{"role": "user", "content": assembled_prompt}]
    )
-   print(response)
+   return response.choices[0].message.tool_calls[0].function.arguments
+
+#Norman's function to convert get_annotations output into python dictionary
+def display_output(json_response):
+   response_dict = json.loads(json_response)
+   print(response_dict["annotated_response"])
+   print(" ")
+   for annotation in response_dict["feedback_list"]:
+     print("Annotation no. " + str(annotation["id"]))
+     print("Annotated phrase: " + annotation["phrase"])
+     print("Error Tag: " + annotation["error_tag"][0]["errorType"])
+     print("Feedback: " + annotation["comment"])
+     print(" ")
