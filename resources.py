@@ -1,26 +1,42 @@
 base_prompt = """
-<Context>
-You are a diligent teacher identifying errors in a {Level} student response to give them feedback to a {Subject} question: {Question}
-</Context>
+<context>
+You are a diligent teacher identifying errors in a {Level} student response to give them feedback on a {Subject} question: {Question}.
+</context>
 
-<Objective>
+<objective>
 Your objectives are:
-1. Use the provided references in XML tags to carefully analyse the student's response along the dimensions in the references.
-2. Based on the references, identify errors found in the student response.
-3. Return the student's response exactly as sent. 
-4. For each error, enclose the words or phrases in student's response with a unique tag and a running number to the tag. Eg. <tag id="1"></tag>, <tag id="2"></tag>.
-5. For each error type, specify the unique tag and the id of the tag, and list out the type of error type and its comments.
-6. For the comments, it should be in the question's language, written in a student-friendly, concise manner in accordance to these additional instructions <Instructions>{Instructions}</Instructions>. If the language is English, use British English.
-7. If there are no errors, the error tag should tag the first word of the student's response and the error tag should be "No error".
-</Objective>
+1. Use the content enclosed in the Feedback Reference Structure XML tags to help you interpret the feedback references that you will receive.
+2. Use the content enclosed in the Reference XML tags to carefully analyse the student's response along the dimensions in the references.
+3. Based on the references, identify errors found in the student response.
+4. Return the student's response exactly as sent. 
+5. For each error, enclose the words or phrases in student's response with a unique tag and a running number to the tag. Eg. <tag id=”1”></tag>, <tag id=”2”></tag>.
+6. For each error type, specify the unique tag and the id of the tag, and list out the error type and its comments.
+7. For the comments, it should be in the question's language, written in a student-friendly, concise manner in accordance to these additional instructions <Instructions>{Instructions}</Instructions>. If the language is English, use British English.
+8. If there are no errors, the error tag should tag the first word of the student's response and the error tag should be "No error".
+</objective>
 
-<Reference>
-<Teacher's model answer> {Model_answer} </Teacher's model answer>
-<Rubrics> {Rubrics} </Rubrics>
-<Error tags> {Error_types} </Error tags>
-</Reference>
+<Feedback Reference Structure>
+<Model answer structure>A series of sentences that expresses the main ideas expected to in the student's response.</Model answer structure>
+<Rubrics structure>Each rubric criterion in a set of rubrics is presented in the following structure: [Dimension] - [Band Descriptor] - [Description]. [Dimension] refers to the name of the criterion being assessed; [Band Descriptor] is the label of the band; [Dimension Band Description] delineates the qualities of a student response that is in the band of [Band Descriptor] for that [Dimension].</Rubrics structure>
+<Error list structure>Each error in the error list is presented in the following structure: [Error type] - [Error type Description]. [Error type] is the label of the error; [Error type Description] explains in detail the error expected in the student's response.</Error list structure>
+</Feedback Reference Structure>
 
-This is the student's response: <Student's response> {Student_response} </Student's response>
+<reference>
+<modelanswer>Teacher's model answer: {Model_answer}</modelanswer>
+<rubrics>Rubrics: {Rubrics}
+Additional Rubric Instructions: 
+a. always return error tag as the name of the dimension criteria.
+b. Each dimension criteria is independent of each other and identify parts of the student's response to be commented using different dimensions. 
+c. Start with the first dimension of the rubric. Compare the student's response with the description of each grading band in the dimension and provide feedback. 
+</rubrics>
+<error list>Error list: {Error_types}
+Additional Error type instructions:
+a. always return error type name in full, for example <example>[Error type]</example>.
+b. adhere strictly to the error list provided.
+</error type>
+</reference>
+
+This is the student's response: {Students_response}
 
 """
 
@@ -89,6 +105,11 @@ tools = [
         }
       }
 ]
+
+LangFA_errors = """
+
+
+"""
 
 biology_errors = """
 Misconception of Process - Fundamental misunderstanding of the biological process (e.g., thinking photosynthesis occurs at night),  
