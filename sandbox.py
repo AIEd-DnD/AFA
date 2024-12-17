@@ -32,17 +32,17 @@ gold_rated_captured = []
 
 TP_annotations_only = []
 
-for annotation_card in LLM_returned_errors:
-    gold_rated_copy = list()
-    gold_rated_copy = gold_rated
-    for card in gold_rated_copy:
-        if card['annotation'] == annotation_card['annotation']:
-            TP_annotations_only.append(annotation_card)
-            LLM_returned_errors.remove(annotation_card)
-            gold_rated_captured.append(card)
-            gold_rated_copy.remove(card)
-            break
-        else:
-            gold_rated.remove(card)
+#for annotation_card in LLM_returned_errors:
+    #gold_rated_copy = list()
+    #gold_rated_copy = gold_rated
+    #for card in gold_rated_copy:
+        #if card['annotation'] == annotation_card['annotation']:
+            #TP_annotations_only.append(annotation_card)
+            #LLM_returned_errors.remove(annotation_card)
+            #gold_rated_captured.append(card)
+            #gold_rated_copy.remove(card)
+            #break
+        #else:
+            #gold_rated.remove(card)
 
 
