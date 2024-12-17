@@ -86,7 +86,8 @@ def get_annotations(assembled_prompt):
      tools = rsrc.tools,
      messages = [{"role": "user", "content": assembled_prompt}]
    )
-   return response.choices[0].message.tool_calls[0].function.arguments
+   return response
+   #return response.choices[0].message.tool_calls[0].function.arguments
 
 #Norman's function to convert get_annotations output into python dictionary
 def display_output(json_response):
