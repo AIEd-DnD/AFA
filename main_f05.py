@@ -1,52 +1,82 @@
-import LLM_helper_f05 as llm
-import helper_functions as AFA
-import csv
-from datetime import datetime
+import AFA_eval_functions as AFA
 
-# Get current timestamp
-timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+data = list()
+evaluation_record = AFA.start_new_record("test_run")
+response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_BulkEval_Test1.csv")
 
-# Create filename with timestamp
-filename = f"AFA_temp0.1_test_{timestamp}.csv"
-
-header = ['Incorrect sentence','False Negative Codes','Cleaned Output','Generated Errant Code List','All True Positives','All False Positives','All False Negatives','Punctuation TP','Punctuation FP','Punctuation FN','Grammar TP','Grammar FP','Grammar FN','Spelling TP','Spelling FP','Spelling FN','Word Choice TP','Word Choice FP','Word Choice FN','Sentence Structure TP','Sentence Structure FP','Sentence Structure FN']
-data = []
-
-sentence_list = llm.csv_to_list_of_dicts("insert file_path for datasets")
-
-for scenario_dict in sentence_list:
-    new_row = []
-    print('Trying sentence '+str(sentence_list.index(scenario_dict)+1))
-    test_sentence = scenario_dict['Incorrect Sentences']
-    #print(test_sentence)
-    new_row.append(test_sentence)
-    gold_code_list = llm.extract_gold_code_list(scenario_dict)
-    new_row.append(gold_code_list)
-    unclean_output = llm.call_OpenAI(test_sentence)
+for scenario_dict in response_list:
+    new_row = list()
+    subject, level, question, students_response, recipe, suggested_answer, rubrics, error_tags, full_gold_response = AFA.extract_parameters(scenario_dict)
+    
+    new_row.append(subject)
+    new_row.append(level)
+    new_row.append(recipe)
+    new_row.append(error_tags)
+    new_row.append(suggested_answer)
+    new_row.append(rubrics)
+    new_row.append(question)
+    new_row.append(students_response)
+    
+    print('Trying response '+str(response_list.index(scenario_dict)+1))
+    
+    message = AFA.assemble_prompt(subject, level, question, students_response, recipe, suggested_answer, rubrics, error_tags)
+    full_LLM_response = AFA.get_annotations(message)
+    
     try:
-        cleaned_output = llm.output_cleaner(unclean_output)
+        LLM_dict = AFA.string_to_dict(full_LLM_response)
+        gold_dict = AFA.string_to_dict(full_gold_response)
     except Exception as exp:
-        print(f"An error occurred with this sentence while cleaning: {str(exp)}. Moving on to next sentence...")
-        print(unclean_output)
+        print(f"An error occurred while attempting to convert the LLM and gold responses into dictionaries: {str(exp)}. Moving on to next response...")
         data.append(new_row)
         continue
-    #print(cleaned_output)
-    new_row.append(str(cleaned_output))
+    
     try:
-        generated_codes = llm.generate_errant_code_list(cleaned_output)
-    except Exception as e:
-        print(f"An error occurred with this sentence while generating code list: {str(e)}. Moving on to next sentence...")
+        LLM_annotated_response, gold_annotated_response, LLM_cards, gold_cards = AFA.extract_annotation_details(LLM_dict, gold_dict)
+    except Exception as exp:
+        new_row.append(full_LLM_response)
+        print(f"An error occurred while attempting to extract the annotated response and feedback list: {str(exp)}. Moving on to next response...")
         data.append(new_row)
         continue
-    new_row.append(generated_codes)
-    code_count = llm.results_counter(generated_codes, gold_code_list)
-    for count in code_count:
-        new_row.append(count)
+    
+    new_row.append(LLM_annotated_response)
+    new_row.append(gold_annotated_response)
+    new_row.append(LLM_cards)
+    new_row.append(gold_cards)
+    
+    try:
+        LLM_TP_identified_confirmed, gold_common_identified_confirmed, number_of_identified_TP = AFA.identification_checker(LLM_annotated_response, gold_annotated_response, LLM_cards, gold_cards)
+    except Exception as exp:
+        print(f"An error occurred while attempting to identify the common errors: {str(exp)}. Moving on to next response...")
+        data.append(new_row)
+        continue
+    
+    new_row.append(LLM_TP_identified_confirmed)
+    new_row.append(gold_common_identified_confirmed)
+    
+    try:
+        categorisation_TP, number_of_categorised_TP = AFA.categorisation_checker(LLM_TP_identified_confirmed, gold_common_identified_confirmed, number_of_identified_TP)
+    except Exception as exp:
+        print(f"An error occurred while attempting to check the categories of the common errors: {str(exp)}. Moving on to next response...")
+        data.append(new_row)
+        continue
+    
+    new_row.append(categorisation_TP)
+    new_row.append(number_of_identified_TP)
+    new_row.append(number_of_categorised_TP)
+    
+    retrieved = len(LLM_cards)
+    relevant = len(gold_cards)
+    
+    new_row.append(retrieved)
+    new_row.append(relevant)
+    
+    identification_F05 = AFA.identificationF05Score(number_of_identified_TP, LLM_cards, gold_cards)
+    categorisation_F05 = AFA.categorisationF05Score(number_of_categorised_TP, LLM_cards, gold_cards)
+    
+    new_row.append(identification_F05)
+    new_row.append(categorisation_F05)
+
+    #This is the end of the data extraction and calculation.
     data.append(new_row)
 
-with open(filename, 'w', newline='') as file:
-    writer = csv.writer(file)
-    writer.writerow(header)
-    writer.writerows(data)
-
-print(f"CSV file '{filename}' has been created successfully.")
+AFA.write_into_record(evaluation_record, data)

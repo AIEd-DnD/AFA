@@ -85,12 +85,6 @@ def csv_to_list_of_dicts(file_path):
             result.append(row)
     return result
 
-def message_formatter(sentence, example):
-    message = rsrc.langfa_el_user.format(sentence=sentence,example=example)
-    return message
-
-#test_sentence = 'For examples food , factories use machinery to produce good such as instant noodles .'
-
 def call_Anthropic(user_sentence):
     user_message = message_formatter(user_sentence,rsrc.user_example)
     #print(user_message)

@@ -23,3 +23,6 @@ dist/
 # Streamlit
 .streamlit/secrets.toml
 
+#Folders
+Records
+Dataset

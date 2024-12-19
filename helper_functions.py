@@ -81,13 +81,12 @@ def assemble_prompt(subject, level, question, student_answer, recipe=rsrc.recipe
 def get_annotations(assembled_prompt):
    response = client.chat.completions.create(
      model="gpt-4o-2024-08-06",
-     temperature = 0.2,
+     temperature = 0.1,
      max_tokens = 4000,
      tools = rsrc.tools,
      messages = [{"role": "user", "content": assembled_prompt}]
    )
-   return response
-   #return response.choices[0].message.tool_calls[0].function.arguments
+   return response.choices[0].message.tool_calls[0].function.arguments
 
 #Norman's function to convert get_annotations output into python dictionary
 def display_output(json_response):
