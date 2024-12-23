@@ -26,3 +26,6 @@ dist/
 #Folders
 Records
 Dataset
+
+#Files
+sandbox.py

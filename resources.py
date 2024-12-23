@@ -236,14 +236,64 @@ Lastly, I think that homework works as good revision notes to refer to for examp
 In a nutshell, homework is a very useful learning tool that can play a part in how well you do in an exam. Although only doing homework is not enough to secure your results, I hope that people would start taking homework more seriously as it could play a huge role in you doing well for your examinations.
 """
 
-sec_sample_m1_annotations = """
-"Keep calm and love homework."-Anonymous. Homework is an essential tool in our lives, and many people get pressured and stressed by the overload of homework that they receive from their teachers <tag id = "1">over days</tags><tag id = "2"> </tag>some even going to the extent of crying. Homework was invented in 1905 by Robert Nevilin and is still very much present in today's modern schools. In my opinion, homework can be very useful to us and I do not agree with this statement. Many people complain that homework is useless. 
-
-To begin with, homework is useful as it helps students learn to manage their time properly. Homework allows students to plan their time, so that they have sufficient time to study, do their homework, and also for leisure. The students will be able to learn how to put their homework as their first priority so that in the future, when they are working, they will be efficient and fast. However, there are also downsides to having homework. One may feel too stressed from <tag id = "3">keeping up deadlines</tag> and may not be able to cope with the enormous stress that they gain from it. 
-
-Furthermore, homework can also help to improve one's grades<tag id = "4">,</tag> it can motivate students to continue studying and may even teach them a thing or two. In 2020, <tag id = "5">a research</tag> was conducted by Oxford University. They found out that 95% of students who consistently do their homework, do extraordinarily well in grades compared to students who are lazy and refuse to do their homework. In addition, homework <tag id = "6">also is</tag> a good way <tag id = "7">for revision</tag>. You can refer to it anytime you want <tag id = "8">one</tag> it has been marked and if there is any <tag id = "9">questions</tag> that needs to be clarified or<tag id = "10">,</tag> one may get wrong<tag id = "11"> </tag>they can always ask the teacher how to solve the problem. <tag id = "12">Whatever</tag> homework<tag id = "13"> </tag>students may not be able to do well in their studies and might not be motivated for school. 
-
-Finally, homework is not a waste of time as without homework, many people will not be able to check if they are doing well in their studies or not. Homework helps to improve one's knowledge on the topic that they are doing and allows one to get better at it. If they are getting all the questions in the homework wrong, they will know which areas require <tag id = "14">improvements</tag>. <tag id = "15">From</tag> doing this, their grades will also improve and the students will be scoring higher marks <tag id = "15">compared to the homework as did not exist</tag>. Many people make the argument that people will have to sleep late if there is homework. However, if one has enough discipline and integrity, <tag id = "16">they</tag> will be able to finish <tag id = "17">their</tag> homework <tag id = "18">in</tag> time and be able to sleep early. 
-
-In conclusion, homework is not a waste of time<tag id = "19"> </tag>and it is very essential and useful in a student's life. Without it, many students may not be able to cope with their studies and eventually, their grades will <tag id = "20">dwindle</tag>.
-"""
+old_to_new_error_mapping = {
+    "M:ADJ": "Add: Adjective",
+    "M:ADV": "Add: Adverb",
+    "M:CONJ": "Add: Conjunction",
+    "M:DET": "Add: Determiner",
+    "M:NOUN": "Add: Noun",
+    "M:PART": "Add: Particle",
+    "M:PREP": "Add: Preposition",
+    "M:PRON": "Add: Pronoun",
+    "M:PUNCT": "Add: Punctuation",
+    "M:VERB": "Add: Verb",
+    "M:CONTR": "Add: Contraction",
+    "M:OTHER": "Add: Word/Phrase",
+    "M:NOUN:POSS": "Add: Possessive",
+    "M:VERB:FORM": "Add: Verb Form",
+    "M:VERB:TENSE": "Add: Verb Tense",
+    "U:ADJ": "Remove: Adjective",
+    "U:ADV": "Remove: Adverb",
+    "U:CONJ": "Remove: Conjunction",
+    "U:DET": "Remove: Determiner",
+    "U:NOUN": "Remove: Noun",
+    "U:PART": "Remove: Particle",
+    "U:PREP": "Remove: Preposition",
+    "U:PRON": "Remove: Pronoun",
+    "U:PUNCT": "Remove: Punctuation",
+    "U:VERB": "Remove: Verb",
+    "U:CONTR": "Remove: Contraction",
+    "U:SPACE": "Remove: Space",
+    "U:OTHER": "Remove: Word/Phrase",
+    "U:NOUN:POSS": "Remove: Possessive",
+    "U:VERB:FORM": "Remove: Verb Form",
+    "U:VERB:TENSE": "Remove: Verb Tense",
+    "R:ADJ": "Replace: Adjective",
+    "R:ADV": "Replace: Adverb",
+    "R:CONJ": "Replace: Conjunction",
+    "R:DET": "Replace: Determiner",
+    "R:NOUN": "Replace: Noun",
+    "R:PART": "Replace: Particle",
+    "R:PREP": "Replace: Preposition",
+    "R:PRON": "Replace: Pronoun",
+    "R:PUNCT": "Replace: Punctuation",
+    "R:VERB": "Replace: Verb",
+    "PUNCT:CONTRACTION": "Remove: Contraction",
+    "R:MORPH": "Replace: Word Form",
+    "R:ORTH": "Replace: Capitalisation",
+    "R:OTHER": "Replace: Word/Phrase",
+    "R:SPELL": "Replace: Spelling",
+    "R:WO": "Replace: Word Order",
+    "R:NOUN:NUM": "Replace: Noun Number",
+    "R:NOUN:POSS": "Replace: Possessive Noun",
+    "R:VERB:FORM": "Replace: Verb Form",
+    "R:VERB:INFL": "Replace: Verb Spelling",
+    "R:VERB:SVA": "Replace: Subject-Verb Agreement",
+    "R:VERB:TENSE": "Replace: Verb Tense",
+    "R:ADJ:FORM": "Replace: Adjective",
+    "R:NOUN:INFL": "Replace: Noun Number",
+    "SENT:LONG": "Sentence: Long",
+    "SENT:STICKY": "Sentence: Unnecessary Words",
+    "SENT:FRAGMENT": "Sentence: Fragment",
+    "COLLOCATION:SUGGESTION": "Collocation: Suggestion"
+}
