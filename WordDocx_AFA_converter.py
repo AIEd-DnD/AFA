@@ -38,4 +38,6 @@ def convert_docx_to_AFA(docx_path, old_error_tag=False):
 
     AFA_template['annotated_response'] = annotated_response
     AFA_template['feedback_list'] = feedback_list
+    with open('Output/conversion_output.txt', 'w') as output:
+        output.write(str(AFA_template))
     return AFA_template

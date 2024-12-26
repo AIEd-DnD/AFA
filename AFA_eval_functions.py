@@ -12,7 +12,7 @@ client = openai.OpenAI(api_key=openai_api_key)
 
 def start_new_record(file_name):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"AFA_{file_name}_{timestamp}.csv"
+    filename = f"Records/AFA_{file_name}_{timestamp}.csv"
     return filename
 
 def write_into_record(filename, data):

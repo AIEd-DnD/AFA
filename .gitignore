@@ -26,6 +26,7 @@ dist/
 #Folders
 Records
 Dataset
+Output
 
 #Files
 sandbox.py
