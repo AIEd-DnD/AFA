@@ -101,9 +101,13 @@ def second_identification_checker(LLM_annotated_response, gold_annotated_respons
         gold_tag_id = '<tag id="' + str(gold_common_first_identification[i]['id']) + '">'
         LLM_tag_position = LLM_annotated_response.index(LLM_tag_id)
         gold_tag_position = gold_annotated_response.index(gold_tag_id)
+        LLM_end_tag_position = LLM_annotated_response.index('</tag>', LLM_tag_position) + len('</tag>')
+        gold_end_tag_position = gold_annotated_response.index('</tag>', gold_tag_position) + len('</tag>')
         LLM_check_start = LLM_tag_position - tolerance
         gold_check_start = gold_tag_position - tolerance
-        if LLM_annotated_response[LLM_check_start:LLM_tag_position] == gold_annotated_response[gold_check_start:gold_tag_position]:
+        LLM_check_end = LLM_tag_position + len(LLM_tag_id) + len(LLM_TP_first_identification[i]['phrase']) + len('</tag>') + tolerance
+        gold_check_end = gold_tag_position + len(gold_tag_id) + len(gold_common_first_identification[i]['phrase']) + len('</tag>') + tolerance
+        if LLM_annotated_response[LLM_check_start:LLM_tag_position] == gold_annotated_response[gold_check_start:gold_tag_position] or LLM_annotated_response[LLM_end_tag_position:LLM_check_end] == gold_annotated_response[gold_end_tag_position:gold_check_end]:
             LLM_identified_TP.append(LLM_TP_first_identification[i])
             gold_identified_common.append(gold_common_first_identification[i])
     return LLM_identified_TP, gold_identified_common

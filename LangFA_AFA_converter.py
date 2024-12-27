@@ -5,6 +5,17 @@ def LangFAjsonReader(file_path):
         data = json.load(file)
     return data
 
+def massSplitter(ref_dict, errorlistNumber):
+    counter = 0
+    for i in range(len(errorlistNumber)):
+        container = list()
+        for n in range(errorlistNumber[i]):
+            container.append(ref_dict['data'][n+counter])
+        counter += errorlistNumber[i]
+        new_dict = {"code":"ok","data":container,"timestamp":ref_dict['timestamp']}
+        with open('Dataset/number_'+str(i+1)+'_ELLB.json', 'w') as file:
+            json.dump(new_dict, file)
+
 def tagCreator(number_of_tags):
     list_of_Tags = ['</tag>'] 
     for i in range(number_of_tags):
