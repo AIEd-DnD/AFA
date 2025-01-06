@@ -82,6 +82,7 @@ def extract_annotation_details(LLM_dict, gold_dict):
 
 def first_identification_checker(LLM_cards, gold_cards):
     LLM_TP_first_identification = list()
+    LLM_TP_waitlist = list()
     gold_common_first_identification = list()
     index_tracker = 0
     for annotation_card in gold_cards:
@@ -91,7 +92,9 @@ def first_identification_checker(LLM_cards, gold_cards):
                 gold_common_first_identification.append(annotation_card)
                 index_tracker = card_index + 1
                 break
-    return LLM_TP_first_identification, gold_common_first_identification
+            else:
+                LLM_TP_waitlist.append(LLM_cards[card_index])
+    return LLM_TP_first_identification, gold_common_first_identification, LLM_TP_waitlist
 
 def second_identification_checker(LLM_annotated_response, gold_annotated_response, LLM_TP_first_identification, gold_common_first_identification, tolerance):
     LLM_identified_TP = list()
@@ -112,8 +115,17 @@ def second_identification_checker(LLM_annotated_response, gold_annotated_respons
             gold_identified_common.append(gold_common_first_identification[i])
     return LLM_identified_TP, gold_identified_common
 
+def third_identification_checker(LLM_TP_waitlist, gold_cards, LLM_identified_TP, gold_identified_common):
+    index_tracker = 0
+    for annotation_card in gold_cards:
+        for card_index in range(index_tracker, len(LLM_TP_waitlist)):
+            if len(LLM_TP_waitlist[card_index]['phrase']) < len(annotation_card['phrase']):
+                # Check if the annotation card is a substring of the gold card
+            elif len(LLM_TP_waitlist[card_index]['phrase']) > len(annotation_card['phrase']):
+                # Check if the gold card is a substring of the annotation card
+
 def identification_checker(LLM_annotated_response, gold_annotated_response, LLM_cards, gold_cards, tolerance=20):
-    LLM_TP_identified, gold_common_identified = first_identification_checker(LLM_cards, gold_cards)
+    LLM_TP_identified, gold_common_identified, LLM_TP_waitlist= first_identification_checker(LLM_cards, gold_cards)
     LLM_TP_identified_confirmed, gold_common_identified_confirmed = second_identification_checker(LLM_annotated_response, gold_annotated_response, LLM_TP_identified, gold_common_identified, tolerance)
     number_of_identified_TP = len(LLM_TP_identified_confirmed)
     return LLM_TP_identified_confirmed, gold_common_identified_confirmed, number_of_identified_TP
