@@ -43,7 +43,10 @@ def convertAFA(ref_dict, text):
     no_of_cards = len(ref_dict['data'])
     for i in range(no_of_cards):
         AFA_annotation_template['id'] = i+1
-        AFA_annotation_template['phrase'] = ref_dict['data'][i]['data']['highlightedContent']
+        if ref_dict['data'][i]['data']['highlightedContent'] == '':
+            AFA_annotation_template['phrase'] = ' '
+        else:
+            AFA_annotation_template['phrase'] = ref_dict['data'][i]['data']['highlightedContent']
         AFA_annotation_template['error_tag'][0]['errorType'] = ref_dict['data'][i]['keywords']
         AFA_annotation_template['comment'] = ref_dict['data'][i]['note']
         AFA_template['feedback_list'].append(AFA_annotation_template)
