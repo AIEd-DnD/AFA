@@ -3,7 +3,7 @@ import AFA_eval_functions as AFA
 data = list()
 #test_name = input("Please enter the name of the test: ")               #uncomment this to unlock user input for test name
 #file_path = input("Please enter the file path of the test data: ")     #uncomment this to unlock user input for file path
-evaluation_record = AFA.start_new_record("GSA_record")
+evaluation_record = AFA.start_new_record("GSA_record_improve_second_checker")
 response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_BulkEval_Test1.csv")
 langfa_el_list = AFA.csv_to_list_of_dicts("Texts/GSA_sample.csv")
 

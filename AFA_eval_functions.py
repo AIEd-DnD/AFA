@@ -85,135 +85,112 @@ def first_identification_checker(LLM_cards, gold_cards):
     LLM_TP_first_identification = list()
     LLM_TP_waitlist = list()
     gold_common_first_identification = list()
-    index_tracker = 0
     for annotation_card in gold_cards:
-        for card_index in range(index_tracker, len(LLM_cards)):
+        for card_index in range(len(LLM_cards)):
             if LLM_cards[card_index]['phrase'] == annotation_card['phrase']:
                 LLM_TP_first_identification.append(LLM_cards[card_index])
                 gold_common_first_identification.append(annotation_card)
-                index_tracker = card_index + 1
+                #index_tracker = card_index + 1
                 break
             else:
                 LLM_TP_waitlist.append(LLM_cards[card_index])
     return LLM_TP_first_identification, gold_common_first_identification, LLM_TP_waitlist
 
-def second_identification_checker(LLM_annotated_response, gold_annotated_response, LLM_TP_first_identification, gold_common_first_identification, tolerance):
+def tag_removal(annotated_response, annotation_card_list):
+    cleaned_text = annotated_response.replace('</tag>', '', len(annotation_card_list))
+    for i in range(len(annotation_card_list)):
+        cleaned_text = cleaned_text.replace(f'<tag id="{annotation_card_list[i]["id"]}">', '')
+    return cleaned_text
+
+def wrapping_character_counter(phrase, sub_phrase):
+    phrase_length = len(phrase)
+    sub_phrase_start_position = phrase.index(sub_phrase)
+    sub_phrase_end_position = sub_phrase_start_position + len(sub_phrase)
+    left_side_length = sub_phrase_start_position
+    right_side_length = phrase_length - sub_phrase_end_position
+    return left_side_length, right_side_length
+
+def tag_locator(annotation_number, annotated_response):
+    tag_id = '<tag id="' + str(annotation_number) + '">'
+    tag_position = annotated_response.index(tag_id)
+    end_tag_position = annotated_response.index('</tag>', tag_position) + len('</tag>')
+    return tag_position, end_tag_position
+
+def expand_subphrase_to_phrase(cleaned_text, sub_phrase, annotation_number, annotated_response, annotation_card_list, tag_position, end_tag_position, left_side_length, right_side_length):
+    card_number = annotation_number
+    left_end_tag_count = annotated_response[:tag_position].count('</tag>')
+    left_start_tag_count = annotated_response[:tag_position].count('<tag')
+    left_XML_tag_char_count = left_end_tag_count * len('</tag>')
+    for i in range(left_start_tag_count):
+        left_tag_id = f'<tag id="{annotation_card_list[i]['id']}">'
+        left_tag_char_count = len(left_tag_id)
+        left_XML_tag_char_count += left_tag_char_count
+    
+    sub_phrase_start_position_cleaned = tag_position - left_XML_tag_char_count
+    sub_phrase_end_position_cleaned = end_tag_position - left_XML_tag_char_count - len('</tag>') - len(f'<tag id="{card_number}">')
+
+    left_slice = cleaned_text[(sub_phrase_end_position_cleaned - left_side_length):sub_phrase_start_position_cleaned]
+    right_slice = cleaned_text[sub_phrase_end_position_cleaned:(sub_phrase_end_position_cleaned + right_side_length)]
+    expanded_phrase = left_slice + sub_phrase + right_slice
+    return expanded_phrase
+
+def second_identification_checker(LLM_annotated_response, gold_annotated_response, LLM_TP_first_identification, gold_common_first_identification, LLM_cards, gold_cards, strictness):
     LLM_identified_TP = list()
     gold_identified_common = list()
     for i in range(len(gold_common_first_identification)):
         LLM_tag_id = '<tag id="' + str(LLM_TP_first_identification[i]['id']) + '">'
         gold_tag_id = '<tag id="' + str(gold_common_first_identification[i]['id']) + '">'
-        LLM_tag_position = LLM_annotated_response.index(LLM_tag_id)
-        gold_tag_position = gold_annotated_response.index(gold_tag_id)
-        LLM_end_tag_position = LLM_annotated_response.index('</tag>', LLM_tag_position) + len('</tag>')
-        gold_end_tag_position = gold_annotated_response.index('</tag>', gold_tag_position) + len('</tag>')
-        LLM_check_start = LLM_tag_position - tolerance
-        gold_check_start = gold_tag_position - tolerance
-        LLM_check_end = LLM_tag_position + len(LLM_tag_id) + len(LLM_TP_first_identification[i]['phrase']) + len('</tag>') + tolerance
-        gold_check_end = gold_tag_position + len(gold_tag_id) + len(gold_common_first_identification[i]['phrase']) + len('</tag>') + tolerance
-        if LLM_annotated_response[LLM_check_start:LLM_tag_position] == gold_annotated_response[gold_check_start:gold_tag_position] or LLM_annotated_response[LLM_end_tag_position:LLM_check_end] == gold_annotated_response[gold_end_tag_position:gold_check_end]:
+        LLM_tag_position, LLM_end_tag_position = tag_locator(LLM_TP_first_identification[i]['id'], LLM_annotated_response)
+        gold_tag_position, gold_end_tag_position = tag_locator(gold_common_first_identification[i]['id'], gold_annotated_response)
+
+        LLM_cleaned_text = tag_removal(LLM_annotated_response, LLM_cards)
+        gold_cleaned_text = tag_removal(gold_annotated_response, gold_cards)
+        LLM_expanded_phrase = expand_subphrase_to_phrase(LLM_cleaned_text, LLM_TP_first_identification[i]['phrase'], LLM_TP_first_identification[i]['id'], LLM_annotated_response, LLM_cards, LLM_tag_position, LLM_end_tag_position, left_side_length=strictness, right_side_length=strictness)
+        gold_expanded_phrase = expand_subphrase_to_phrase(gold_cleaned_text, gold_common_first_identification[i]['phrase'], gold_common_first_identification[i]['id'], gold_annotated_response, gold_cards, gold_tag_position, gold_end_tag_position, left_side_length=strictness, right_side_length=strictness)
+        if LLM_expanded_phrase == gold_expanded_phrase:
             LLM_identified_TP.append(LLM_TP_first_identification[i])
             gold_identified_common.append(gold_common_first_identification[i])
+
+        #LLM_check_start = LLM_tag_position - strictness
+        #gold_check_start = gold_tag_position - strictness
+        #LLM_check_end = LLM_tag_position + len(LLM_tag_id) + len(LLM_TP_first_identification[i]['phrase']) + len('</tag>') + tolerance
+        #gold_check_end = gold_tag_position + len(gold_tag_id) + len(gold_common_first_identification[i]['phrase']) + len('</tag>') + tolerance
+        #if LLM_annotated_response[LLM_check_start:LLM_tag_position] == gold_annotated_response[gold_check_start:gold_tag_position] or LLM_annotated_response[LLM_end_tag_position:LLM_check_end] == gold_annotated_response[gold_end_tag_position:gold_check_end]:
+            #LLM_identified_TP.append(LLM_TP_first_identification[i])
+            #gold_identified_common.append(gold_common_first_identification[i])
+
     return LLM_identified_TP, gold_identified_common
 
 def third_identification_checker(LLM_TP_waitlist, gold_cards, LLM_identified_TP, gold_identified_common, LLM_annotated_response, gold_annotated_response, LLM_cards):
-    index_tracker = 0
     for annotation_card in gold_cards:
-        for card_index in range(index_tracker, len(LLM_TP_waitlist)):
+        for card_index in range(len(LLM_TP_waitlist)):
             if len(LLM_TP_waitlist[card_index]['phrase']) < len(annotation_card['phrase']) and LLM_TP_waitlist[card_index]['phrase'] in annotation_card['phrase']:
-                # check characters to the left and right of waitlist phrase up to the length of the gold phrase and concantenate with waitlist phrase and compare. ignore all <> tags.
-                phrase_length = len(annotation_card['phrase'])
-                sub_phrase_start_position = annotation_card['phrase'].index(LLM_TP_waitlist[card_index]['phrase'])
-                sub_phrase_end_position = sub_phrase_start_position + len(LLM_TP_waitlist[card_index]['phrase'])
-                left_side_length = sub_phrase_start_position
-                right_side_length = phrase_length - sub_phrase_end_position
-                
-                LLM_tag_id = '<tag id="' + str(LLM_TP_waitlist[card_index]['id']) + '>'
-                LLM_tag_position = LLM_annotated_response.index(LLM_tag_id)
-                LLM_end_tag_position = LLM_annotated_response.index('</tag>', LLM_tag_position) + len('</tag>')
-                
-                cleaned_text = LLM_annotated_response.replace('</tag>', '', len(LLM_cards))
-                for i in range(len(LLM_cards)):
-                    cleaned_text = cleaned_text.replace(f'<tag id="{LLM_cards[i]["id"]}">', '')
-
-                card_number = LLM_TP_waitlist[card_index]['id']
-                left_end_tag_count = LLM_annotated_response[:LLM_tag_position].count('</tag>')
-                left_start_tag_count = LLM_annotated_response[:LLM_tag_position].count('<tag')
-                #right_end_tag_count = LLM_annotated_response[LLM_end_tag_position:].count('</tag>')
-                #right_start_tag_count = LLM_annotated_response[LLM_end_tag_position:].count('<tag')
-                left_XML_tag_char_count = left_end_tag_count * len('</tag>')
-                #right_XML_tag_char_count = (right_end_tag_count+1) * len('</tag>')
-                for i in range(left_start_tag_count):
-                    left_tag_id = f'<tag id="{LLM_cards[i]["id"]}">'
-                    left_tag_char_count = len(left_tag_id)
-                    left_XML_tag_char_count += left_tag_char_count
-                #for i in range(card_number+1, len(LLM_cards)):
-                    #right_tag_id = f'<tag id="{LLM_cards[i]["id"]}">'
-                    #right_tag_char_count = len(right_tag_id)
-                    #right_XML_tag_char_count += right_tag_char_count
-
-                sub_phrase_start_position_cleaned = LLM_tag_position - left_XML_tag_char_count
-                sub_phrase_end_position_cleaned = LLM_end_tag_position - left_XML_tag_char_count - len('</tag>') - len(f'<tag id="{card_number}">')
-
-                left_slice = cleaned_text[(sub_phrase_end_position_cleaned - left_side_length):sub_phrase_start_position_cleaned]
-                right_slice = cleaned_text[sub_phrase_end_position_cleaned:(sub_phrase_end_position_cleaned + right_side_length)]
-                phrase_check = left_slice + LLM_TP_waitlist[card_index]['phrase'] + right_slice
+                left_side_length, right_side_length = wrapping_character_counter(annotation_card['phrase'], LLM_TP_waitlist[card_index]['phrase'])
+                LLM_tag_position, LLM_end_tag_position = tag_locator(LLM_TP_waitlist[card_index]['id'], LLM_annotated_response)
+                cleaned_text = tag_removal(LLM_annotated_response, LLM_cards)
+                phrase_check = expand_subphrase_to_phrase(cleaned_text, LLM_TP_waitlist[card_index]['phrase'], LLM_TP_waitlist[card_index]['id'], LLM_annotated_response, LLM_cards, LLM_tag_position, LLM_end_tag_position, left_side_length, right_side_length)
 
                 if phrase_check == annotation_card['phrase']:
                     LLM_identified_TP.append(LLM_TP_waitlist[card_index])
                     gold_identified_common.append(annotation_card)
-                    index_tracker = card_index + 1
                     break
 
             elif len(LLM_TP_waitlist[card_index]['phrase']) > len(annotation_card['phrase']) and annotation_card['phrase'] in LLM_TP_waitlist[card_index]['phrase']:
-                # check characters to the left and right of waitlist phrase up to the length of the gold phrase and concantenate with waitlist phrase and compare. ignore all <> tags.
-                phrase_length = len(LLM_TP_waitlist[card_index]['phrase'])
-                sub_phrase_start_position = LLM_TP_waitlist[card_index]['phrase'].index(annotation_card['phrase'])
-                sub_phrase_end_position = sub_phrase_start_position + len(annotation_card['phrase'])
-                left_side_length = sub_phrase_start_position
-                right_side_length = phrase_length - sub_phrase_end_position
-                
-                gold_tag_id = '<tag id="' + str(annotation_card['id']) + '>'
-                gold_tag_position = gold_annotated_response.index(gold_tag_id)
-                gold_end_tag_position = gold_annotated_response.index('</tag>', gold_tag_position) + len('</tag>')
-                
-                cleaned_text = gold_annotated_response.replace('</tag>', '', len(gold_cards))
-                for i in range(len(gold_cards)):
-                    cleaned_text = cleaned_text.replace(f'<tag id="{gold_cards[i]["id"]}">', '')
-
-                card_number = annotation_card['id']
-                left_end_tag_count = gold_annotated_response[:gold_tag_position].count('</tag>')
-                left_start_tag_count = gold_annotated_response[:gold_tag_position].count('<tag')
-                #right_end_tag_count = gold_annotated_response[gold_end_tag_position:].count('</tag>')
-                #right_start_tag_count = gold_annotated_response[gold_end_tag_position:].count('<tag')
-                left_XML_tag_char_count = left_end_tag_count * len('</tag>')
-                #right_XML_tag_char_count = (right_end_tag_count+1) * len('</tag>')
-                for i in range(left_start_tag_count):
-                    left_tag_id = f'<tag id="{gold_cards[i]["id"]}">'
-                    left_tag_char_count = len(left_tag_id)
-                    left_XML_tag_char_count += left_tag_char_count
-                #for i in range(card_number+1, len(gold_cards)):
-                    #right_tag_id = f'<tag id="{gold_cards[i]["id"]}">'
-                    #right_tag_char_count = len(right_tag_id)
-                    #right_XML_tag_char_count += right_tag_char_count
-
-                sub_phrase_start_position_cleaned = gold_tag_position - left_XML_tag_char_count
-                sub_phrase_end_position_cleaned = gold_end_tag_position - left_XML_tag_char_count - len('</tag>') - len(f'<tag id="{card_number}">')
-
-                left_slice = cleaned_text[(sub_phrase_end_position_cleaned - left_side_length):sub_phrase_start_position_cleaned]
-                right_slice = cleaned_text[sub_phrase_end_position_cleaned:(sub_phrase_end_position_cleaned + right_side_length)]
-                phrase_check = left_slice + annotation_card['phrase'] + right_slice
+                left_side_length, right_side_length = wrapping_character_counter(LLM_TP_waitlist[card_index]['phrase'], annotation_card['phrase'])
+                gold_tag_position, gold_end_tag_position = tag_locator(annotation_card['id'], gold_annotated_response)
+                cleaned_text = tag_removal(gold_annotated_response, gold_cards)
+                phrase_check = expand_subphrase_to_phrase(cleaned_text, annotation_card['phrase'], annotation_card['id'], gold_annotated_response, gold_cards, gold_tag_position, gold_end_tag_position, left_side_length, right_side_length)
 
                 if phrase_check == LLM_TP_waitlist[card_index]['phrase']:
                     LLM_identified_TP.append(LLM_TP_waitlist[card_index])
                     gold_identified_common.append(annotation_card)
-                    index_tracker = card_index + 1
                     break
+
     return LLM_identified_TP, gold_identified_common
 
-def identification_checker(LLM_annotated_response, gold_annotated_response, LLM_cards, gold_cards, tolerance=20):
+def identification_checker(LLM_annotated_response, gold_annotated_response, LLM_cards, gold_cards, strictness=20):
     LLM_TP_identified, gold_common_identified, LLM_TP_waitlist= first_identification_checker(LLM_cards, gold_cards)
-    LLM_identified_TP, gold_identified_common = second_identification_checker(LLM_annotated_response, gold_annotated_response, LLM_TP_identified, gold_common_identified, tolerance)
+    LLM_identified_TP, gold_identified_common = second_identification_checker(LLM_annotated_response, gold_annotated_response, LLM_TP_identified, gold_common_identified, LLM_cards, gold_cards, strictness)
     LLM_TP_identified_confirmed, gold_common_identified_confirmed = third_identification_checker(LLM_TP_waitlist, gold_cards, LLM_identified_TP, gold_identified_common, LLM_annotated_response, gold_annotated_response, LLM_cards)
     number_of_identified_TP = len(LLM_TP_identified_confirmed)
     return LLM_TP_identified_confirmed, gold_common_identified_confirmed, number_of_identified_TP
