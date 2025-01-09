@@ -90,7 +90,6 @@ def first_identification_checker(LLM_cards, gold_cards):
             if LLM_cards[card_index]['phrase'] == annotation_card['phrase']:
                 LLM_TP_first_identification.append(LLM_cards[card_index])
                 gold_common_first_identification.append(annotation_card)
-                #index_tracker = card_index + 1
                 break
             else:
                 LLM_TP_waitlist.append(LLM_cards[card_index])
@@ -129,8 +128,14 @@ def expand_subphrase_to_phrase(cleaned_text, sub_phrase, annotation_number, anno
     sub_phrase_start_position_cleaned = tag_position - left_XML_tag_char_count
     sub_phrase_end_position_cleaned = end_tag_position - left_XML_tag_char_count - len('</tag>') - len(f'<tag id="{card_number}">')
 
-    left_slice = cleaned_text[(sub_phrase_end_position_cleaned - left_side_length):sub_phrase_start_position_cleaned]
-    right_slice = cleaned_text[sub_phrase_end_position_cleaned:(sub_phrase_end_position_cleaned + right_side_length)]
+    left_slice_start = sub_phrase_start_position_cleaned - left_side_length
+    right_slice_end = sub_phrase_end_position_cleaned + right_side_length
+    if left_slice_start < 0:
+        left_slice_start = 0
+    if right_slice_end > len(cleaned_text):
+        right_slice_end = len(cleaned_text)
+    left_slice = cleaned_text[left_slice_start:sub_phrase_start_position_cleaned]
+    right_slice = cleaned_text[sub_phrase_end_position_cleaned:right_slice_end]
     expanded_phrase = left_slice + sub_phrase + right_slice
     return expanded_phrase
 
@@ -138,8 +143,8 @@ def second_identification_checker(LLM_annotated_response, gold_annotated_respons
     LLM_identified_TP = list()
     gold_identified_common = list()
     for i in range(len(gold_common_first_identification)):
-        LLM_tag_id = '<tag id="' + str(LLM_TP_first_identification[i]['id']) + '">'
-        gold_tag_id = '<tag id="' + str(gold_common_first_identification[i]['id']) + '">'
+        #LLM_tag_id = '<tag id="' + str(LLM_TP_first_identification[i]['id']) + '">'
+        #gold_tag_id = '<tag id="' + str(gold_common_first_identification[i]['id']) + '">'
         LLM_tag_position, LLM_end_tag_position = tag_locator(LLM_TP_first_identification[i]['id'], LLM_annotated_response)
         gold_tag_position, gold_end_tag_position = tag_locator(gold_common_first_identification[i]['id'], gold_annotated_response)
 
