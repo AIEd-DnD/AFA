@@ -4,13 +4,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244490,
-            "uuid": "e6bb65ca-bd0f-407d-a545-f3bd83dde449",
+            "id": 23312876,
+            "uuid": "4dfe02d8-69d5-477e-94ae-09a029f6ef4c",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688327,
+                "highlighterId": 1736669734030,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -38,18 +38,18 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -62,19 +62,19 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244491,
-            "uuid": "7fb69e90-be66-46c5-9dac-a485a9ab47dd",
+            "id": 23312877,
+            "uuid": "03cb91f3-41f4-4239-8be0-c2da4def8372",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688328,
+                "highlighterId": 1736669734031,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 133,
-                        "end": 134,
+                        "start": 134,
+                        "end": 135,
                         "top": null,
                         "left": null
                     }
@@ -96,43 +96,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Add: Pronoun",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 133,
+            "indexPosition": 134,
             "note": "Consider adding a pronoun. Suggestion(s):,  them "
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244492,
-            "uuid": "cae2abae-c2c8-4194-afff-98a97dbdabe4",
+            "id": 23312878,
+            "uuid": "a1d3ebf6-4863-484b-ae66-1d5b05b4dc37",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688329,
+                "highlighterId": 1736669734032,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 177,
-                        "end": 178,
+                        "start": 178,
+                        "end": 179,
                         "top": null,
                         "left": null
                     }
@@ -154,43 +154,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Add: Punctuation",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 177,
+            "indexPosition": 178,
             "note": "Consider adding a punctuation mark. Suggestion(s):, ,"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244493,
-            "uuid": "b72fd1f0-c33a-4892-a5b0-7343fb1cc3f0",
+            "id": 23312879,
+            "uuid": "8d9dcd43-7a4f-457f-88fe-bf80d882992d",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688330,
+                "highlighterId": 1736669734033,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 187,
-                        "end": 189,
+                        "start": 188,
+                        "end": 190,
                         "top": null,
                         "left": null
                     }
@@ -212,43 +212,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Subject-Verb Agreement",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 187,
+            "indexPosition": 188,
             "note": "Consider if the highlighted verb agrees with the subject. Suggestion(s):, are"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244494,
-            "uuid": "a6638702-4a4f-4e24-8066-408677c92205",
+            "id": 23312880,
+            "uuid": "2bfb5e4e-2bfd-439a-bc26-ab07fe83d12f",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688331,
+                "highlighterId": 1736669734034,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 206,
-                        "end": 213,
+                        "start": 207,
+                        "end": 214,
                         "top": null,
                         "left": null
                     }
@@ -270,43 +270,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Capitalisation",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 206,
+            "indexPosition": 207,
             "note": "Consider changing the capitalisation of the highlighted word. Suggestion(s):, YouTube"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244495,
-            "uuid": "c194dc8f-cb12-4ca7-b3b7-422e3d6852bb",
+            "id": 23312881,
+            "uuid": "837a27cc-2a27-45d9-9cc6-4d81a6508afb",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688332,
+                "highlighterId": 1736669734035,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 339,
-                        "end": 344,
+                        "start": 340,
+                        "end": 345,
                         "top": null,
                         "left": null
                     }
@@ -328,43 +328,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Capitalisation",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 339,
+            "indexPosition": 340,
             "note": "Consider changing the capitalisation of the highlighted word. Suggestion(s):, Hence"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244496,
-            "uuid": "402db214-dbc8-4ddc-9702-9c49c334ba7d",
+            "id": 23312882,
+            "uuid": "ad74e20e-513b-4ab4-9b0a-569e3305e1e7",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688333,
+                "highlighterId": 1736669734036,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 514,
-                        "end": 520,
+                        "start": 515,
+                        "end": 521,
                         "top": null,
                         "left": null
                     }
@@ -386,43 +386,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Remove: Word/Phrase",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 514,
+            "indexPosition": 515,
             "note": "Consider removing the highlighted word/phrase., "
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244497,
-            "uuid": "61a8f0ab-463f-4f43-a23f-5a9f3db0d56b",
+            "id": 23312883,
+            "uuid": "7e817e65-a48f-4caa-b408-8799f5d7cf0b",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688334,
+                "highlighterId": 1736669734037,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 541,
-                        "end": 549,
+                        "start": 542,
+                        "end": 550,
                         "top": null,
                         "left": null
                     }
@@ -444,43 +444,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Verb Form",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 541,
+            "indexPosition": 542,
             "note": "Consider changing the form of the highlighted verb. Suggestion(s):, spoiling"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244498,
-            "uuid": "a25f87ea-43b9-414e-a596-a1f6322396e0",
+            "id": 23312884,
+            "uuid": "e88b567c-c0da-42dc-8746-99f155210c1a",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688335,
+                "highlighterId": 1736669734038,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 566,
-                        "end": 570,
+                        "start": 567,
+                        "end": 571,
                         "top": null,
                         "left": null
                     }
@@ -502,43 +502,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Adjective",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 566,
+            "indexPosition": 567,
             "note": "Consider changing the highlighted adjective. Suggestion(s):, many"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244499,
-            "uuid": "434cdbb7-f1d7-40e4-8493-7788c8d1cd5e",
+            "id": 23312885,
+            "uuid": "ed8249ca-0a82-4d4e-9a85-bc67757db078",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688336,
+                "highlighterId": 1736669734039,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 607,
-                        "end": 615,
+                        "start": 608,
+                        "end": 616,
                         "top": null,
                         "left": null
                     }
@@ -560,43 +560,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Spelling",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 607,
+            "indexPosition": 608,
             "note": "Consider if the spelling of the highlighted word is accurate. Suggestions:, tablets"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244500,
-            "uuid": "374de129-af42-4b2a-abd6-34912dbfbde4",
+            "id": 23312886,
+            "uuid": "3082ac2d-8343-4884-8fe9-c817fd7bc645",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688337,
+                "highlighterId": 1736669734040,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 649,
-                        "end": 655,
+                        "start": 650,
+                        "end": 656,
                         "top": null,
                         "left": null
                     }
@@ -618,43 +618,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Adjective",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 649,
+            "indexPosition": 650,
             "note": "Consider changing the highlighted adjective. Suggestion(s):, spoil"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244501,
-            "uuid": "949da80d-4ec4-481f-a686-a1cfe5590145",
+            "id": 23312887,
+            "uuid": "addcd86d-14c2-4301-9d08-721d4e8f6264",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688338,
+                "highlighterId": 1736669734041,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 656,
-                        "end": 658,
+                        "start": 657,
+                        "end": 659,
                         "top": null,
                         "left": null
                     }
@@ -676,43 +676,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Subject-Verb Agreement",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 656,
+            "indexPosition": 657,
             "note": "Consider if the highlighted verb agrees with the subject. Suggestion(s):, are"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244502,
-            "uuid": "91e7b1f2-661f-4a75-91dc-6cc2fb52b5ff",
+            "id": 23312888,
+            "uuid": "09be0b72-40e2-4e56-8ac5-f4faa00d3beb",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688339,
+                "highlighterId": 1736669734042,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 707,
-                        "end": 711,
+                        "start": 708,
+                        "end": 712,
                         "top": null,
                         "left": null
                     }
@@ -734,43 +734,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Spelling",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 707,
+            "indexPosition": 708,
             "note": "Consider if the spelling of the highlighted word is accurate. Suggestions:, high, hugh"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244503,
-            "uuid": "5c19267d-cc9d-4fda-b70f-bf220a73d119",
+            "id": 23312889,
+            "uuid": "d276d688-cc9a-4724-839f-78b095ec04af",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688340,
+                "highlighterId": 1736669734043,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 764,
-                        "end": 768,
+                        "start": 765,
+                        "end": 769,
                         "top": null,
                         "left": null
                     }
@@ -792,43 +792,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Spelling",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 764,
+            "indexPosition": 765,
             "note": "Consider if the spelling of the highlighted word is accurate. Suggestions:, least, left, let, lead, heat"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244504,
-            "uuid": "41b83050-95fc-4797-8d92-58d46e07a1a1",
+            "id": 23312890,
+            "uuid": "1b55e9b1-3a95-43d9-ae6e-6990f970c09b",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688341,
+                "highlighterId": 1736669734044,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 780,
-                        "end": 785,
+                        "start": 781,
+                        "end": 786,
                         "top": null,
                         "left": null
                     }
@@ -850,43 +850,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Spelling",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 780,
+            "indexPosition": 781,
             "note": "Consider if the spelling of the highlighted word is accurate. Suggestions:, away"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244505,
-            "uuid": "af7fed9f-5da5-4ec7-854c-1db4179b1377",
+            "id": 23312891,
+            "uuid": "717c74dc-8855-4fe8-a7b0-df22fb5f608c",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688342,
+                "highlighterId": 1736669734045,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 891,
-                        "end": 895,
+                        "start": 892,
+                        "end": 896,
                         "top": null,
                         "left": null
                     }
@@ -908,37 +908,37 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Spelling",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 891,
+            "indexPosition": 892,
             "note": "Consider if the spelling of the highlighted word is accurate. Suggestions:, not, riot, nit"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244506,
-            "uuid": "cb4b421a-5ca4-4bfa-9c2c-0773206ead94",
+            "id": 23312892,
+            "uuid": "beec89b4-a775-4dd9-b1b4-9df2f787fce8",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688343,
+                "highlighterId": 1736669734046,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -966,18 +966,18 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -990,19 +990,19 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244507,
-            "uuid": "3e9d5502-95b9-4ce9-9387-54042bc7037c",
+            "id": 23312893,
+            "uuid": "1dc73eae-f6da-4644-b6ed-9aa392e3dd6c",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688344,
+                "highlighterId": 1736669734047,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 1059,
-                        "end": 1061,
+                        "start": 1060,
+                        "end": 1062,
                         "top": null,
                         "left": null
                     }
@@ -1024,43 +1024,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Add: Contraction",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 1059,
+            "indexPosition": 1060,
             "note": "Consider if a contraction should be used here. Suggestion(s):, n't"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244508,
-            "uuid": "3bf914a5-76ea-46f1-8097-3deada58ec9a",
+            "id": 23312894,
+            "uuid": "28f06fd3-94a8-4118-9079-818eb18df3c6",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688345,
+                "highlighterId": 1736669734048,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 1144,
-                        "end": 1151,
+                        "start": 1145,
+                        "end": 1152,
                         "top": null,
                         "left": null
                     }
@@ -1082,43 +1082,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Verb Spelling",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 1144,
+            "indexPosition": 1145,
             "note": "Consider if the spelling of the highlighted verb is accurate. Suggestion(s):, taught"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244509,
-            "uuid": "8890ae1b-953d-45a5-b12e-0ae8038c7e25",
+            "id": 23312895,
+            "uuid": "7d2a68be-cbeb-4167-bd4e-9679cb6381bf",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688346,
+                "highlighterId": 1736669734049,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 1209,
-                        "end": 1210,
+                        "start": 1210,
+                        "end": 1211,
                         "top": null,
                         "left": null
                     }
@@ -1140,43 +1140,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Remove: Punctuation",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 1209,
+            "indexPosition": 1210,
             "note": "Consider removing the highlighted punctuation mark., "
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244510,
-            "uuid": "65150ae9-abc7-4ded-a028-49ebe45652b8",
+            "id": 23312896,
+            "uuid": "0563d859-c920-4d18-8711-fa4f065ee857",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688347,
+                "highlighterId": 1736669734050,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 1232,
-                        "end": 1236,
+                        "start": 1233,
+                        "end": 1237,
                         "top": null,
                         "left": null
                     }
@@ -1198,43 +1198,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Word/Phrase",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 1232,
+            "indexPosition": 1233,
             "note": "Consider changing the highlighted word/phrase. Suggestion(s):, a lot of"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244511,
-            "uuid": "53ff705f-e06d-4807-976d-e937008fa3c2",
+            "id": 23312897,
+            "uuid": "821d2346-cf3b-40de-9bc7-e7c15ac8f32a",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688348,
+                "highlighterId": 1736669734051,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 1293,
-                        "end": 1295,
+                        "start": 1294,
+                        "end": 1296,
                         "top": null,
                         "left": null
                     }
@@ -1256,43 +1256,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Add: Contraction",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 1293,
+            "indexPosition": 1294,
             "note": "Consider if a contraction should be used here. Suggestion(s):, n't"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244512,
-            "uuid": "1003fef2-9365-400c-9bc3-e89b8806b0a0",
+            "id": 23312898,
+            "uuid": "9912fed9-7936-4f72-b5a4-b53fc1232e91",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688349,
+                "highlighterId": 1736669734052,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 1315,
-                        "end": 1316,
+                        "start": 1316,
+                        "end": 1317,
                         "top": null,
                         "left": null
                     }
@@ -1314,43 +1314,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Remove: Punctuation",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 1315,
+            "indexPosition": 1316,
             "note": "Consider removing the highlighted punctuation mark., "
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244513,
-            "uuid": "41d8119f-d8ed-412e-9571-0f241781c2f1",
+            "id": 23312899,
+            "uuid": "d545e125-726d-43e8-ade7-8397b8ccd04b",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688350,
+                "highlighterId": 1736669734053,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 1396,
-                        "end": 1404,
+                        "start": 1397,
+                        "end": 1405,
                         "top": null,
                         "left": null
                     }
@@ -1372,43 +1372,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Spelling",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 1396,
+            "indexPosition": 1397,
             "note": "Consider if the spelling of the highlighted word is accurate. Suggestions:, surprised"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244514,
-            "uuid": "a88947a3-4d14-4e96-96b0-05e9954b3cc0",
+            "id": 23312900,
+            "uuid": "eeeced43-69ae-4831-a74a-69b07ab9306c",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688351,
+                "highlighterId": 1736669734054,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 1411,
-                        "end": 1416,
+                        "start": 1412,
+                        "end": 1417,
                         "top": null,
                         "left": null
                     }
@@ -1430,43 +1430,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Verb Tense",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 1411,
+            "indexPosition": 1412,
             "note": "Consider changing the tense of the highlighted verb. Suggestion(s):, will"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244515,
-            "uuid": "a3924000-e550-400c-9615-12156f2532f6",
+            "id": 23312901,
+            "uuid": "1adb8ce9-4bb1-4415-a449-f86ad61814ea",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688352,
+                "highlighterId": 1736669734055,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 1451,
-                        "end": 1458,
+                        "start": 1452,
+                        "end": 1459,
                         "top": null,
                         "left": null
                     }
@@ -1488,43 +1488,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Capitalisation",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 1451,
+            "indexPosition": 1452,
             "note": "Consider changing the capitalisation of the highlighted word. Suggestion(s):, YouTube"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244516,
-            "uuid": "518eaa47-b806-446f-a940-6dc2cb45c3c3",
+            "id": 23312902,
+            "uuid": "b8032e99-bc3c-49ff-9ee8-c4ce3665ee1e",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688353,
+                "highlighterId": 1736669734056,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 1506,
-                        "end": 1509,
+                        "start": 1507,
+                        "end": 1510,
                         "top": null,
                         "left": null
                     }
@@ -1546,43 +1546,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Remove: Determiner",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 1506,
+            "indexPosition": 1507,
             "note": "Consider removing the highlighted determiner., "
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244517,
-            "uuid": "fe959382-f662-43d6-a45b-ce57bbc81b37",
+            "id": 23312903,
+            "uuid": "bf4d1b75-f891-4b34-b72c-e1b92518d7d1",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688354,
+                "highlighterId": 1736669734057,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 1562,
-                        "end": 1569,
+                        "start": 1563,
+                        "end": 1570,
                         "top": null,
                         "left": null
                     }
@@ -1604,43 +1604,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Spelling",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 1562,
+            "indexPosition": 1563,
             "note": "Consider if the spelling of the highlighted word is accurate. Suggestions:, enough"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244518,
-            "uuid": "19312b53-8a7a-4328-a1fa-b17422172052",
+            "id": 23312904,
+            "uuid": "14fd0430-8806-4d3b-baad-69f5aa3225a0",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688355,
+                "highlighterId": 1736669734058,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 1575,
-                        "end": 1576,
+                        "start": 1576,
+                        "end": 1577,
                         "top": null,
                         "left": null
                     }
@@ -1662,43 +1662,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Punctuation",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 1575,
+            "indexPosition": 1576,
             "note": "Consider changing the highlighted punctuation mark. Suggestion(s):, ."
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244519,
-            "uuid": "90c3fe7b-2bc7-4905-9ee4-0a0d18d13c60",
+            "id": 23312905,
+            "uuid": "c9d4cfb1-eed0-49db-b185-84258aaeb7c2",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688356,
+                "highlighterId": 1736669734059,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 1577,
-                        "end": 1583,
+                        "start": 1578,
+                        "end": 1584,
                         "top": null,
                         "left": null
                     }
@@ -1720,43 +1720,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Adverb",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 1577,
+            "indexPosition": 1578,
             "note": "Consider changing the highlighted adverb. Suggestion(s):, Finally"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244520,
-            "uuid": "ed6fd44f-e362-41ac-9737-8a062664e012",
+            "id": 23312906,
+            "uuid": "2857a5a9-4fa5-4af0-bda4-22701444ee89",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688357,
+                "highlighterId": 1736669734060,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 1596,
-                        "end": 1597,
+                        "start": 1597,
+                        "end": 1598,
                         "top": null,
                         "left": null
                     }
@@ -1778,49 +1778,49 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Add: Determiner",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 1596,
+            "indexPosition": 1597,
             "note": "Consider adding a determiner. Suggestion(s):,  the "
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244521,
-            "uuid": "990e84a2-cd4d-4dfe-9bc7-904f56abe6b8",
+            "id": 23312907,
+            "uuid": "89c6f612-cce3-44fa-a1f3-b024bc2693ad",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688358,
+                "highlighterId": 1736669734061,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 1688,
-                        "end": 1693,
+                        "start": 1689,
+                        "end": 1692,
                         "top": null,
                         "left": null
                     }
                 ],
                 "tooltipData": null,
-                "highlightedContent": "the  "
+                "highlightedContent": "the"
             },
             "title": null,
             "type": "TEXT_ANNOTATION",
@@ -1836,37 +1836,37 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
-            "keywords": "Remove: Word/Phrase",
+            "keywords": "Remove: Determiner",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 1688,
-            "note": "Consider removing the highlighted word/phrase., "
+            "indexPosition": 1689,
+            "note": "Consider removing the highlighted determiner., "
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244522,
-            "uuid": "378e9a0d-b943-4f7d-b7da-48ee6cf2d291",
+            "id": 23312908,
+            "uuid": "3e1bcc94-2053-4761-9ac5-46accf413ff4",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688359,
+                "highlighterId": 1736669734062,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -1894,18 +1894,18 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -1918,13 +1918,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244523,
-            "uuid": "cb903971-d1b3-436f-ad00-10f47605290c",
+            "id": 23312909,
+            "uuid": "f605f73b-bde0-48e8-ade8-27e248cc6c9f",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688360,
+                "highlighterId": 1736669734063,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -1952,18 +1952,18 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -1976,13 +1976,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244524,
-            "uuid": "2bf4eaf0-4fa8-4697-9831-6ce250f549c4",
+            "id": 23312910,
+            "uuid": "07084953-3b94-42ba-b9de-8c5fee9d24b5",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688361,
+                "highlighterId": 1736669734064,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -2010,18 +2010,18 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -2034,13 +2034,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244525,
-            "uuid": "db7637ef-d594-44de-a021-37259c1ddbf8",
+            "id": 23312911,
+            "uuid": "f0ff880c-b998-4ba1-91ca-0da3413eca82",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688362,
+                "highlighterId": 1736669734065,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -2068,18 +2068,18 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -2092,13 +2092,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244526,
-            "uuid": "5038e10c-cf0a-4676-bcab-61e83d8d9a84",
+            "id": 23312912,
+            "uuid": "a97cc413-11f6-400c-a9d1-25ca38a94684",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688363,
+                "highlighterId": 1736669734066,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -2126,18 +2126,18 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -2150,25 +2150,25 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244527,
-            "uuid": "cb8208d6-fc76-4349-a400-e3074c670c40",
+            "id": 23312913,
+            "uuid": "4bf51879-2820-4dd0-8311-4a720ec24b60",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688364,
+                "highlighterId": 1736669734067,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
                         "start": 2063,
-                        "end": 2066,
+                        "end": 2065,
                         "top": null,
                         "left": null
                     }
                 ],
                 "tooltipData": null,
-                "highlightedContent": " on"
+                "highlightedContent": "on"
             },
             "title": null,
             "type": "TEXT_ANNOTATION",
@@ -2184,43 +2184,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
-            "keywords": "Remove: Word/Phrase",
+            "keywords": "Remove: Preposition",
             "appFeatureId": 9,
             "audioFilePath": null,
             "indexPosition": 2063,
-            "note": "Consider removing the highlighted word/phrase., "
+            "note": "Consider removing the highlighted preposition., "
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244528,
-            "uuid": "b58242fe-8cb7-471e-be9a-ecba83cf4882",
+            "id": 23312914,
+            "uuid": "7cdf38dd-8bb9-4d6f-8b47-e0607a6a84eb",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688365,
+                "highlighterId": 1736669734068,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 2132,
-                        "end": 2133,
+                        "start": 2131,
+                        "end": 2132,
                         "top": null,
                         "left": null
                     }
@@ -2242,43 +2242,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Add: Determiner",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 2132,
+            "indexPosition": 2131,
             "note": "Consider adding a determiner. Suggestion(s):,  the "
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244529,
-            "uuid": "109ecacc-f25d-4515-8e22-b63080940c9b",
+            "id": 23312915,
+            "uuid": "03e93c3e-557a-404a-99a4-017930dd42b4",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688366,
+                "highlighterId": 1736669734069,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 2186,
-                        "end": 2195,
+                        "start": 2185,
+                        "end": 2194,
                         "top": null,
                         "left": null
                     }
@@ -2300,43 +2300,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Spelling",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 2186,
+            "indexPosition": 2185,
             "note": "Consider if the spelling of the highlighted word is accurate. Suggestions:, eyesight"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244530,
-            "uuid": "d43801e4-fe84-4177-9fbf-542e36a383fc",
+            "id": 23312916,
+            "uuid": "877fcf37-f0fa-4e5d-8ed3-1ffd36303435",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688367,
+                "highlighterId": 1736669734070,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 2203,
-                        "end": 2209,
+                        "start": 2202,
+                        "end": 2208,
                         "top": null,
                         "left": null
                     }
@@ -2358,43 +2358,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Word Form",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 2203,
+            "indexPosition": 2202,
             "note": "Consider changing the form of the highlighted word. Suggestion(s):, worse"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244531,
-            "uuid": "458dff74-3fc7-4ca4-9ac0-ca8cbf033e0b",
+            "id": 23312917,
+            "uuid": "5f6859aa-b2c1-4633-b75b-77e3bec1b435",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688368,
+                "highlighterId": 1736669734071,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 2256,
-                        "end": 2263,
+                        "start": 2255,
+                        "end": 2262,
                         "top": null,
                         "left": null
                     }
@@ -2416,43 +2416,43 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Replace: Noun Number",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 2256,
+            "indexPosition": 2255,
             "note": "Consider if the highlighted noun should be singular or plural. Suggestion(s):, problems"
         },
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052609,
+            "annotationResourceId": 1080579337,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244532,
-            "uuid": "f5020211-a606-4d48-918a-91752a401ada",
+            "id": 23312918,
+            "uuid": "c8a7127a-7aaa-4718-85a9-267a16cd5456",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441688369,
+                "highlighterId": 1736669734072,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
                         "type": "TEXT_POSITION_SELECTOR",
-                        "start": 2266,
-                        "end": 2267,
+                        "start": 2265,
+                        "end": 2266,
                         "top": null,
                         "left": null
                     }
@@ -2474,27 +2474,27 @@
             "createdDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedDate": [
                 2025,
                 1,
-                10,
-                0,
-                9,
-                47
+                12,
+                15,
+                30,
+                17
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
             "keywords": "Add: Determiner",
             "appFeatureId": 9,
             "audioFilePath": null,
-            "indexPosition": 2266,
+            "indexPosition": 2265,
             "note": "Consider adding a determiner. Suggestion(s):,  the "
         }
     ],
-    "timestamp": "1736438988"
+    "timestamp": "1736667021"
 }

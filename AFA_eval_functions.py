@@ -3,7 +3,6 @@ import resources as rsrc
 import ast
 import os
 import csv
-import re
 from dotenv import load_dotenv
 from datetime import datetime
 
@@ -17,7 +16,7 @@ def start_new_record(file_name):
     return filename
 
 def write_into_record(filename, data):
-    header = ['Subject','Level','Recipe','Error Tags','Suggested Answer','Rubrics','Question','Student Response','LLM Annotated Response','Gold Annotated Response','LLM Cards','Gold Cards','Identification TP Cards','Gold Identification Common Cards','Categorisation TP Cards','Identification TP Count','Categorisation TP Count','TP+FP','TP+FN','Identification F0.5','Categorisation F0.5']
+    header = ['Subject','Level','Recipe','Error Tags','Suggested Answer','Rubrics','Question','Student Response','LLM Annotated Response','Gold Annotated Response','LLM Cards','Gold Cards','Identification TP Cards','Gold Identification Common Cards','Identification TP Count','Common Gold Count','TP+FP (Total LLM)','TP+FN (Total Gold)','Precision','Recall','F05 Score']
     with open(filename, 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(header)
@@ -26,7 +25,7 @@ def write_into_record(filename, data):
 
 def csv_to_list_of_dicts(file_path):
     result = list()
-    with open(file_path, 'r') as csvfile:
+    with open(file_path, 'r', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             result.append(row)
@@ -82,18 +81,30 @@ def extract_annotation_details(LLM_dict, gold_dict):
     return LLM_annotated_response, gold_annotated_response, LLM_cards, gold_cards
 
 def first_identification_checker(LLM_cards, gold_cards):
+    print("Running First Checker")
     LLM_TP_first_identification = list()
-    LLM_TP_waitlist = list()
     gold_common_first_identification = list()
+    LLM_return_size = len(LLM_cards)
+    gold_size = len(gold_cards)
+    LLM_identification_counter = dict()
+    gold_identification_counter = dict()
+
+    for i in range(LLM_return_size):
+        LLM_identification_counter[i] = 0
+
+    for e in range(gold_size):
+        gold_identification_counter[e] = 0
+    
     for annotation_card in gold_cards:
-        for card_index in range(len(LLM_cards)):
+        for card_index in range(LLM_return_size):
             if LLM_cards[card_index]['phrase'] == annotation_card['phrase']:
                 LLM_TP_first_identification.append(LLM_cards[card_index])
                 gold_common_first_identification.append(annotation_card)
-                break
-            else:
-                LLM_TP_waitlist.append(LLM_cards[card_index])
-    return LLM_TP_first_identification, gold_common_first_identification, LLM_TP_waitlist
+                LLM_identification_counter[card_index] += 1
+                gold_identification_counter[gold_cards.index(annotation_card)] += 1
+
+    print(len(LLM_TP_first_identification))
+    return LLM_TP_first_identification, gold_common_first_identification, LLM_identification_counter, gold_identification_counter
 
 def tag_removal(annotated_response, annotation_card_list):
     cleaned_text = annotated_response.replace('</tag>', '', len(annotation_card_list))
@@ -139,66 +150,95 @@ def expand_subphrase_to_phrase(cleaned_text, sub_phrase, annotation_number, anno
     expanded_phrase = left_slice + sub_phrase + right_slice
     return expanded_phrase
 
-def second_identification_checker(LLM_annotated_response, gold_annotated_response, LLM_TP_first_identification, gold_common_first_identification, LLM_cards, gold_cards, strictness):
+def second_identification_checker(LLM_annotated_response, gold_annotated_response, LLM_TP_first_identification, gold_common_first_identification, LLM_cards, gold_cards, strictness, LLM_identification_counter, gold_identification_counter):
+    print("Running Second Checker")
+    LLM_TP_waitlist = list()
+    gold_common_waitlist = list()
     LLM_identified_TP = list()
     gold_identified_common = list()
     for i in range(len(gold_common_first_identification)):
-        #LLM_tag_id = '<tag id="' + str(LLM_TP_first_identification[i]['id']) + '">'
-        #gold_tag_id = '<tag id="' + str(gold_common_first_identification[i]['id']) + '">'
         LLM_tag_position, LLM_end_tag_position = tag_locator(LLM_TP_first_identification[i]['id'], LLM_annotated_response)
         gold_tag_position, gold_end_tag_position = tag_locator(gold_common_first_identification[i]['id'], gold_annotated_response)
 
         LLM_cleaned_text = tag_removal(LLM_annotated_response, LLM_cards)
         gold_cleaned_text = tag_removal(gold_annotated_response, gold_cards)
+        #print(f"Post first check LLM Phrase: {LLM_TP_first_identification[i]['phrase']}")
+        #print(f"Post first check gold Phrase: {gold_common_first_identification[i]['phrase']}")
         LLM_expanded_phrase = expand_subphrase_to_phrase(LLM_cleaned_text, LLM_TP_first_identification[i]['phrase'], LLM_TP_first_identification[i]['id'], LLM_annotated_response, LLM_cards, LLM_tag_position, LLM_end_tag_position, left_side_length=strictness, right_side_length=strictness)
+        #print(f"LLM_expanded_phrase: {LLM_expanded_phrase}")
         gold_expanded_phrase = expand_subphrase_to_phrase(gold_cleaned_text, gold_common_first_identification[i]['phrase'], gold_common_first_identification[i]['id'], gold_annotated_response, gold_cards, gold_tag_position, gold_end_tag_position, left_side_length=strictness, right_side_length=strictness)
+        #print(f"gold_expanded_phrase: {gold_expanded_phrase}")
+        
         if LLM_expanded_phrase == gold_expanded_phrase:
             LLM_identified_TP.append(LLM_TP_first_identification[i])
             gold_identified_common.append(gold_common_first_identification[i])
+            #print("Match found.")
+        else:
+            find_LLM_index = LLM_cards.index(LLM_TP_first_identification[i])
+            find_gold_index = gold_cards.index(gold_common_first_identification[i])
+            LLM_identification_counter[find_LLM_index] -= 1
+            gold_identification_counter[find_gold_index] -= 1
+            #print("Match not found.")
+        
+    for key in LLM_identification_counter:
+        if LLM_identification_counter[key] == 0:
+            LLM_TP_waitlist.append(LLM_cards[key])
+    
+    for key in gold_identification_counter:
+        if gold_identification_counter[key] == 0:
+            gold_common_waitlist.append(gold_cards[key])
 
-        #LLM_check_start = LLM_tag_position - strictness
-        #gold_check_start = gold_tag_position - strictness
-        #LLM_check_end = LLM_tag_position + len(LLM_tag_id) + len(LLM_TP_first_identification[i]['phrase']) + len('</tag>') + tolerance
-        #gold_check_end = gold_tag_position + len(gold_tag_id) + len(gold_common_first_identification[i]['phrase']) + len('</tag>') + tolerance
-        #if LLM_annotated_response[LLM_check_start:LLM_tag_position] == gold_annotated_response[gold_check_start:gold_tag_position] or LLM_annotated_response[LLM_end_tag_position:LLM_check_end] == gold_annotated_response[gold_end_tag_position:gold_check_end]:
-            #LLM_identified_TP.append(LLM_TP_first_identification[i])
-            #gold_identified_common.append(gold_common_first_identification[i])
+    return LLM_identified_TP, gold_identified_common, LLM_TP_waitlist, gold_common_waitlist
 
-    return LLM_identified_TP, gold_identified_common
-
-def third_identification_checker(LLM_TP_waitlist, gold_cards, LLM_identified_TP, gold_identified_common, LLM_annotated_response, gold_annotated_response, LLM_cards):
-    for annotation_card in gold_cards:
+def third_identification_checker(LLM_TP_waitlist, gold_common_waitlist, LLM_identified_TP, gold_identified_common, LLM_annotated_response, gold_annotated_response, LLM_cards, gold_cards):
+    print("Running Third Checker")
+    print(len(LLM_TP_waitlist))
+    for annotation_card in gold_common_waitlist:
+        print(f"Annotation Card: {annotation_card}")
         for card_index in range(len(LLM_TP_waitlist)):
             if len(LLM_TP_waitlist[card_index]['phrase']) < len(annotation_card['phrase']) and LLM_TP_waitlist[card_index]['phrase'] in annotation_card['phrase']:
-                left_side_length, right_side_length = wrapping_character_counter(annotation_card['phrase'], LLM_TP_waitlist[card_index]['phrase'])
+                LLM_left_side, LLM_right_side = wrapping_character_counter(annotation_card['phrase'], LLM_TP_waitlist[card_index]['phrase'])
                 LLM_tag_position, LLM_end_tag_position = tag_locator(LLM_TP_waitlist[card_index]['id'], LLM_annotated_response)
+                gold_tag_position, gold_end_tag_position = tag_locator(annotation_card['id'], gold_annotated_response)
                 cleaned_text = tag_removal(LLM_annotated_response, LLM_cards)
-                phrase_check = expand_subphrase_to_phrase(cleaned_text, LLM_TP_waitlist[card_index]['phrase'], LLM_TP_waitlist[card_index]['id'], LLM_annotated_response, LLM_cards, LLM_tag_position, LLM_end_tag_position, left_side_length, right_side_length)
+                LLM_phrase_check = expand_subphrase_to_phrase(cleaned_text, LLM_TP_waitlist[card_index]['phrase'], LLM_TP_waitlist[card_index]['id'], LLM_annotated_response, LLM_cards, LLM_tag_position, LLM_end_tag_position, left_side_length=LLM_left_side+20, right_side_length=LLM_right_side+20)
+                gold_phrase_check = expand_subphrase_to_phrase(cleaned_text, annotation_card['phrase'], annotation_card['id'], gold_annotated_response, gold_cards, gold_tag_position, gold_end_tag_position, 20, 20)
 
-                if phrase_check == annotation_card['phrase']:
+                if LLM_phrase_check == gold_phrase_check:
+                    #print("llm longer than gold")
+                    #print(LLM_TP_waitlist[card_index])
+                    #print(" ")
                     LLM_identified_TP.append(LLM_TP_waitlist[card_index])
-                    gold_identified_common.append(annotation_card)
-                    break
+                    if annotation_card not in gold_identified_common:
+                        gold_identified_common.append(annotation_card)
 
             elif len(LLM_TP_waitlist[card_index]['phrase']) > len(annotation_card['phrase']) and annotation_card['phrase'] in LLM_TP_waitlist[card_index]['phrase']:
-                left_side_length, right_side_length = wrapping_character_counter(LLM_TP_waitlist[card_index]['phrase'], annotation_card['phrase'])
+                gold_left_side, gold_right_side = wrapping_character_counter(LLM_TP_waitlist[card_index]['phrase'], annotation_card['phrase'])
                 gold_tag_position, gold_end_tag_position = tag_locator(annotation_card['id'], gold_annotated_response)
+                LLM_tag_position, LLM_end_tag_position = tag_locator(LLM_TP_waitlist[card_index]['id'], LLM_annotated_response)
                 cleaned_text = tag_removal(gold_annotated_response, gold_cards)
-                phrase_check = expand_subphrase_to_phrase(cleaned_text, annotation_card['phrase'], annotation_card['id'], gold_annotated_response, gold_cards, gold_tag_position, gold_end_tag_position, left_side_length, right_side_length)
+                gold_phrase_check = expand_subphrase_to_phrase(cleaned_text, annotation_card['phrase'], annotation_card['id'], gold_annotated_response, gold_cards, gold_tag_position, gold_end_tag_position, left_side_length=gold_left_side+20, right_side_length=gold_right_side+20)
+                LLM_phrase_check = expand_subphrase_to_phrase(cleaned_text, LLM_TP_waitlist[card_index]['phrase'], LLM_TP_waitlist[card_index]['id'], LLM_annotated_response, LLM_cards, LLM_tag_position, LLM_end_tag_position, 20, 20)
 
-                if phrase_check == LLM_TP_waitlist[card_index]['phrase']:
-                    LLM_identified_TP.append(LLM_TP_waitlist[card_index])
+                if gold_phrase_check == LLM_phrase_check:
+                    #print("gold longer than llm")
+                    #print(LLM_TP_waitlist[card_index])
+                    #print(" ")
+                    if LLM_TP_waitlist[card_index] not in LLM_identified_TP:
+                        LLM_identified_TP.append(LLM_TP_waitlist[card_index])
                     gold_identified_common.append(annotation_card)
-                    break
 
     return LLM_identified_TP, gold_identified_common
 
 def identification_checker(LLM_annotated_response, gold_annotated_response, LLM_cards, gold_cards, strictness=20):
-    LLM_TP_identified, gold_common_identified, LLM_TP_waitlist= first_identification_checker(LLM_cards, gold_cards)
-    LLM_identified_TP, gold_identified_common = second_identification_checker(LLM_annotated_response, gold_annotated_response, LLM_TP_identified, gold_common_identified, LLM_cards, gold_cards, strictness)
-    LLM_TP_identified_confirmed, gold_common_identified_confirmed = third_identification_checker(LLM_TP_waitlist, gold_cards, LLM_identified_TP, gold_identified_common, LLM_annotated_response, gold_annotated_response, LLM_cards)
+    LLM_TP_identified, gold_common_identified, LLM_TP_id_counter, gold_common_id_counter = first_identification_checker(LLM_cards, gold_cards)
+    LLM_identified_TP, gold_identified_common, LLM_TP_waitlist, gold_common_waitlist = second_identification_checker(LLM_annotated_response, gold_annotated_response, LLM_TP_identified, gold_common_identified, LLM_cards, gold_cards, strictness, LLM_TP_id_counter, gold_common_id_counter)
+    #print(f"LLM_identified_TP: {LLM_identified_TP}")
+    LLM_TP_identified_confirmed, gold_common_identified_confirmed = third_identification_checker(LLM_TP_waitlist, gold_common_waitlist, LLM_identified_TP, gold_identified_common, LLM_annotated_response, gold_annotated_response, LLM_cards, gold_cards)
+    #print(f"LLM_TP_identified_confirmed: {LLM_TP_identified_confirmed}")
     number_of_identified_TP = len(LLM_TP_identified_confirmed)
-    return LLM_TP_identified_confirmed, gold_common_identified_confirmed, number_of_identified_TP
+    number_of_common_gold = len(gold_common_identified_confirmed)
+    return LLM_TP_identified_confirmed, gold_common_identified_confirmed, number_of_identified_TP, number_of_common_gold
 
 def categorisation_checker(LLM_TP_identified_confirmed, gold_common_identified_confirmed, number_of_identified_TP):
     categorisation_TP = list()
@@ -215,14 +255,14 @@ def identificationPrecision(number_of_identified_TP, LLM_cards):
     identified_Precision = number_of_identified_TP/TP_plus_FP
     return identified_Precision
 
-def identificationRecall(number_of_identified_TP, gold_cards):
+def identificationRecall(number_of_common_gold, gold_cards):
     TP_plus_FN = len(gold_cards)
-    identified_Recall = number_of_identified_TP/TP_plus_FN
+    identified_Recall = number_of_common_gold/TP_plus_FN
     return identified_Recall
 
-def identificationF05Score(number_of_identified_TP, LLM_cards, gold_cards):
+def identificationF05Score(number_of_identified_TP, number_of_common_gold, LLM_cards, gold_cards):
     Precision = identificationPrecision(number_of_identified_TP, LLM_cards)
-    Recall = identificationRecall(number_of_identified_TP, gold_cards)
+    Recall = identificationRecall(number_of_common_gold, gold_cards)
     identified_F05 = (1 + 0.25)*(Precision*Recall)/((0.25*Precision)+Recall)
     return identified_F05
 

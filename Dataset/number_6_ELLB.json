@@ -4,13 +4,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244045,
-            "uuid": "e34d8cb7-2d58-4dbb-8ee2-f7cb61960f5e",
+            "id": 23312358,
+            "uuid": "7bde9023-bbf5-445d-b6c1-2e9049529554",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015281,
+                "highlighterId": 1736669464928,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -38,18 +38,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -62,13 +62,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244046,
-            "uuid": "2defff68-9699-4af1-a5ea-886549b4cf6b",
+            "id": 23312359,
+            "uuid": "12d0edfd-af7a-4881-a4cb-489c1d6ad674",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015282,
+                "highlighterId": 1736669464929,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -96,18 +96,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -120,13 +120,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244047,
-            "uuid": "bb225bab-f1ee-4469-aae9-7d0fffb19c9a",
+            "id": 23312360,
+            "uuid": "a038772e-56fd-4b19-8057-e8f25bc8780d",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015283,
+                "highlighterId": 1736669464930,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -154,18 +154,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -178,13 +178,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244048,
-            "uuid": "5d326ec1-aa83-49f2-8dd6-036030db0067",
+            "id": 23312361,
+            "uuid": "d0a550be-9352-4629-abe3-29a7a7ad7780",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015284,
+                "highlighterId": 1736669464931,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -212,18 +212,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -236,13 +236,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244049,
-            "uuid": "0b331dcd-a58f-44f3-b8a0-1b8f7ae9fd3f",
+            "id": 23312362,
+            "uuid": "37962e25-c7d0-4f9e-abe4-8153beb4da06",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015285,
+                "highlighterId": 1736669464932,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -270,18 +270,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -294,13 +294,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244050,
-            "uuid": "0e3caa4d-89cc-478d-8840-ea306dcacb13",
+            "id": 23312363,
+            "uuid": "6fe2149a-0a60-44e2-b19b-e981677e0f32",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015286,
+                "highlighterId": 1736669464933,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -328,18 +328,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -352,13 +352,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244051,
-            "uuid": "7d12d8fd-0094-4426-a049-a120c1d18966",
+            "id": 23312364,
+            "uuid": "83a04890-2308-4396-a791-577afe435bf2",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015287,
+                "highlighterId": 1736669464934,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -386,18 +386,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -410,13 +410,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244052,
-            "uuid": "b70a6a6b-9d83-451f-90ec-91e6622bac74",
+            "id": 23312365,
+            "uuid": "489d9e73-51e9-4f1d-838c-237408bb1052",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015288,
+                "highlighterId": 1736669464935,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -444,18 +444,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -468,13 +468,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244053,
-            "uuid": "e627d516-a6fb-4ef6-b9cb-f2718e49c92b",
+            "id": 23312366,
+            "uuid": "1607990b-49b1-4ec5-8fbc-22bf1940a418",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015289,
+                "highlighterId": 1736669464936,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -502,18 +502,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -526,13 +526,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244054,
-            "uuid": "938d5d23-262f-4bfb-96e9-61ab6413de55",
+            "id": 23312367,
+            "uuid": "03c39763-2921-413d-be07-a47846722db3",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015290,
+                "highlighterId": 1736669464937,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -560,18 +560,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -584,13 +584,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244055,
-            "uuid": "001decc0-30c3-4986-a116-6004a56c951b",
+            "id": 23312368,
+            "uuid": "07dd7eda-6d45-4ad9-969f-2250d48f89ec",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015291,
+                "highlighterId": 1736669464938,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -618,18 +618,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -642,13 +642,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244056,
-            "uuid": "182c7518-9c2d-4eaf-b290-14c34b5b5458",
+            "id": 23312369,
+            "uuid": "55798c7b-6390-431e-acdb-fd71d31c0a7c",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015292,
+                "highlighterId": 1736669464939,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -676,18 +676,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -700,13 +700,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244057,
-            "uuid": "73ccd7ee-95b0-4ff0-a208-e14d1a6e6325",
+            "id": 23312370,
+            "uuid": "7275bf69-e313-4d1c-a19b-f78bdeb889c9",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015293,
+                "highlighterId": 1736669464940,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -734,18 +734,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -758,13 +758,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244058,
-            "uuid": "bcf41705-055f-4692-aeb5-e1844805b7a3",
+            "id": 23312371,
+            "uuid": "f375e0ac-6658-4444-95bc-84b9aa7dbeb8",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015294,
+                "highlighterId": 1736669464941,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -792,18 +792,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -816,13 +816,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244059,
-            "uuid": "3cad8574-2282-4783-b72b-7b83a69fb978",
+            "id": 23312372,
+            "uuid": "c5985853-d9ac-4514-8716-156f751763c6",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015295,
+                "highlighterId": 1736669464942,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -850,18 +850,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -874,13 +874,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244060,
-            "uuid": "05f906e2-df3a-49c2-9a40-3d5b00037c4b",
+            "id": 23312373,
+            "uuid": "d7112e57-3bfd-4197-a6b6-d32516878e2f",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015296,
+                "highlighterId": 1736669464943,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -908,18 +908,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -932,13 +932,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244061,
-            "uuid": "11312009-63b2-475d-8efd-4c86d85b6478",
+            "id": 23312374,
+            "uuid": "6e6e3ad8-04fb-4b5e-b884-cd6787eed6c6",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015297,
+                "highlighterId": 1736669464944,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -966,18 +966,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -990,13 +990,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244062,
-            "uuid": "4a00f9c7-5892-4537-84eb-e6fa0a205314",
+            "id": 23312375,
+            "uuid": "9b683597-2a0f-4d8d-a2d7-346d01619d8a",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015298,
+                "highlighterId": 1736669464945,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -1024,18 +1024,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -1048,13 +1048,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244063,
-            "uuid": "73cf2285-7b2c-44e1-9f03-d4ac1f51035d",
+            "id": 23312376,
+            "uuid": "4b6e7061-551a-485d-91ec-90c0bbbc9adf",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015299,
+                "highlighterId": 1736669464946,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -1082,18 +1082,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -1106,13 +1106,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244064,
-            "uuid": "d751ffab-5441-40d6-bf60-b0211c19694c",
+            "id": 23312377,
+            "uuid": "9711cb2b-00a9-4dab-8634-8d89d4ceb532",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015300,
+                "highlighterId": 1736669464947,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -1140,18 +1140,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -1164,13 +1164,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244065,
-            "uuid": "91baa440-feaa-4e3e-8428-e3409a0600c7",
+            "id": 23312378,
+            "uuid": "f1797710-ddd4-4986-b6ca-1cce3aa7ae0b",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015301,
+                "highlighterId": 1736669464948,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -1198,18 +1198,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -1222,13 +1222,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244066,
-            "uuid": "0583f13d-b907-4499-be41-8f9ad1bd79f8",
+            "id": 23312379,
+            "uuid": "b7808695-a06a-44d8-be02-896ed181e8fb",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015302,
+                "highlighterId": 1736669464949,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -1256,18 +1256,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -1280,13 +1280,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244067,
-            "uuid": "31fca524-6eb3-46ee-a5c9-7902ddfad2a0",
+            "id": 23312380,
+            "uuid": "d5d10191-25dd-410a-898b-c7d6fd6956b1",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015303,
+                "highlighterId": 1736669464950,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -1314,18 +1314,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -1338,13 +1338,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244068,
-            "uuid": "89de2741-a98f-482b-bc1a-b6eee1afc33a",
+            "id": 23312381,
+            "uuid": "46112b50-b92f-4964-bec0-ec7d3ed97cce",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015304,
+                "highlighterId": 1736669464951,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -1372,18 +1372,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -1396,13 +1396,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244069,
-            "uuid": "4a7d11ac-ce97-482d-ae9b-8f67465b01f1",
+            "id": 23312382,
+            "uuid": "889b3a63-b9c3-488e-bf59-eea192438870",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015305,
+                "highlighterId": 1736669464952,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -1430,18 +1430,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -1454,13 +1454,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244070,
-            "uuid": "eace3d23-d5a3-4ad4-9c6a-3eb1f29606fe",
+            "id": 23312383,
+            "uuid": "216e8d47-7ed5-4dbe-a0d4-8479c063eace",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015306,
+                "highlighterId": 1736669464953,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -1488,18 +1488,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -1512,13 +1512,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244071,
-            "uuid": "d86ed613-81c6-4112-a1f0-006398b9479c",
+            "id": 23312384,
+            "uuid": "7b52eff2-e222-4342-88de-6505b69100f2",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015307,
+                "highlighterId": 1736669464954,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -1546,18 +1546,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -1570,13 +1570,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244072,
-            "uuid": "85011366-147f-411d-9fad-b3f4dbbc96c1",
+            "id": 23312385,
+            "uuid": "e25d7df4-432f-4738-8271-43188304055e",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015308,
+                "highlighterId": 1736669464955,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -1604,18 +1604,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -1628,13 +1628,13 @@
         {
             "resourceUuid": null,
             "resourceType": null,
-            "annotationResourceId": 1080052316,
+            "annotationResourceId": 1080578443,
             "annotationResourceType": "QUESTION_ANSWER",
-            "id": 23244073,
-            "uuid": "1c832b8c-371d-40b0-8293-4b376bd1a7db",
+            "id": 23312386,
+            "uuid": "d8e44352-7fb3-4a91-866c-f75672d987e0",
             "anchor": "QN_460739915_SA",
             "data": {
-                "highlighterId": 1736441015309,
+                "highlighterId": 1736669464956,
                 "highlighterClass": "assess-2",
                 "highlighterSelectors": [
                     {
@@ -1662,18 +1662,18 @@
             "createdDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedDate": [
                 2025,
                 1,
-                9,
-                23,
-                58,
-                34
+                12,
+                15,
+                25,
+                48
             ],
             "modifiedBy": 1,
             "modifiedByName": "System Admin",
@@ -1684,5 +1684,5 @@
             "note": "Consider if the spelling of the highlighted word is accurate. Suggestions:, Class, class, clay, las, alas"
         }
     ],
-    "timestamp": "1736438316"
+    "timestamp": "1736666750"
 }

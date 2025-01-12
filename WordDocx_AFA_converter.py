@@ -24,6 +24,8 @@ def convert_docx_to_AFA(docx_path, old_error_tag=False):
         counter = 0
         annotated_response = str()    
         for para in docx.body_runs[0][0][0]:
+            print(counter)
+            print(para)
             for phrase in para:
                 if counter < len(feedback_list):
                     if phrase == feedback_list[counter]['phrase']:
@@ -38,6 +40,7 @@ def convert_docx_to_AFA(docx_path, old_error_tag=False):
 
     AFA_template['annotated_response'] = annotated_response
     AFA_template['feedback_list'] = feedback_list
-    with open('Output/conversion_output.txt', 'w') as output:
+    final_name = docx_path[8:-4]
+    with open('Output/'+ final_name +'.txt', 'w') as output:
         output.write(str(AFA_template))
     return AFA_template
