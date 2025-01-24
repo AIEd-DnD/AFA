@@ -192,9 +192,9 @@ def second_identification_checker(LLM_annotated_response, gold_annotated_respons
 
 def third_identification_checker(LLM_TP_waitlist, gold_common_waitlist, LLM_identified_TP, gold_identified_common, LLM_annotated_response, gold_annotated_response, LLM_cards, gold_cards):
     print("Running Third Checker")
-    print(len(LLM_TP_waitlist))
+    #print(len(LLM_TP_waitlist))
     for annotation_card in gold_common_waitlist:
-        print(f"Annotation Card: {annotation_card}")
+        #print(f"Annotation Card: {annotation_card}")
         for card_index in range(len(LLM_TP_waitlist)):
             if len(LLM_TP_waitlist[card_index]['phrase']) < len(annotation_card['phrase']) and LLM_TP_waitlist[card_index]['phrase'] in annotation_card['phrase']:
                 LLM_left_side, LLM_right_side = wrapping_character_counter(annotation_card['phrase'], LLM_TP_waitlist[card_index]['phrase'])
