@@ -3,9 +3,9 @@ import AFA_eval_functions as AFA
 data = list()
 #test_name = input("Please enter the name of the test: ")               #uncomment this to unlock user input for test name
 #file_path = input("Please enter the file path of the test data: ")     #uncomment this to unlock user input for file path
-evaluation_record = AFA.start_new_record("GED_SampleSize10_20_ELLB")
+evaluation_record = AFA.start_new_record("GED_SampleSize10_20_sent_ELLB_o3_mini")
 print("The evaluation record has been created.")
-response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_BulkEval_Test_20_ELLB.csv")
+response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_BulkEval_Test_20_sent_ELLB.csv")
 print("The response list has been created.")
 
 for scenario_dict in response_list:
