@@ -59,10 +59,10 @@ def assemble_prompt(subject, level, question, students_response, recipe=" ", sug
 
 def get_annotations(assembled_prompt):
    response = client.chat.completions.create(
-     model="o3-mini-2025-01-31",
-     #temperature = 0.1, #temperature is only available to gpt models
+     model="gpt-4o-2024-08-06",
+     temperature = 0.1, #temperature is only available to gpt models
      #reasoning_effort = "high"
-     max_completion_tokens = 30000, #max tokens is only available to gpt models, default max tokens is 4000. this parameter is being deprecated in favour of max_completion_tokens
+     max_tokens = 4000, #max tokens is only available to gpt models, default max tokens is 4000. this parameter is being deprecated in favour of max_completion_tokens
      tools = rsrc.tools,
      messages = [{"role": "user", "content": assembled_prompt}]
    )
@@ -104,7 +104,7 @@ def first_identification_checker(LLM_cards, gold_cards):
                 LLM_identification_counter[card_index] += 1
                 gold_identification_counter[gold_cards.index(annotation_card)] += 1
 
-    print(len(LLM_TP_first_identification))
+    #print(len(LLM_TP_first_identification))
     return LLM_TP_first_identification, gold_common_first_identification, LLM_identification_counter, gold_identification_counter
 
 def tag_removal(annotated_response, annotation_card_list):

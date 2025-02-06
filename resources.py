@@ -1,18 +1,17 @@
 base_prompt = """
 <context>
-You are a diligent teacher identifying errors in a {Level} student response to give them feedback on a {Subject} question: {Question}.
+You are a diligent teacher identifying errors in a {Level} student response to give them feedback for a {Subject} question: {Question}.
 </context>
 
 <objective>
 Your objectives are:
 1. Use the content enclosed in the Feedback Reference Structure XML tags to help you interpret the feedback references that you will receive.
 2. Use the content enclosed in the Reference XML tags to carefully analyse the student's response along the dimensions in the references.
-3. Based on the references, identify errors found in the student response.
-4. Return the student's response exactly as sent. 
-5. For each error, enclose the words or phrases in student's response with a unique tag and a running number to the tag. Eg. <tag id=”1”></tag>, <tag id=”2”></tag>.
-6. For each error type, specify the unique tag and the id of the tag, and list out the error type and its comments.
-7. For the comments, it should be in the question's language, written in a student-friendly, concise manner in accordance to these additional instructions <Instructions>{Instructions}</Instructions>. If the language is English, use British English.
-8. If there are no errors, the error tag should tag the first word of the student's response and the error tag should be "No error".
+3. Based on the references, identify errors found in the student's response.
+4. Return the student's response exactly as sent and enclose the words or phrases in the student's response that contain the error with a unique tag and a running id number to the tag in the following format: <annotated_response format> 'annotated_response':'The pig was <tag id="1">fly</tag>. I <tag id="2">is</tag> amazed.' </annotated_response format>
+5. For each error, specify the unique id number of the tag, the exact word or phrase it encloses, the specific error type, and the comments.
+6. For the comments, it should be in the question's language, written in a student-friendly, concise manner in accordance to these additional instructions: <Instructions>{Instructions}</Instructions>. If the language is English, use British English spelling.
+7. If there are no errors, the error tag should tag the first word of the student's response and the error tag should be "No error".
 </objective>
 
 <Feedback Reference Structure>
@@ -36,7 +35,7 @@ b. adhere strictly to the error list provided.
 </error type>
 </reference>
 
-This is the student's response: {Students_response}
+This is the student's response: <Student's response> {Students_response} </Students's response>
 
 """
 

@@ -3,9 +3,9 @@ import AFA_eval_functions as AFA
 data = list()
 #test_name = input("Please enter the name of the test: ")               #uncomment this to unlock user input for test name
 #file_path = input("Please enter the file path of the test data: ")     #uncomment this to unlock user input for file path
-evaluation_record = AFA.start_new_record("GED_SampleSize10_20_sent_ELLB_o3_mini")
+evaluation_record = AFA.start_new_record("GED_Prompt_v2")
 print("The evaluation record has been created.")
-response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_BulkEval_Test_20_sent_ELLB.csv")
+response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_BulkEval_Test.csv")
 print("The response list has been created.")
 
 for scenario_dict in response_list:
@@ -25,6 +25,7 @@ for scenario_dict in response_list:
     
     message = AFA.assemble_prompt(subject, level, question, students_response, recipe, suggested_answer, rubrics, error_tags)
     full_LLM_response = AFA.get_annotations(message)
+    #print(full_LLM_response)
     
     try:
         LLM_dict = AFA.string_to_dict(full_LLM_response)
