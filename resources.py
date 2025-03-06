@@ -5,38 +5,79 @@ You are a diligent teacher identifying errors in a {Level} student response to g
 
 <objective>
 Your objectives are:
-1. Use the content enclosed in the Feedback Reference Structure XML tags to help you interpret the feedback references that you will receive.
-2. Use the content enclosed in the Reference XML tags to carefully analyse the student's response along the dimensions in the references.
+1. Use the content enclosed in the Feedback Reference Explanation XML tags to help you interpret the feedback references that you will receive.
+2. Use the content enclosed in the Feedback Reference XML tags to carefully analyse the student's response along the dimensions in the references.
 3. Based on the references, identify errors found in the student's response.
-4. Return the student's response exactly as sent and enclose the words or phrases in the student's response that contain the error with a unique tag and a running id number to the tag in the following format: <annotated_response format> 'annotated_response':'The pig was <tag id="1">fly</tag>. I <tag id="2">is</tag> amazed.' </annotated_response format>
+4. Return the student's response exactly as sent and enclose the words or phrases in the student's response that contain the error with a unique tag and a running id number to the tag in the following format: 'annotated_response':'The pig was <tag id="1">fly</tag>. I <tag id="2">is</tag> amazed.'
 5. For each error, specify the unique id number of the tag, the exact word or phrase it encloses, the specific error type, and the comments.
 6. For the comments, it should be in the question's language, written in a student-friendly, concise manner in accordance to these additional instructions: <Instructions>{Instructions}</Instructions>. If the language is English, use British English spelling.
 7. If there are no errors, the error tag should tag the first word of the student's response and the error tag should be "No error".
 </objective>
 
+<Feedback Reference Explanation>
+1. Model answer: A series of sentences that expresses the main ideas expected to be in the student's response.
+2. Rubrics: Each rubric criterion in a set of rubrics is presented in the following structure: "[Dimension] - [Band Descriptor] - [Description]". [Dimension] refers to the name of the criterion being assessed; [Band Descriptor] is the label of the band; [Dimension Band Description] delineates the qualities of a student response that is in the band of [Band Descriptor] for that [Dimension].
+3. Error list: Each error in the error list is presented in the following structure: "[Error type] - [Error type Description]". [Error type] is the label of the error; [Error type Description] explains in detail the error expected in the student's response.
+</Feedback Reference Explanation>
+
+<Feedback Reference>
+<Model answer>Teacher's model answer: {Model_answer}</Model answer>
+<Rubrics>Rubrics: {Rubrics}
+Additional Rubric Instructions: 
+a. always return error tag as the name of the dimension criteria.
+b. Each dimension criteria is independent of each other and identify parts of the student's response to be commented using different dimensions. 
+c. Start with the first dimension of the rubric. Compare the student's response with the description of each grading band in the dimension and provide feedback. 
+</Rubrics>
+<Error list>Error list: {Error_types}
+Additional Error type instructions:
+a. always return error type name in full, for example <example>[Error type]</example>.
+b. adhere strictly to the error list provided.
+</Error list>
+</Feedback Reference>
+
+This is the student's response: <Student's response> {Students_response} </Students's response>
+
+"""
+
+sandbox_prompt = """
+<context>  
+You are a diligent teacher identifying errors in a {Level} student response to give them feedback on a {Subject} question: {Question}.
+</context>
+
+<objective>
+Your objectives are:
+1.⁠ ⁠Use the content enclosed in the Feedback Reference Structure XML tags to help you interpret the feedback references that you will receive.
+2.⁠ ⁠Use the content enclosed in the Reference XML tags to carefully analyse the student's response along the dimensions in the references.
+3.⁠ ⁠Based on the references, identify errors found in the student's response.
+4.⁠ ⁠Return the student's response exactly as sent. 
+5.⁠ ⁠For each error, enclose the words or phrases in student's response with a unique tag and a running number to the tag. Eg. <tag id=”1”></tag>, <tag id=”2”></tag>.
+6.⁠ ⁠For each error type, specify the unique tag and the id of the tag, and list out the error type and its comments.
+7.⁠ ⁠For the comments, it should be in the question's language, written in a student-friendly, concise manner in accordance to these additional instructions <Instructions>{Instructions}</Instructions>. If the language is English, use British English.
+8.⁠ ⁠If there are no errors, the error tag should tag the first word of the student's response and the error tag should be "No error".
+</objective>
+
 <Feedback Reference Structure>
 <Model answer structure>A series of sentences that expresses the main ideas expected to in the student's response.</Model answer structure>
-<Rubrics structure>Each rubric criterion in a set of rubrics is presented in the following structure: [Dimension] - [Band Descriptor] - [Description]. [Dimension] refers to the name of the criterion being assessed; [Band Descriptor] is the label of the band; [Dimension Band Description] delineates the qualities of a student response that is in the band of [Band Descriptor] for that [Dimension].</Rubrics structure>
-<Error list structure>Each error in the error list is presented in the following structure: [Error type] - [Error type Description]. [Error type] is the label of the error; [Error type Description] explains in detail the error expected in the student's response.</Error list structure>
+<Rubrics structure>Each rubric criterion in a set of rubrics is presented in the following structure: [Dimension] – [Band Descriptor] – [Description]. [Dimension] refers to the name of the criterion being assessed; [Band Descriptor] is the label of the band; [Dimension Band Description] delineates the qualities of a student response that is in the band of [Band Descriptor] for that [Dimension].</Rubrics structure>
+<Error list structure>Each error in the error list is presented in the following structure: [Error type] – [Error type Description]. [Error type] is the label of the error; [Error type Description] explains in detail the error expected in the student's response.</Error list structure>
 </Feedback Reference Structure>
 
 <reference>
-<modelanswer>Teacher's model answer: {Model_answer}</modelanswer>
+<modelanswer>Teacher's model answer: {Model answer}</modelanswer>
 <rubrics>Rubrics: {Rubrics}
 Additional Rubric Instructions: 
 a. always return error tag as the name of the dimension criteria.
 b. Each dimension criteria is independent of each other and identify parts of the student's response to be commented using different dimensions. 
 c. Start with the first dimension of the rubric. Compare the student's response with the description of each grading band in the dimension and provide feedback. 
 </rubrics>
-<error list>Error list: {Error_types}
+<error list>Error list: {Error types}
 Additional Error type instructions:
 a. always return error type name in full, for example <example>[Error type]</example>.
 b. adhere strictly to the error list provided.
 </error type>
 </reference>
 
-This is the student's response: <Student's response> {Students_response} </Students's response>
-
+This is the student's response: {Student's response}
 """
 
 recipes = {"Default":" ",
@@ -191,7 +232,6 @@ To build trust, belief, motivation and a plethora more of key traits, one must c
 full_59_error_LangFA_conversion = {'annotated_response': 'To build trust, belief, motivation and a plethora <tag id="1">more</tag> of<tag id="2"> </tag>key traits, one must co-operate with others in order to make their life, at the very least, a little <tag id="3">bit</tag> brighter. This is because when everyone is contributing, the net level of productivity rises and everyone becomes much<tag id="4"> </tag>efficient. However, I have only been in South East Asia,<tag id="5"> </tag>never once stepped out into Europe or East Asia. She did that in<tag id="6"> </tag>hope of him giving up his seat. In Singapore, shopping is not the only<tag id="7"> </tag>that brings visitors to Singapore. I took my small bag and put<tag id="8"> </tag>my towel and my water bottle. Before he could reply<tag id="9"> </tag>me, I froze. So he went to give<tag id="10"> </tag>the wallet. For example<tag id="11"> </tag>they would bring their own chips bought from the convenience store next to the school, or eat them after school. I sincerely hope that you will<tag id="12"> </tag>me the approval to proceed with the arrangement. I tried arguing with him, despite<tag id="13"> </tag>that it was of no use. I looked at my classmates<tag id="14"> </tag>faces and knew <tag id="15">that</tag> they were as nervous as I was. It is when we re-visit the same topic that we become more familiar and experienced, allowing us<tag id="16"> </tag>remember the skills taught. What<tag id="17"> </tag>your home be like in the future? After showering and freshening ourselves up from being in the water the entire day, we <tag id="18">finally</tag> decided to go grab a big meal. Although the book Auntie Snowdrop gave me was not very expensive, <tag id="19">but</tag> to me, it is the most valuable gift and is priceless. More importantly, it is <tag id="20">the</tag> peer support that would make learning in school enjoyable and less stressful. Different people have different ways of cooking <tag id="21">up</tag> a dish. Dad then <tag id="22">me</tag> passed me the box and asked me to open it. I was super unhealthy<tag id="23">,</tag> until I joined Campus, thinking this was a waste of time. A recent development of technology is the growth <tag id="24">using</tag> of big-data technologies. It<tag id="25">\'s</tag> was a bright and sunny Saturday morning. I am going to the bungalow stay, <tag id="26"> </tag>which has free recreation room usage and meals are provided. Moreover, you should avoid <tag id="27">of the</tag> online jobs. Alex<tag id="28">\'s</tag> went to town. One day during the school holidays, my brother and I were <tag id="29">to</tag> told to clean the house. I <tag id="30">had</tag> got a 100 on my paper! One would definitely want to buy the <tag id="31">whole</tag> store. <tag id="32">Henceforth</tag>, being cooperative enhances the chances of success. Imagine doing <tag id="33">researches</tag> all by yourself, without any assistance <tag id="34">nor</tag> different ideas. It was <tag id="35">a</tag> early morning where most people <tag id="36">will</tag> wake up. Going to <tag id="37">collage</tag> is too expensive. After hearing what she said, I agreed <tag id="38">on</tag> lend her. He walked <tag id="39">in</tag> the shop. <tag id="40">Them</tag> are friends. Hours flew by<tag id="41">,</tag> It was time to go home as the clock chimed. I ran home as fast as I <tag id="42">can</tag>. He said, "I ca<tag id="43">nt</tag> expect you to pay." <tag id="44">I’m</tag> your friend. He should not have been greedy and had those <tag id="45">thought</tag>. <tag id="46">i</tag> hope to hear from you soon! Teachers do everything they can to try <tag id="47">and</tag> get everyone involved. My entire class <tag id="48">suprised</tag> me with a birthday celebration. That should not be taken <tag id="49">granted for</tag>. It would only depart in an <tag id="50">hours</tag> time. Why did no one <tag id="51">knows</tag> it was my birthday today? Problems will be <tag id="52">overcomed</tag> more efficiently. John <tag id="53">eat</tag> fish. In an environment with <tag id="54">lesser</tag> tension, one would be able to work efficiently. All spectators burst into <tag id="55">laughters</tag>. <tag id="56">They went home, and they took care of the dogs, but they separated after having dinner together in the restaurant, and they have never seen each other since.</tag> <tag id="57">She did all that was asked, then went away for a little while, but should come back with something new.</tag> <tag id="58">Great idea.</tag> It is time to figure out why. There is ample evidence the region receives only an inch of rainfall every year. They need to <tag id="59">contribute to the improvement</tag> of the area.',
                                    'feedback_list': [{'id': 1, 'phrase': 'more', 'error_tag': [{'errorType': 'Remove: Adjective'}], 'comment': 'Consider removing the highlighted adjective., '}, {'id': 2, 'phrase': '', 'error_tag': [{'errorType': 'Add: Adjective'}], 'comment': 'Consider adding an adjective. Suggestion(s):,  other '}, {'id': 3, 'phrase': 'bit', 'error_tag': [{'errorType': 'Remove: Noun'}], 'comment': 'Consider removing the highlighted noun., '}, {'id': 4, 'phrase': '', 'error_tag': [{'errorType': 'Add: Adverb'}], 'comment': 'Consider adding an adverb. Suggestion(s):,  more '}, {'id': 5, 'phrase': '', 'error_tag': [{'errorType': 'Add: Conjunction'}], 'comment': 'Consider adding a conjunction. Suggestion(s):,  and '}, {'id': 6, 'phrase': '', 'error_tag': [{'errorType': 'Add: Determiner'}], 'comment': 'Consider adding a determiner. Suggestion(s):,  the '}, {'id': 7, 'phrase': '', 'error_tag': [{'errorType': 'Add: Noun'}], 'comment': 'Consider adding a noun. Suggestion(s):,  thing '}, {'id': 8, 'phrase': '', 'error_tag': [{'errorType': 'Add: Particle'}], 'comment': 'Consider adding a particle. Suggestion(s):,  on '}, {'id': 9, 'phrase': '', 'error_tag': [{'errorType': 'Add: Preposition'}], 'comment': 'Consider adding a preposition. Suggestion(s):,  to '}, {'id': 10, 'phrase': '', 'error_tag': [{'errorType': 'Add: Pronoun'}], 'comment': 'Consider adding a pronoun. Suggestion(s):,  him '}, {'id': 11, 'phrase': '', 'error_tag': [{'errorType': 'Add: Punctuation'}], 'comment': 'Consider adding a punctuation mark. Suggestion(s):, ,'}, {'id': 12, 'phrase': '', 'error_tag': [{'errorType': 'Add: Verb'}], 'comment': 'Consider adding a verb. Suggestion(s):,  give '}, {'id': 13, 'phrase': '', 'error_tag': [{'errorType': 'Add: Word/Phrase'}], 'comment': 'Consider if something is missing here. Suggestion(s):, the fact'}, {'id': 14, 'phrase': '', 'error_tag': [{'errorType': 'Add: Possessive'}], 'comment': "Consider adding a possessive. Suggestion(s):, '"}, {'id': 15, 'phrase': 'that', 'error_tag': [{'errorType': 'Remove: Preposition'}], 'comment': 'Consider removing the highlighted preposition., '}, {'id': 16, 'phrase': '', 'error_tag': [{'errorType': 'Add: Verb Form'}], 'comment': 'Consider adding word(s) to the verb phrase. Suggestion(s):,  to '}, {'id': 17, 'phrase': '', 'error_tag': [{'errorType': 'Add: Verb Tense'}], 'comment': 'Consider adding word(s) to change the tense of this verb. Suggestion(s):,  will '}, {'id': 18, 'phrase': 'finally', 'error_tag': [{'errorType': 'Remove: Adverb'}], 'comment': 'Consider removing the highlighted adverb., '}, {'id': 19, 'phrase': 'but', 'error_tag': [{'errorType': 'Remove: Conjunction'}], 'comment': 'Consider removing the highlighted conjunction., '}, {'id': 20, 'phrase': 'the', 'error_tag': [{'errorType': 'Remove: Determiner'}], 'comment': 'Consider removing the highlighted determiner., '}, {'id': 21, 'phrase': 'up', 'error_tag': [{'errorType': 'Remove: Particle'}], 'comment': 'Consider removing the highlighted particle., '}, {'id': 22, 'phrase': 'me', 'error_tag': [{'errorType': 'Remove: Pronoun'}], 'comment': 'Consider removing the highlighted pronoun., '}, {'id': 23, 'phrase': ',', 'error_tag': [{'errorType': 'Remove: Punctuation'}], 'comment': 'Consider removing the highlighted punctuation mark., '}, {'id': 24, 'phrase': 'using', 'error_tag': [{'errorType': 'Remove: Verb'}], 'comment': 'Consider removing the highlighted verb., '}, {'id': 25, 'phrase': "'s", 'error_tag': [{'errorType': 'Remove: Contraction'}], 'comment': 'Consider removing the highlighted contraction., '}, {'id': 26, 'phrase': ' ', 'error_tag': [{'errorType': 'Remove: Space'}], 'comment': 'Consider removing the highlighted space., '}, {'id': 27, 'phrase': 'of the', 'error_tag': [{'errorType': 'Remove: Word/Phrase'}], 'comment': 'Consider removing the highlighted word/phrase., '}, {'id': 28, 'phrase': "'s", 'error_tag': [{'errorType': 'Remove: Possessive'}], 'comment': 'Consider removing the highlighted possessive., '}, {'id': 29, 'phrase': 'to', 'error_tag': [{'errorType': 'Remove: Verb Form'}], 'comment': 'Consider removing the highlighted word(s) from the verb phrase., '}, {'id': 30, 'phrase': 'had', 'error_tag': [{'errorType': 'Remove: Verb Tense'}], 'comment': 'Consider removing the highlighted word(s) to change the verb tense., '}, {'id': 31, 'phrase': 'whole', 'error_tag': [{'errorType': 'Replace: Adjective'}], 'comment': 'Consider changing the highlighted adjective. Suggestion(s):, entire'}, {'id': 32, 'phrase': 'Henceforth', 'error_tag': [{'errorType': 'Replace: Adverb'}], 'comment': 'Consider changing the highlighted adverb. Suggestion(s):, Therefore'}, {'id': 33, 'phrase': 'researches', 'error_tag': [{'errorType': 'Replace: Noun Number'}], 'comment': 'Consider if the highlighted noun should be singular or plural. Suggestion(s):, research'}, {'id': 34, 'phrase': 'nor', 'error_tag': [{'errorType': 'Replace: Conjunction'}], 'comment': 'Consider changing the highlighted conjunction. Suggestion(s):, or'}, {'id': 35, 'phrase': 'a', 'error_tag': [{'errorType': 'Replace: Determiner'}], 'comment': 'Consider changing the highlighted determiner. Suggestion(s):, an'}, {'id': 36, 'phrase': 'will', 'error_tag': [{'errorType': 'Replace: Verb Tense'}], 'comment': 'Consider changing the tense of the highlighted verb. Suggestion(s):, would'}, {'id': 37, 'phrase': 'collage', 'error_tag': [{'errorType': 'Replace: Noun'}], 'comment': 'Consider changing the highlighted noun. Suggestion(s):, college'}, {'id': 38, 'phrase': 'on', 'error_tag': [{'errorType': 'Replace: Particle'}], 'comment': 'Consider changing the highlighted particle. Suggestion(s):, to'}, {'id': 39, 'phrase': 'in', 'error_tag': [{'errorType': 'Replace: Preposition'}], 'comment': 'Consider changing the highlighted preposition. Suggestion(s):, into'}, {'id': 40, 'phrase': 'Them', 'error_tag': [{'errorType': 'Replace: Pronoun'}], 'comment': 'Consider changing the highlighted pronoun. Suggestion(s):, They'}, {'id': 41, 'phrase': ',', 'error_tag': [{'errorType': 'Replace: Punctuation'}], 'comment': 'Consider changing the highlighted punctuation mark. Suggestion(s):, .'}, {'id': 42, 'phrase': 'can', 'error_tag': [{'errorType': 'Replace: Verb'}], 'comment': 'Consider changing the highlighted verb. Suggestion(s):, could'}, {'id': 43, 'phrase': 'nt', 'error_tag': [{'errorType': 'Add: Contraction'}], 'comment': "Consider if a contraction should be used here. Suggestion(s):, n't"}, {'id': 44, 'phrase': 'Iâ€™m', 'error_tag': [{'errorType': 'Remove: Contraction'}], 'comment': 'Consider removing the highlighted contraction if not in quotes.'}, {'id': 45, 'phrase': 'thought', 'error_tag': [{'errorType': 'Replace: Word Form'}], 'comment': 'Consider changing the form of the highlighted word. Suggestion(s):, thoughts'}, {'id': 46, 'phrase': 'i', 'error_tag': [{'errorType': 'Replace: Capitalisation'}], 'comment': 'Consider changing the capitalisation of the highlighted word. Suggestion(s):, I'}, {'id': 47, 'phrase': 'and', 'error_tag': [{'errorType': 'Replace: Word/Phrase'}], 'comment': 'Consider changing the highlighted word/phrase. Suggestion(s):, to'}, {'id': 48, 'phrase': 'suprised', 'error_tag': [{'errorType': 'Replace: Spelling'}], 'comment': 'Consider if the spelling of the highlighted word is accurate. Suggestions:, surprised'}, {'id': 49, 'phrase': 'granted for', 'error_tag': [{'errorType': 'Replace: Word Order'}], 'comment':'Consider changing the order of the highlighted words. Suggestion(s):, for granted'}, {'id': 50, 'phrase': 'hours', 'error_tag': [{'errorType': 'Replace: Possessive Noun'}], 'comment': "Consider if the highlighted noun should be in possessive form. Suggestion(s):, hour's"}, {'id': 51, 'phrase': 'knows', 'error_tag': [{'errorType': 'Replace: Verb Form'}], 'comment': 'Consider changing the form of the highlighted verb. Suggestion(s):, know'}, {'id': 52, 'phrase': 'overcomed', 'error_tag': [{'errorType': 'Replace: Verb Spelling'}], 'comment': 'Consider if the spelling of the highlighted verb is accurate. Suggestion(s):, overcome'}, {'id': 53, 'phrase': 'eat', 'error_tag': [{'errorType': 'Replace: Subject-Verb Agreement'}], 'comment': 'Consider if the highlighted verb agrees with the subject. Suggestion(s):, eats'}, {'id': 54, 'phrase': 'lesser', 'error_tag': [{'errorType': 'Replace: Adjective'}], 'comment': 'Consider changing the form of the highlighted adjective. Suggestion(s):, less'}, {'id': 55, 'phrase': 'laughters', 'error_tag': [{'errorType': 'Replace: Noun Number'}], 'comment': 'Consider if the highlighted noun is uncountable. Suggestion(s):, laughter'}, {'id': 56, 'phrase': 'They went home, and they took care of the dogs, but they separated after having dinner together in the restaurant, and they have never seen each other since.', 'error_tag': [{'errorType': 'Sentence: Long'}], 'comment': 'Consider if the highlighted sentence should be shortened.'}, {'id': 57, 'phrase': 'She did all that was asked, then went away for a little while, but should come back with something new.', 'error_tag': [{'errorType': 'Sentence: Unnecessary Words'}], 'comment': 'Consider removing unnecessary words in the highlighted sentence. Suggestion(s):, a, all, asked, away, but, come, did, for, little, new, should, that, then, was, went, with'}, {'id': 58, 'phrase': 'Great idea.', 'error_tag': [{'errorType': 'Sentence: Fragment'}], 'comment': 'Consider if the highlighted sentence is a complete sentence.'}, {'id': 59, 'phrase': 'contribute to the improvement', 'error_tag': [{'errorType': 'Collocation: Suggestion'}], 'comment': 'Consider replacing the highlighted phrase. Suggestion(s):, contribute to the development'}]}
 
-
 full_59_error_AFA_returns = [{'annotation': 'efficient', 'error_tag': 'Replace: Adverb'}, 
                        {'annotation': 'that', 'error_tag': 'Remove: Word/Phrase'}, 
                        {'annotation': 'reply', 'error_tag': 'Replace: Preposition'}, 
@@ -296,3 +336,45 @@ old_to_new_error_mapping = {
     "SENT:FRAGMENT": "Sentence: Fragment",
     "COLLOCATION:SUGGESTION": "Collocation: Suggestion"
 }
+
+ELLB_20 = """
+Adjective - Incorrect or inappropriate use of adjectives, such as using the wrong form (comparative, superlative): Incorrect: "She is more prettier than her sister." Correct: "She is prettier than her sister.",
+
+Adverb - Incorrect use of adverbs, such as using an adjective instead of an adverb: Incorrect: "He runs quick." Correct: "He runs quickly.",
+
+Capitalisation/ case - Incorrect use of uppercase and lowercase letters, especially for proper nouns and sentence beginnings: Incorrect: "i went to paris last summer." Correct: "I went to Paris last summer.",
+
+Collocation - Incorrect pairing of words that do not naturally go together in English: Incorrect: "She made a big effort." Correct: "She made a great effort.",
+
+Conjunction - Incorrect use or omission of conjunctions to link sentences or clauses. Incorrect: "Although it was cold outside, but I still went for a walk." Correct: "Although it was cold outside, I still went for a walk.",
+
+Contraction - Incorrect use or omission of contractions, leading to confusion: Incorrect: "Its raining today." Correct: "It’s raining today.",
+
+Determiner - Incorrect use or omission of determiners, such as articles, quantifiers and possessive determiners (e.g., a, an, the, much, many, my, your). Incorrect: "I love the nature." Correct: "I love nature.",
+
+Noun - Incorrect noun forms, including pluralisation or uncountable nouns: Incorrect: "I have many homeworks." Correct: "I have a lot of homework.",
+
+Other - Miscellaneous errors that don’t fit other categories: Incorrect: "I enjoy to the fullest life." Correct: "I enjoy life to the fullest.",
+
+Particle - Incorrect use of particles, especially in phrasal verbs. Incorrect: "Please fill the form before leaving." Correct: "Please fill out the form before leaving.",
+
+Possessive - Incorrect use of possessive forms (’s or s’). Incorrect: "The dog wagged it's tail." Correct: "The dog wagged its tail.",
+
+Preposition - Incorrect or missing prepositions, leading to grammatical errors: Incorrect: "She is good in math." Correct: "She is good at math.",
+
+Pronoun - Incorrect pronoun usage, including unclear references or agreement issues. Incorrect: "Each student must bring their book." Correct: "Each student must bring his or her book.",
+
+Punctuation - Incorrect or missing punctuation marks that change the meaning. Incorrect: "Let’s eat Grandma." Correct: "Let’s eat, Grandma.",
+
+Sentence - Errors related to sentence structure, such as fragments or run-ons: Incorrect: "When I arrived. I saw him." Correct: "When I arrived, I saw him.",
+
+Space - Missing or extra spaces between words or punctuation: Incorrect: "I went tothe park." Correct: "I went to the park.",
+
+Spelling - Incorrect spelling of words, affecting comprehension: Incorrect: "She recieved a letter." Correct: "She received a letter.",
+
+Verb - Incorrect verb tense, agreement, or form (including gerunds/infinitives). Incorrect: "I look forward to meet you." Correct: "I look forward to meeting you.",
+
+Word choice - Using an incorrect or suboptimal word that does not fit the context. Incorrect: "He is a criminal who has alluded capture." Correct: "He is a criminal who has eluded capture.",
+
+Word order - Incorrect word order, making sentences sound unnatural or confusing: Incorrect: "She always is late." Correct: "She is always late."
+"""

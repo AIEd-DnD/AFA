@@ -91,11 +91,12 @@ def get_annotations(assembled_prompt):
 #Norman's function to convert get_annotations output into python dictionary
 def display_output(json_response):
    response_dict = json.loads(json_response)
+   print("Annotated Response: ")
    print(response_dict["annotated_response"])
    print(" ")
-   for annotation in response_dict["feedback_list"]:
-     print("Annotation no. " + str(annotation["id"]))
-     print("Annotated phrase: " + annotation["phrase"])
-     print("Error Tag: " + annotation["error_tag"][0]["errorType"])
-     print("Feedback: " + annotation["comment"])
-     print(" ")
+   #for annotation in response_dict["feedback_list"]:
+     #print("Annotation no. " + str(annotation["id"]))
+     #print("Annotated phrase: " + annotation["phrase"])
+     #print("Error Tag: " + annotation["error_tag"][0]["errorType"])
+     #print("Feedback: " + annotation["comment"])
+     #print(" ")
