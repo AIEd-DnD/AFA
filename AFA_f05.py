@@ -3,7 +3,7 @@ import AFA_eval_functions as AFA
 data = list()
 #test_name = input("Please enter the name of the test: ")               #uncomment this to unlock user input for test name
 #file_path = input("Please enter the file path of the test data: ")     #uncomment this to unlock user input for file path
-evaluation_record = AFA.start_new_record("GED_Prompt_v2")
+evaluation_record = AFA.start_new_record("o3_mini_test")
 print("The evaluation record has been created.")
 response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_BulkEval_Test.csv")
 print("The response list has been created.")

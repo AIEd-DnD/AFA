@@ -59,10 +59,10 @@ def assemble_prompt(subject, level, question, students_response, recipe=" ", sug
 
 def get_annotations(assembled_prompt):
    response = client.chat.completions.create(
-     model="gpt-4o-2024-08-06",
-     temperature = 0.1, #temperature is only available to gpt models
-     #reasoning_effort = "high"
-     max_tokens = 4000, #max tokens is only available to gpt models, default max tokens is 4000. this parameter is being deprecated in favour of max_completion_tokens
+     #model="gpt-4o-2024-08-06",
+     model="o3-mini",
+     #temperature = 0.1, #temperature is only available to gpt models
+     #max_tokens = 4000, #max tokens is only available to gpt models, default max tokens is 4000. this parameter is being deprecated in favour of max_completion_tokens
      tools = rsrc.tools,
      messages = [{"role": "user", "content": assembled_prompt}]
    )
