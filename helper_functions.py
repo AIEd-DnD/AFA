@@ -63,7 +63,7 @@ def get_completion(prompt, model="gpt-4o-mini", temperature=0):
  return response.choices[0].message.content
 
 #Norman's function to assemble prompt
-def assemble_prompt(subject, level, question, student_answer, recipe=rsrc.recipes["Default"], suggested_answer=" ", rubrics=" ", error_tags=" "):
+def assemble_prompt(subject, level, question, student_answer, recipe=rsrc.recipes["Default"], suggested_answer=" ", rubrics=" ", error_tags=" ", feedback_list=rsrc.feedback_list, standard=rsrc.standard_response, no_errors=rsrc.no_error_response):
    assembled_prompt = rsrc.base_prompt.format(
      Subject=subject,
      Level=level,
@@ -72,7 +72,10 @@ def assemble_prompt(subject, level, question, student_answer, recipe=rsrc.recipe
      Rubrics=rubrics, 
      Error_types=error_tags, 
      Instructions=recipe,
-     Students_response=student_answer 
+     Students_response=student_answer,
+     feedback_list_eg=feedback_list,
+     standard_response=standard,
+     no_error_response=no_errors
      )
    
    return assembled_prompt
