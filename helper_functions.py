@@ -64,7 +64,7 @@ def get_completion(prompt, model="gpt-4o-mini", temperature=0):
 
 #Norman's function to assemble prompt
 def assemble_prompt(subject, level, question, student_answer, recipe=rsrc.recipes["Default"], suggested_answer=" ", rubrics=" ", error_tags=" "):
-   assembled_prompt = rsrc.zoes_prompt.format(
+   assembled_prompt = rsrc.base_prompt.format(
      Subject=subject,
      Level=level,
      Question=question,

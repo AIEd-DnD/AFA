@@ -1,64 +1,53 @@
 base_prompt = """
-<context>
+<Context>
 You are a diligent teacher identifying errors in a {Level} student response to give them feedback for a {Subject} question: {Question}.
-</context>
+</Context>
 
-<objective>
-Your objectives are:
-1. Use the content enclosed in the Feedback Reference Explanation XML tags to help you interpret the Feedback References that you will receive.
-2. Use the content enclosed in the Feedback Reference XML tags to carefully identify specific errors associated with the dimensions of feedback in the provided Feedback Reference.
-3. Your response MUST be in JSON format with two variables: 'annotated_response' and 'feedback_list'.
-4. For 'annotated_response', you MUST return the student's original response and include in this original response error tags, which enclose the words or phrases in the student's original response that contain the identified error with a unique tag and a running id number to the tag in the following format: <example>'annotated_response':'The pig was <tag id="1">fly</tag>. I <tag id="2">is</tag> amazed.'</example>
-5. For 'feedback_list', you MUST provide a list of the identified errors tagged in the student's original response in Step 4. Each error should have the following properties: 'id', 'phrase', 'error_tag', and 'comment' in the following format: <example>{feedback_list_eg}</example>
-6. For each error, specify the unique id number of the tag ('id'), the exact word or phrase it encloses ('phrase'), the specific error type ('error_tag'), and the comments ('comment').
-7. For the comments, it should be in the question's language, written in a student-friendly, concise manner in accordance to these additional instructions: <Instructions>{Instructions}</Instructions>. If the language is English, use British English spelling.
-8. If there are no errors, the error tag should tag the first word of the student's response and the error tag should be "No error".
-</objective>
-
-<Feedback Reference Explanation>
-1. Model answer: A series of sentences that expresses the main ideas expected to be in the student's response.
-2. Rubrics: Each rubric criterion in a set of rubrics is presented in the following structure: "[Dimension] - [Band Descriptor] - [Description]". [Dimension] refers to the name of the criterion being assessed; [Band Descriptor] is the label of the band; [Dimension Band Description] delineates the qualities of a student response that is in the band of [Band Descriptor] for that [Dimension].
-3. Error list: Each error in the error list is presented in the following structure: "[Error type] - [Error type Description]". [Error type] is the label of the error; [Error type Description] explains in detail the error expected in the student's response.
-</Feedback Reference Explanation>
+<Objective>
+Your objectives are to:
+1. Use the content and instructions enclosed in the Feedback Reference XML tags to carefully analyse and identify specific errors associated with the dimensions of feedback in the provided Feedback Reference.
+2. Craft your response as JSON object with two variables: 'annotated_response' and 'feedback_list'.
+3. Return the 'annotated_response' as the student's original response and include error tags in the original response, which are unique tags with running id numbers that enclose the words or phrases that contain the identified error in the student's original response, in the following format: <Example>'annotated_response':'The pig was <tag id="1">fly</tag>. I <tag id="2">is</tag> amazed.'</Example>
+4. Return the 'feedback_list', as an array of the identified errors tagged in the student's original response in Step 4. Each error should have the following properties: 'id', 'phrase', 'error_tag', and 'comment'.
+5. Specify, for each identified error in 'feedback_list', the unique id number of the tag ('id'), the exact word or phrase it encloses ('phrase'), the specific error type ('error_tag'), and the comments, AKA feedback for the student ('comment').
+6. Write the comments in the question's language, ensuring that it is student-friendly, concise, and in accordance to these additional instructions: <Instructions>{Instructions}</Instructions>. If the language is English, use British English spelling.
+7. If there are no errors, the error tag should tag the first word of the student's response and the error tag should be "No error".
+</Objective>
 
 <Feedback Reference>
 You are provided with only ONE feedback reference: Model answer OR Rubrics OR Error list. Use ONLY the instructions for the feedback reference that has content within its XML tags.
 
-<Model answer reference>
-1. This is the teacher's model answer: <Model answer>{Model_answer}</Model answer>
-Additional Model Answer Instructions:
-a. Always return the error tag as a summary of the error in the student's response.
-</Model answer reference>
+<Error list reference>
+1. Error list: Each error in the error list is presented in the following structure: "[Error type] - [Error type Description]". [Error type] is the label of the error; [Error type Description] explains the typical characteristics of the error type. 
+2. This is the error list that you will use: <Error list> {Error_types} </Error list>
+3. If there is no content inside the Error list XML tags, you should ignore the remaining instructions in the Error list reference XML tags.
+4. Use the [Error type description] to identify the specific [Error type] in the student's response and provide feedback in accordance with Objective step 6.
+5. Always return the error tags as the [Error type] label only, for example <Example>[Error type]</Example>. Do not embellish the error tags with additional descriptors.
+6. Adhere strictly to the error list provided when identifying errors in the student's response. Do not identify errors that are in the error list.
+</Error list reference>
 
 <Rubrics reference>
-2. Rubrics: <Rubrics>{Rubrics}</Rubrics>
-Additional Rubric instructions: 
-a. Always return the error tag as the name of the dimension criteria.
-b. Each dimension criteria is independent of each other and identify parts of the student's response to be commented using different dimensions. 
-c. Start with the first dimension of the rubric. Compare the student's response with the description of each grading band in the dimension and provide feedback. 
+1. Rubrics: Each rubric criterion in a set of rubrics is presented in the following structure: "[Dimension] - [Band Descriptor] - [Description]". [Dimension] refers to the name of the criterion being assessed; [Band Descriptor] is the label of the band; [Description] delineates the qualities of a student response that is in the band of [Band Descriptor] for that [Dimension].
+2. This is the rubrics that you will use: <Rubrics>{Rubrics}</Rubrics>
+3. If there is no content inside the Rubrics XML tags, you should ignore the remaining instructions in the Rubrics reference XML tags.
+4. Starting with first [Dimension], use each [Dimension] and associated [Description]s to identify the areas of improvement in the student's response and provide feedback in accordance with Objective step 6.
+5. Always return the error tags as the [Dimension] label only, for example <Example>[Dimension]</Example>. Do not embellish the error tags with additional descriptors.
+6. Adhere strictly to the error list provided when identifying errors in the student's response. Do not identify errors that are in the error list.
 </Rubrics reference>
 
-<Error list reference>
-3. Error list: <Error list> {Error_types} </Error list>
-Additional Error list instructions:
-a. Always return the error tags as the error type names in full, for example <example>"Name of error type"</example>.
-b. Adhere strictly to the error list provided.
-</Error list reference>
+<Model answer reference>
+1. Model answer: A series of statements that expresses the main ideas and how they should be logically connected in the ideal response. 
+2. This is the model answer: <Model answer>{Model_answer}</Model answer>
+3. If there is no content inside the Model answer XML tags, you should ignore the remaining instructions in the Model answer reference XML tags.
+4. By comparing with the student's response, use the model answer to identify the areas of improvement in the student's response and provide feedback in accordance with Objective step 6.
+5. Always return the error tag as a summary of the error in the student's response.
+6. Adhere strictly to the model answer provided. 
+</Model answer reference>
 
 </Feedback Reference>
 
-<Examples>
-<Example with errors>
-Student's response: The pig was fly. I is amazed.
-Your response in JSON format: {standard_response}
-</Example with errors>
-<Example with no errors>
-Student's response: The pig was flying. I was amazed.
-Your response in JSON format: {no_error_response}
-</Example with no errors>
-</Examples>
-
 This is the student's response: <Student's response> {Students_response} </Students's response>
+<Reminder>After completing the task, double-check that you have tagged the student response with the appropriate error tags. If there are no errors, ensure that the first word is tagged.</Reminder>
 """
 zoes_prompt = """
 <context>
@@ -120,14 +109,14 @@ You are a diligent teacher identifying errors in a {Level} student response to g
 
 <objective>
 Your objectives are:
-1.⁠ ⁠Use the content enclosed in the Feedback Reference Structure XML tags to help you interpret the feedback references that you will receive.
-2.⁠ ⁠Use the content enclosed in the Reference XML tags to carefully analyse the student's response along the dimensions in the references.
-3.⁠ ⁠Based on the references, identify errors found in the student's response.
-4.⁠ ⁠Return the student's response exactly as sent. 
-5.⁠ ⁠For each error, enclose the words or phrases in student's response with a unique tag and a running number to the tag. Eg. <tag id=”1”></tag>, <tag id=”2”></tag>.
-6.⁠ ⁠For each error type, specify the unique tag and the id of the tag, and list out the error type and its comments.
-7.⁠ ⁠For the comments, it should be in the question's language, written in a student-friendly, concise manner in accordance to these additional instructions <Instructions>{Instructions}</Instructions>. If the language is English, use British English.
-8.⁠ ⁠If there are no errors, the error tag should tag the first word of the student's response and the error tag should be "No error".
+1. Use the content enclosed in the Feedback Reference Structure XML tags to help you interpret the feedback references that you will receive.
+2. Use the content enclosed in the Reference XML tags to carefully analyse the student's response along the dimensions in the references.
+3. Based on the references, identify errors found in the student's response.
+4. Return the student's response exactly as sent. 
+5. For each error, enclose the words or phrases in student's response with a unique tag and a running number to the tag. Eg. <tag id=”1”></tag>, <tag id=”2”></tag>.
+6. For each error type, specify the unique tag and the id of the tag, and list out the error type and its comments.
+7. For the comments, it should be in the question's language, written in a student-friendly, concise manner in accordance to these additional instructions <Instructions>{Instructions}</Instructions>. If the language is English, use British English.
+8. If there are no errors, the error tag should tag the first word of the student's response and the error tag should be "No error".
 </objective>
 
 <Feedback Reference Structure>
@@ -137,21 +126,21 @@ Your objectives are:
 </Feedback Reference Structure>
 
 <reference>
-<modelanswer>Teacher's model answer: {Model answer}</modelanswer>
+<modelanswer>Teacher's model answer: {Model_answer}</modelanswer>
 <rubrics>Rubrics: {Rubrics}
 Additional Rubric Instructions: 
 a. always return error tag as the name of the dimension criteria.
 b. Each dimension criteria is independent of each other and identify parts of the student's response to be commented using different dimensions. 
 c. Start with the first dimension of the rubric. Compare the student's response with the description of each grading band in the dimension and provide feedback. 
 </rubrics>
-<error list>Error list: {Error types}
+<error list>Error list: {Error_types}
 Additional Error type instructions:
 a. always return error type name in full, for example <example>[Error type]</example>.
 b. adhere strictly to the error list provided.
 </error type>
 </reference>
 
-This is the student's response: {Student's response}
+This is the student's response: {Students_response}
 """
 
 recipes = {"Default":" ",
