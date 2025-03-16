@@ -23,6 +23,14 @@ def write_into_record(filename, data):
         writer.writerows(data)
     print(f"CSV file '{filename}' has been created successfully.")
 
+def write_into_record_refinement(filename, data):
+    header = ['Subject','Level','Recipe','Error Tags','Suggested Answer','Rubrics','Question','Student Response','LLM Annotated Response','LLM Cards','Tagged?']
+    with open(filename, 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(header)
+        writer.writerows(data)
+    print(f"CSV file '{filename}' has been created successfully.")
+
 def csv_to_list_of_dicts(file_path):
     result = list()
     with open(file_path, 'r', encoding='utf-8') as csvfile:
@@ -43,6 +51,17 @@ def extract_parameters(parameter_dict):
     gold_response = parameter_dict['gold_rated_response']
     return subject, level, question, students_response, recipe, suggested_answer, rubrics, error_tags, gold_response
 
+def extract_parameters_refinement(parameter_dict):
+    subject = parameter_dict['subject']
+    level = parameter_dict['level']
+    question = parameter_dict['question']
+    students_response = parameter_dict['students_response']
+    recipe = parameter_dict['recipe']
+    suggested_answer = parameter_dict['suggested_answer'] 
+    rubrics = parameter_dict['rubrics']
+    error_tags = parameter_dict['error_tags']
+    return subject, level, question, students_response, recipe, suggested_answer, rubrics, error_tags
+
 def assemble_prompt(subject, level, question, students_response, recipe=" ", suggested_answer=" ", rubrics=" ", error_tags=" "):
    assembled_prompt = rsrc.base_prompt.format(
      Subject=subject,
@@ -59,10 +78,10 @@ def assemble_prompt(subject, level, question, students_response, recipe=" ", sug
 
 def get_annotations(assembled_prompt):
    response = client.chat.completions.create(
-     #model="gpt-4o-2024-08-06",
-     model="o3-mini",
-     #temperature = 0.1, #temperature is only available to gpt models
-     #max_tokens = 4000, #max tokens is only available to gpt models, default max tokens is 4000. this parameter is being deprecated in favour of max_completion_tokens
+     model="gpt-4o-2024-08-06",
+     #model="o3-mini",
+     temperature = 0.1, #temperature is only available to gpt models
+     max_tokens = 4000, #max tokens is only available to gpt models, default max tokens is 4000. this parameter is being deprecated in favour of max_completion_tokens
      tools = rsrc.tools,
      messages = [{"role": "user", "content": assembled_prompt}]
    )
@@ -80,6 +99,11 @@ def extract_annotation_details(LLM_dict, gold_dict):
     LLM_cards = LLM_dict['feedback_list']
     gold_cards = gold_dict['feedback_list']
     return LLM_annotated_response, gold_annotated_response, LLM_cards, gold_cards
+
+def extract_annotation_details_refinement(LLM_dict):
+    LLM_annotated_response = LLM_dict['annotated_response']
+    LLM_cards = LLM_dict['feedback_list']
+    return LLM_annotated_response, LLM_cards
 
 def first_identification_checker(LLM_cards, gold_cards):
     print("Running First Checker")

@@ -64,7 +64,7 @@ def get_completion(prompt, model="gpt-4o-mini", temperature=0):
 
 #Norman's function to assemble prompt
 def assemble_prompt(subject, level, question, student_answer, recipe=rsrc.recipes["Default"], suggested_answer=" ", rubrics=" ", error_tags=" "):
-   assembled_prompt = rsrc.base_prompt.format(
+   assembled_prompt = rsrc.trial1_prompt.format(
      Subject=subject,
      Level=level,
      Question=question,
@@ -85,7 +85,7 @@ def get_annotations(assembled_prompt):
    response = client.chat.completions.create(
      model="gpt-4o-2024-08-06",
      temperature = 0.1,
-     max_tokens = 4000,
+     max_tokens = 16000,
      tools = rsrc.tools,
      messages = [{"role": "user", "content": assembled_prompt}]
    )
