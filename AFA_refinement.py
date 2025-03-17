@@ -24,76 +24,40 @@ for scenario_dict in response_list:
     print('Trying response '+str(response_list.index(scenario_dict)+1))
     
     message = AFA.assemble_prompt(subject, level, question, students_response, recipe, suggested_answer, rubrics, error_tags)
-    full_LLM_response = AFA.get_annotations(message)
-    
-    
-    
-    
+    try:
+        full_LLM_response = AFA.get_annotations(message)
+    except Exception as exp:
+        new_row.append(message)
+        print(f"An error occurred while attempting to receive the message from OpenAI: {str(exp)}.")
+        new_row.append("NIL")
+        new_row.append(False)
+        new_row.append(0)
+        data.append(new_row)
+        continue
+
+    LLM_dict = AFA.string_to_dict(full_LLM_response)
+
     try:
         LLM_annotated_response, LLM_cards = AFA.extract_annotation_details_refinement(LLM_dict)
+        if '</tag>' in LLM_annotated_response:
+            status = True
+        else:
+            status = False
+        number_of_cards = len(LLM_cards)
     except Exception as exp:
         new_row.append(full_LLM_response)
         print(f"An error occurred while attempting to extract the annotated response and feedback list: {str(exp)}.")
+        new_row.append("NIL")
+        new_row.append(False)
+        new_row.append(0)
         data.append(new_row)
         continue
     
     new_row.append(LLM_annotated_response)
-    new_row.append(gold_annotated_response)
     new_row.append(LLM_cards)
-    new_row.append(gold_cards)
-    
-    try:
-        LLM_TP_identified_confirmed, gold_common_identified_confirmed, number_of_identified_TP, number_of_common_gold = AFA.identification_checker(LLM_annotated_response, gold_annotated_response, LLM_cards, gold_cards)
-    except Exception as exp:
-        print(f"An error occurred while attempting to identify the common errors: {str(exp)}.")
-        pass
-    
-    new_row.append(LLM_TP_identified_confirmed)
-    new_row.append(gold_common_identified_confirmed)
-    new_row.append(number_of_identified_TP)
-    new_row.append(number_of_common_gold)
+    new_row.append(status)
+    new_row.append(number_of_cards)
 
-    #try:
-        #categorisation_TP, number_of_categorised_TP = AFA.categorisation_checker(LLM_TP_identified_confirmed, gold_common_identified_confirmed, number_of_identified_TP)
-    #except Exception as exp:
-        #print(f"An error occurred while attempting to check the categories of the common errors: {str(exp)}.")
-        #categorisation_TP = list()
-        #number_of_identified_TP = len(LLM_TP_identified_confirmed)
-        #number_of_categorised_TP = len(categorisation_TP)
-        #pass
-
-    #new_row.append(categorisation_TP)
-    #new_row.append(number_of_identified_TP)
-    #new_row.append(number_of_categorised_TP)
-    
-    retrieved = len(LLM_cards)
-    relevant = len(gold_cards)
-    
-    new_row.append(retrieved)
-    new_row.append(relevant)
-
-    precision = AFA.identificationPrecision(number_of_identified_TP, LLM_cards)
-    recall = AFA.identificationRecall(number_of_common_gold, gold_cards)
-    new_row.append(precision)
-    new_row.append(recall)
-
-    try:
-        identification_F05 = AFA.identificationF05Score(number_of_identified_TP, number_of_common_gold, LLM_cards, gold_cards)
-        new_row.append(identification_F05)
-    except Exception as exp:
-        print(f"An error occurred while attempting to calculate the identification F-0.5 score: {str(exp)}.")
-        new_row.append("DivsionByZeroError")
-        pass
-
-    #try:
-        #categorisation_F05 = AFA.categorisationF05Score(number_of_categorised_TP, LLM_cards, gold_cards)
-        #new_row.append(categorisation_F05)
-    #except Exception as exp:
-        #print(f"An error occurred while attempting to calculate the categorisation F-0.5 score: {str(exp)}.")
-        #new_row.append("DivsionByZeroError")
-        #pass
-    
-    #This is the end of the data extraction and calculation.
     data.append(new_row)
 
-AFA.write_into_record(evaluation_record, data)
+AFA.write_into_record_refinement(evaluation_record, data)

@@ -24,7 +24,7 @@ def write_into_record(filename, data):
     print(f"CSV file '{filename}' has been created successfully.")
 
 def write_into_record_refinement(filename, data):
-    header = ['Subject','Level','Recipe','Error Tags','Suggested Answer','Rubrics','Question','Student Response','LLM Annotated Response','LLM Cards','Tagged?']
+    header = ['Subject','Level','Recipe','Error Tags','Suggested Answer','Rubrics','Question','Student Response','LLM Annotated Response','LLM Cards','Tagged?','Number of Cards']
     with open(filename, 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(header)
