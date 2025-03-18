@@ -63,7 +63,7 @@ def extract_parameters_refinement(parameter_dict):
     return subject, level, question, students_response, recipe, suggested_answer, rubrics, error_tags
 
 def assemble_prompt(subject, level, question, students_response, recipe=" ", suggested_answer=" ", rubrics=" ", error_tags=" "):
-   assembled_prompt = rsrc.base_prompt.format(
+   assembled_prompt = rsrc.trial1_prompt.format(
      Subject=subject,
      Level=level,
      Question=question,

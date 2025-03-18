@@ -64,7 +64,7 @@ def get_completion(prompt, model="gpt-4o-mini", temperature=0):
 
 #Norman's function to assemble prompt
 def assemble_prompt(subject, level, question, student_answer, recipe=rsrc.recipes["Default"], suggested_answer=" ", rubrics=" ", error_tags=" "):
-   assembled_prompt = rsrc.trial1_prompt.format(
+   assembled_prompt = rsrc.base_prompt.format(
      Subject=subject,
      Level=level,
      Question=question,
@@ -89,6 +89,7 @@ def get_annotations(assembled_prompt):
      tools = rsrc.tools,
      messages = [{"role": "user", "content": assembled_prompt}]
    )
+   print(response)
    return response.choices[0].message.tool_calls[0].function.arguments
 
 #Norman's function to convert get_annotations output into python dictionary
