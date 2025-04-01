@@ -34,8 +34,6 @@ You are provided with only ONE feedback reference: Model answer OR Rubrics OR Er
 </Model answer reference>
 </Feedback Reference>
 
-This is the student's response: <Student's response> {Students_response} </Students's response>
-
 <Task>
 Your Task is to:
 1. Use the content and instructions enclosed in the Feedback Reference XML tags to carefully analyse and identify specific errors associated with the dimensions of feedback in the provided Feedback Reference.
@@ -47,6 +45,7 @@ Your Task is to:
 7. If there are no errors, the error tag should tag the first word of the student's response and the error tag should be "No error".
 </Task>
 
+This is the student's response: <Student's response> {Students_response} </Students's response>
 <Reminder>After completing the task, double-check that you have tagged the student response with the appropriate error tags. If there are no errors, ensure that the first word is tagged.</Reminder>
 """
 zoes_prompt = """
@@ -116,8 +115,6 @@ You are provided with only ONE feedback reference: Suggested answer OR Rubrics O
 2. This is the model answer: <Suggested answer>{Model_answer}</Suggested answer>
 </Suggested answer reference>
 
-This is the student's response: <Student's response> {Students_response} </Student's response>
-
 <Task>
 Your Task is to:
 1. Read the student's response carefully.
@@ -130,6 +127,7 @@ Your Task is to:
 8. If there are no errors, the error tag should tag the first word of the student's response and the error tag should be "No error".
 </Task>
 
+This is the student's response: <Student's response> {Students_response} </Student's response>
 <Reminder>After completing the task, double-check that you have tagged the student response with the appropriate error tags. If there are no errors, ensure that the first word is tagged.</Reminder>
 """
 
@@ -245,7 +243,7 @@ tools = [
                   }
                 },
                 "required": [
-                  "feedback_list"
+                  "annotated_response","feedback_list"
                 ]
             }
         }
