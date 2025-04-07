@@ -2,21 +2,38 @@ import helper_functions as AFA
 import resources as rsrc
 import student_response_repo as SRR
 
-subject = "History"
-level = "Secondary 4"
-question = " "
-#student_response = SRR.Pri_EL_Essay_3
-#student_response = "There was too much glucose in the blood after consumption of breakfast, causing islets of Langerhans to be produced by the pancreas that secrete insulin. The liver then converts glucose into glucagon for storage and the blood glucose level decreases."
-student_response = "The Nazi government began rearmament in 1933 though it was banned under the Treaty of Versaille. Unemployed workers were selected into the army to build up its armed forces in secret. By 1935, Hitler did not hide the rearmament programme and held a freedom to Rearm rally in Berlin. Britain and France concerns grew over Germany’s military buildup, however, both countries did not want to get involved in another war so there was a policy of appeasement and they gave in to Hitler. This made Hitler think that both countries will always give in to him so he became bolder and wanted more. The both countries realised that Hitler would want more even if they gave in to him so they declared war with Germany."
-#student_response2 = "The rearmament of Germany directly contributed to the outbreak of World War II by fuelling Hitler’s aggressive foreign policy and undermining the Treaty of Versailles. Hitler began secretly rearming Germany in 1933, expanding the military beyond the treaty’s limits. By 1935, this programme became public at the Freedom to Rearm Rally, where Hitler openly defied international restrictions. Rearmament not only bolstered Germany’s military power but also revitalised its economy by creating jobs, fostering public support for Hitler’s leadership. This emboldened him to militarise the Rhineland in 1936, directly violating the Treaty of Versailles and the Locarno Pact. Britain and France chose not to intervene, reinforcing Hitler’s belief that his aggressive policies would not face resistance.  Rearmament laid the foundation for Germany’s expansionist ambitions. With a stronger military, Hitler pursued aggressive policies such as the Anschluss with Austria in 1938 and the invasion of Poland in 1939, leading directly to war. Rearmament not only strengthened Germany’s capacity for war but encouraged Hitler to continue pushing boundaries unchecked. Germany’s rearmament was pivotal in fuelling Hitler’s aggressive policies, making war inevitable as diplomatic efforts to contain him consistently failed."
-#student_response3 = "The rearmament of Germany directly contributed to the outbreak of World War II by fuelling Hitler’s aggressive foreign policy and undermining the Treaty of Versailles. Hitler began secretly rearming Germany in 1933, expanding the military beyond the treaty’s limits. By 1935, this programme became public at the Freedom to Rearm Rally, where Hitler openly defied international restrictions. Rearmament not only bolstered Germany’s military power but also revitalised its economy by creating jobs, fostering public support for Hitler’s leadership. This emboldened him to militarise the Rhineland in 1936, directly violating the Treaty of Versailles and the Locarno Pact. Britain and France chose not to intervene, reinforcing Hitler’s belief that his aggressive policies would not face resistance.  Rearmament laid the foundation for Germany’s expansionist ambitions. With a stronger military, Hitler pursued aggressive policies such as the Anschluss with Austria in 1938 and the invasion of Poland in 1939, leading directly to war. Rearmament not only strengthened Germany’s capacity for war but encouraged Hitler to continue pushing boundaries unchecked. Germany’s rearmament was pivotal in fuelling Hitler’s aggressive policies, making war inevitable as diplomatic efforts to contain him consistently failed. The ineffectiveness of the League of Nations and the policy of appeasement further contributed to the outbreak of World War II by failing to curb Hitler’s ambitions. The League of Nations was intended to prevent conflict through collective security but proved powerless during the 1930s. It failed to respond effectively to Japan’s invasion of Manchuria (1931) and Italy’s invasion of Abyssinia (1935), demonstrating its weakness. When Germany rearmed and militarised the Rhineland in 1936, the League took no significant action. Britain and France, preferring appeasement, allowed Hitler to annex Austria and the Sudetenland in 1938 without consequence. This emboldened Hitler, leading him to believe that further aggression would not be challenged. The League’s inability to enforce sanctions or mobilise military action encouraged aggressive expansion by authoritarian states. Hitler exploited this weakness, pushing his foreign policy goals with little fear of retribution. Appeasement delayed conflict but ultimately enabled Hitler to grow stronger, culminating in Germany’s invasion of Poland in 1939, which triggered the war. The failure of the League and appeasement revealed the lack of collective will to stop Hitler, allowing German aggression to spiral into global conflict."
-#error_tags = rsrc.ELLB_20
-rubrics="Essay - Level 1 - did not list any factor and out of point, Essay - Level 2 - States 1 factor such as the violation of Treaty of Versailles, militarisation of Rhineland or Annexation of Anschluss, Essay - Level 3 - Provides 1 factor with explanation, Essay - Level 4 - Provides 2 factor with explanation, Essay - Level 5 - Provides 2 factors with explanation and evaluates the impact of each factor."
-#pri_rubrics="Ideas - 1 - A slight attempt at developing ideas, Ideas - 2 - Ideas are generally developed, Ideas - 3 - Ideas are sufficiently developed, Ideas - 4 - Ideas are well-developed, Organisation - 1 - A slight attempt at organisation, Organisation - 2 - Some instances of organisation, Organisation - 3 - Good organisation, Organisation - 4 - Very good organisation, Voice - 1 - Shows slight awareness of purpose of writing, audience, and points of view, Voice - 2 - Shows some awareness of purpose of writing, audience, and points of view, Voice - 3 - Clear awareness of purpose of writing, audience, and points of view, Voice - 4 - Strong awareness of purpose of writing, audience, and points of view, Word Choice - 1 - Simple word choice, Word Choice - 2 - Fairly adequate word choice, Word Choice - 3 - Adequate word choice, Word Choice - 4 - Effective word choice, Sentence Fluency - 1 - Simple sentence fluency, Sentence Fluency - 2 - Attempts to use a variety of sentence structures, Sentence Fluency - 3 - Uses a variety of sentence structures, Sentence Fluency - 4 - Smooth flow of ideas with a variety of sentence structures."
-#suggested_answer = "(1 mark): At 9am, the concentration of glucose in the blood was high, causing the islets of Langerhans to secrete insulin. (1 mark): Insulin stimulates the liver to convert excess glucose into glycogen, (1 mark): causing the blood glucose level to decrease."
-recipe = " "
+subject = ""
+level = ""
+question = "竞争往往会给人带来前进的动力，然而最近发生的一件事，却让你明白恶性竞争会带来不良的结果。试描述这件事，并谈谈你从中得到的启示。"
+recipe = rsrc.recipes["Direct Answer"]
 
-user_msg = AFA.assemble_prompt(subject, level, question, student_response, recipe=recipe, error_tags=" ", rubrics=rubrics, suggested_answer=" ")
+rubrics="内容 - 5 - 内容不足，不切合题意。内容层次不清楚，没有条理或重复，甚至杂乱无章。, 内容 - 4 - 内容不太充实，不太切合题意。内容层次不太清楚，说明也不太详尽、不太有条理。, 内容 - 3 - 内容还算充实，还算切合题意。内容还算有层次，说明还算详尽、有条理。, 内容 - 2 - 内容相当充实，相当切合题意。内容相当有层次，说明相当详尽，也相当有条理。, 内容 - 1 - 内容充实，切合题意。内容有层次，说明详尽、有条理。, 语文与结构 - 5 - 语句不通顺，汉字的书写、词语、语法及标点符号的运用错误非常多。词汇贫乏，遣词造句错误多，表达不清楚。组织凌乱，没有衔接。, 语文与结构 - 4 - 语句不太通顺，汉字的书写、词语、及标点符号的运用错误多。词汇有限，句式简单，没有变化，表达不太清楚。组织不太得当，衔接不太紧凑，段落不太分明。, 语文与结构 - 3 - 语句还算通顺，汉字的书写、词语、语法及标点符号的运用有些错误。用词还算适当，句式简单，变化少，表达还算清楚。组织还算得当，衔接还算紧凑，段落还算分明。, 语文与结构 - 2 - 语句相当通顺，汉字的书写、词语、语法及标点符号的运用有一些小错误。用词适当，句式相当正确且有变化，表达相当清楚。组织相当得当，衔接相当紧凑，段落相当分明。, 语文与结构 - 1 - 语句通顺，汉字的书写、词语、语法及标点符号的运用绝大多数正确。如有错误，也是极小的。用词丰富适当，句式正确且多样化，表达清楚。组织得当，衔接紧凑，段落分明。"
+rubrics_simple="内容 - 1 - 内容充实，切合题意。内容有层次，说明详尽、有条理。, 语文与结构 - 1 - 语句通顺，汉字的书写、词语、语法及标点符号的运用绝大多数正确。如有错误，也是极小的。用词丰富适当，句式正确且多样化，表达清楚。组织得当，衔接紧凑，段落分明。"
+
+student_response = """
+我一直认为竞争是非常重要的，它能让我们变得更，取得更好的成绩。最近，我遇到了一次竞赛，它让我意识到恶性竞争有时也能带来不好的后果。 
+ 
+ 
+有一天，我们班举行了一场英语比赛，很多同学都很紧张，因为这次比赛很重要，能影响到我们的成绩。我的同学小华非常历害，他总是考试得第一，大家都觉得他是最聪明的。我也很想超越他，赢得第一名。 
+ 
+ 
+我开始拼命的复习，做了很多试题，甚至放弃了和朋友们一起玩的时间。可是，复习的时候，我开始变得不耐烦，看到小华做的题目总是很轻松，我就觉得自己不如他。于是，我开始不喜欢和他一起讨论问题，觉得他总是能轻松答对那些我做错的题目。我们之间的关戏变得越来越冷淡，我甚至开始怀义他是不是有什么不正当的手段。 
+ 
+ 
+终于，竞赛来了。我紧张得不得了，手心里全是汗。虽然我尽力发挥，但最终还是没能超越小华。我很失望，觉得自己付出的努力没有得到回报。我看到小华得了第一名，虽然他看起来很开心，但我心里有种不太舒服的感觉，因为我觉得自己和他竞争时太过用力，失去了很多友谊和快乐。 
+ 
+ 
+从这件事中，我意识到虽然竞争可以让我们变得更好，但过度的竞争有时会让我们失去更多东西，比如朋友之间的信任和关戏。如果我们只想着急败别人，而忽视了与他人合作和互相帮助的意义，那么这种竞争就变得没有意义，反而会带来不好的后果。以后我会更加主重和同学们一起合作，而不是只故着抄越别人。 我一直认为竞争是非常重要的，它能让我们变得更，取得更好的成绩。最近，我遇到了一次竞赛，它让我意识到恶性竞争有时也能带来不好的后果。有一天，我们班举行了一场英语比赛，很多同学都很紧张，因为这次比赛很重要，能影响到我们的成绩。我的同学小华非常历害，他总是考试得第一，大家都觉得他是最聪明的。我也很想超越他，赢得第一名。我开始拼命的复习，做了很多试题，甚至放弃了和朋友们一起玩的时间。可是，复习的时候，我开始变得不耐烦，看到小华做的题目总是很轻松，我就觉得自己不如他。于是，我开始不喜欢和他一起讨论问题，觉得他总是能轻松答对那些我做错的题目。我们之间的关戏变得越来越冷淡，我甚至开始怀义他是不是有什么不正当的手段。终于，竞赛来了。我紧张得不得了，手心里全是汗。虽然我尽力发挥，但最终还是没能超越小华。我很失望，觉得自己付出的努力没有得到回报。我看到小华得了第一名，虽然他看起来很开心，但我心里有种不太舒服的感觉，因为我觉得自己和他竞争时太过用力，失去了很多友谊和快乐。从这件事中，我意识到虽然竞争可以让我们变得更好，但过度的竞争有时会让我们失去更多东西，比如朋友之间的信任和关戏。如果我们只想着急败别人，而忽视了与他人合作和互相帮助的意义，那么这种竞争就变得没有意义，反而会带来不好的后果。以后我会更加主重和同学们一起合作，而不是只故着抄越别人。" \
+"""
+
+
+
+user_msg = AFA.assemble_prompt(subject, level, question, student_response, recipe=recipe, error_tags="", rubrics=rubrics, suggested_answer="")
 response = AFA.get_annotations(user_msg)
 print(response)
+print(" ")
+if "</tag>" in response:
+    print(True)
+else:
+    print(False)
 #AFA.display_output(response)

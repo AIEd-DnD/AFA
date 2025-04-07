@@ -63,7 +63,7 @@ def extract_parameters_refinement(parameter_dict):
     return subject, level, question, students_response, recipe, suggested_answer, rubrics, error_tags
 
 def assemble_prompt(subject, level, question, students_response, recipe=" ", suggested_answer=" ", rubrics=" ", error_tags=" "):
-   assembled_prompt = rsrc.zoes_prompt.format(
+   assembled_prompt = rsrc.prod_prompt.format(
      Subject=subject,
      Level=level,
      Question=question,
@@ -82,7 +82,8 @@ def get_annotations(assembled_prompt):
      #model="o3-mini",
      temperature = 0.1, #temperature is only available to gpt models
      max_tokens = 4000, #max tokens is only available to gpt models, default max tokens is 4000. this parameter is being deprecated in favour of max_completion_tokens
-     tools = rsrc.tools,
+     tools = rsrc.prod_tools,
+     tool_choice={"type": "function", "function": {"name": "get_annotated_feedback"}},
      messages = [{"role": "user", "content": assembled_prompt}]
    )
    return response.choices[0].message.tool_calls[0].function.arguments
