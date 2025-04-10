@@ -3,9 +3,9 @@ import AFA_eval_functions as AFA
 data = list()
 #test_name = input("Please enter the name of the test: ")               #uncomment this to unlock user input for test name
 #file_path = input("Please enter the file path of the test data: ")     #uncomment this to unlock user input for file path
-evaluation_record = AFA.start_new_record("Refinement_Bulk_newtools_stgprompt")
+evaluation_record = AFA.start_new_record("o3mini_currentprompt_currenttool")
 print("The refinement record has been created.")
-response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_BulkTagCheck.csv")
+response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_BulkTagCheck_Reduced.csv")
 print("The response list has been created.")
 
 for scenario_dict in response_list:
@@ -34,8 +34,17 @@ for scenario_dict in response_list:
         new_row.append(0)
         data.append(new_row)
         continue
-
-    LLM_dict = AFA.string_to_dict(full_LLM_response)
+    
+    try:
+        LLM_dict = AFA.string_to_dict(full_LLM_response)
+    except Exception as exp:
+        new_row.append(full_LLM_response)
+        print(f"An error occurred while attempting to convert the LLM response into a dictionary: {str(exp)}.")
+        new_row.append("NIL")
+        new_row.append(False)
+        new_row.append(0)
+        data.append(new_row)
+        continue
 
     try:
         LLM_annotated_response, LLM_cards = AFA.extract_annotation_details_refinement(LLM_dict)

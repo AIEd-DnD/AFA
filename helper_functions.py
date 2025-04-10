@@ -83,10 +83,10 @@ def assemble_prompt(subject, level, question, student_answer, recipe=rsrc.recipe
 #Norman's function to send to LLM to get annotations
 def get_annotations(assembled_prompt):
    response = client.chat.completions.create(
-     #model="gpt-4o-2024-08-06",
-     model="o3-mini",
-     #temperature = 0.1,
-     #max_tokens = 4000,
+     model="gpt-4o-2024-08-06",
+     #model="o3-mini",
+     temperature = 0.1,
+     max_tokens = 4000,
      tools = rsrc.tools,
      tool_choice={"type": "function", "function": {"name": "get_annotated_feedback"}},
      messages = [{"role": "user", "content": assembled_prompt}]
