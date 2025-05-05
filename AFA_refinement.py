@@ -5,7 +5,7 @@ data = list()
 #file_path = input("Please enter the file path of the test data: ")     #uncomment this to unlock user input for file path
 evaluation_record = AFA.start_new_record("o3mini_currentprompt_currenttool")
 print("The refinement record has been created.")
-response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_BulkTagCheck_Reduced.csv")
+response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_BulkTagCheck.csv")
 print("The response list has been created.")
 
 for scenario_dict in response_list:
