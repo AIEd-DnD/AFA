@@ -76,6 +76,26 @@ def assemble_prompt(subject, level, question, students_response, recipe=" ", sug
    
    return assembled_prompt
 
+def assemble_system_prompt(subject, level, question, recipe=" ", suggested_answer=" ", rubrics=" ", error_tags=" "):
+   assembled_system_prompt = rsrc.system_prompt.format(
+     Subject=subject,
+     Level=level,
+     Question=question,
+     Model_answer=suggested_answer, 
+     Rubrics=rubrics, 
+     Error_types=error_tags, 
+     Instructions=recipe
+     )
+   
+   return assembled_system_prompt
+
+def assemble_user_prompt(students_response):
+   assembled_user_prompt = rsrc.user_prompt.format(
+     Students_response=students_response 
+     )
+   
+   return assembled_user_prompt
+
 def get_annotations(assembled_prompt):
    response = client.chat.completions.create(
      model="gpt-4o-2024-08-06",
@@ -87,6 +107,20 @@ def get_annotations(assembled_prompt):
      tools = rsrc.tools,
      tool_choice={"type": "function", "function": {"name": "get_annotated_feedback"}},
      messages = [{"role": "user", "content": assembled_prompt}]
+   )
+   return response.choices[0].message.tool_calls[0].function.arguments
+
+def get_annotations_system_user(assembled_system_prompt, assembled_user_prompt):
+   response = client.chat.completions.create(
+     model="gpt-4o-2024-08-06",
+     #model="o3-mini",
+     #reasoning_effort="medium",
+     temperature = 0.1, #temperature is only available to gpt models
+     max_tokens = 16000, #max tokens is only available to gpt models, default max tokens is 4000. this parameter is being deprecated in favour of max_completion_tokens
+     #max_completion_tokens=8000,
+     tools = rsrc.tools,
+     tool_choice={"type": "function", "function": {"name": "get_annotated_feedback"}},
+     messages = [{"role":"system","content":assembled_system_prompt},{"role": "user", "content": assembled_user_prompt}]
    )
    return response.choices[0].message.tool_calls[0].function.arguments
 
