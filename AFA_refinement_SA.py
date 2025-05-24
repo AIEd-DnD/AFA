@@ -1,29 +1,27 @@
-import AFA_eval_functions as AFA
+import testbed_AFA_functions as AFA
 
 data = list()
 #test_name = input("Please enter the name of the test: ")               #uncomment this to unlock user input for test name
 #file_path = input("Please enter the file path of the test data: ")     #uncomment this to unlock user input for file path
-evaluation_record = AFA.start_new_record("4o_control")
+evaluation_record = AFA.start_new_record("4o_SA")
 print("The refinement record has been created.")
-response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_BulkTagCheck.csv")
+response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_Bulk_SA.csv")
 print("The response list has been created.")
 
 for scenario_dict in response_list:
     new_row = list()
-    subject, level, question, students_response, recipe, suggested_answer, rubrics, error_tags = AFA.extract_parameters_refinement(scenario_dict)
+    subject, level, question, students_response, recipe, suggested_answer = AFA.extract_parameters_refinement_SA(scenario_dict)
     
     new_row.append(subject)
     new_row.append(level)
     new_row.append(recipe)
-    new_row.append(error_tags)
     new_row.append(suggested_answer)
-    new_row.append(rubrics)
     new_row.append(question)
     new_row.append(students_response)
     
     print('Trying response '+str(response_list.index(scenario_dict)+1))
     
-    message = AFA.assemble_prompt(subject, level, question, students_response, recipe, suggested_answer, rubrics, error_tags)
+    message = AFA.assemble_prompt_SA(subject, level, question, students_response, recipe, suggested_answer)
     try:
         full_LLM_response = AFA.get_annotations(message)
     except Exception as exp:
@@ -69,4 +67,4 @@ for scenario_dict in response_list:
 
     data.append(new_row)
 
-AFA.write_into_record_refinement(evaluation_record, data)
+AFA.write_into_record_refinement_SA(evaluation_record, data)
