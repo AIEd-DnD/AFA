@@ -1134,14 +1134,33 @@ def main():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     
     # Set up argument parser
-    parser = argparse.ArgumentParser(description='Process student responses with AI feedback using multiple models')
-    parser.add_argument('--csv', help='Path to input CSV file (defaults to afa_data.csv in the current directory)')
+    parser = argparse.ArgumentParser(
+        description='AI Feedback Assistant (AFA): Process student responses with AI-generated feedback using multiple LLM models',
+        epilog='''
+Examples:
+  python main_bulk.py                                     # Process all models and methods using default CSV
+  python main_bulk.py --csv my_data.csv --model gpt4o     # Process only with GPT-4o model
+  python main_bulk.py --method split --check              # Process with split method only and validate results
+        '''
+    )
+    parser.add_argument('--csv', 
+                      help='Path to input CSV file with student responses (defaults to afa_data.csv in the current directory)')
     parser.add_argument('--model', choices=['gpt4o', 'gpt41', 'claude', 'all'], default='all', 
-                      help='Model to use for processing: gpt4o, gpt41, claude, or all')
+                      help='''Model to use for processing:
+                      gpt4o: GPT-4o (OpenAI)
+                      gpt41: GPT-4.1 Turbo (OpenAI)
+                      claude: Claude 4 Sonnet (Anthropic)
+                      all: Run with all available models (default)''')
     parser.add_argument('--method', choices=['single', 'split', 'reverse', 'all'], default='all',
-                      help='Method to use: single API call, split API calls, reverse split, or all methods')
-    parser.add_argument('--reverse', action='store_true', help='Include reverse method in addition to the specified method')
-    parser.add_argument('--check', action='store_true', help='Enable validation and fixing of annotation results')
+                      help='''Feedback generation method:
+                      single: Single API call that generates both annotations and feedback at once
+                      split: Two API calls - first generates feedback list, then applies annotations
+                      reverse: Two API calls in reverse order - first annotates text, then generates feedback
+                      all: Run with all methods (default)''')
+    parser.add_argument('--reverse', action='store_true', 
+                      help='Include reverse method in addition to the specified method (ignored if --method=all)')
+    parser.add_argument('--check', action='store_true', 
+                      help='Enable validation and fixing of annotation results (corrects mismatches between tags and feedback)')
     
     args = parser.parse_args()
     

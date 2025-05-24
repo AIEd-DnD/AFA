@@ -721,13 +721,31 @@ def get_data_file_path():
 def main():
     """Main function to load and analyze YAML data."""
     # Set up argument parser
-    parser = argparse.ArgumentParser(description='Analyze student responses with AI feedback')
-    parser.add_argument('-c', '--claude', action='store_true', help='Use Claude model for analysis')
-    parser.add_argument('-g4o', '--gpt4o', action='store_true', help='Use GPT-4o model for analysis (default)')
-    parser.add_argument('-g41', '--gpt41', action='store_true', help='Use GPT-4.1 model for analysis')
-    parser.add_argument('-m', '--model', help='Specify a specific model name')
-    parser.add_argument('-s', '--split', action='store_true', help='Use split system for generating annotations')
-    parser.add_argument('-r', '--reverse', action='store_true', help='Use reverse order for split system')
+    parser = argparse.ArgumentParser(
+        description='AI Feedback Assistant (AFA): Analyze individual student responses with AI-generated feedback using YAML data',
+        epilog='''
+Examples:
+  python main.py                                          # Use default GPT-4o model with single API call
+  python main.py -c -s                                    # Use Claude model with split method
+  python main.py -g41 -r                                  # Use GPT-4.1 model with reverse split method
+  python main.py -m "gpt-4o-mini" -s                      # Use specific model with split method
+        '''
+    )
+    parser.add_argument('-c', '--claude', action='store_true', 
+                      help='Use Claude 4 Sonnet model for analysis (Anthropic)')
+    parser.add_argument('-g4o', '--gpt4o', action='store_true', 
+                      help='Use GPT-4o model for analysis (OpenAI) - this is the default')
+    parser.add_argument('-g41', '--gpt41', action='store_true', 
+                      help='Use GPT-4.1 Turbo model for analysis (OpenAI)')
+    parser.add_argument('-m', '--model', 
+                      help='Specify a custom model name (e.g., "gpt-4o-mini", "claude-3-sonnet-20240229")')
+    parser.add_argument('-s', '--split', action='store_true', 
+                      help='''Use split method for generating annotations:
+                      First API call generates feedback list, then second call applies annotations''')
+    parser.add_argument('-r', '--reverse', action='store_true', 
+                      help='''Use reverse split method (requires -s/--split flag):
+                      First API call annotates text, then second call generates feedback based on annotations''')
+    
     args = parser.parse_args()
     
     # Determine which model to use
