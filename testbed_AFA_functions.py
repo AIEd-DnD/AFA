@@ -108,6 +108,36 @@ def assemble_system_prompt(subject, level, question, recipe=" ", suggested_answe
      )
    return assembled_system_prompt
 
+def assemble_SA_system_prompt(subject, level, question, recipe=" ", suggested_answer=" "):
+   assembled_system_prompt = rsrc.SA_system_prompt.format(
+     Subject=subject,
+     Level=level,
+     Question=question,
+     Model_answer=suggested_answer,  
+     Instructions=recipe
+     )
+   return assembled_system_prompt
+
+def assemble_Rubrics_system_prompt(subject, level, question, recipe=" ", rubrics=" "):
+   assembled_system_prompt = rsrc.Rubrics_system_prompt.format(
+     Subject=subject,
+     Level=level,
+     Question=question,
+     Rubrics=rubrics, 
+     Instructions=recipe
+     )
+   return assembled_system_prompt
+
+def assemble_Error_tags_system_prompt(subject, level, question, recipe=" ", error_tags=" "):
+   assembled_system_prompt = rsrc.Error_tags_system_prompt.format(
+     Subject=subject,
+     Level=level,
+     Question=question,
+     Error_types=error_tags, 
+     Instructions=recipe
+     )
+   return assembled_system_prompt
+
 def assemble_user_prompt(students_response):
    assembled_user_prompt = rsrc.user_prompt.format(
      Students_response=students_response 
