@@ -1,0 +1,89 @@
+{
+    "model": "gpt-3.5-turbo-1106",
+    "messages": [
+        {
+            "role": "user",
+            "content": "As an experienced Secondary 4 Geography teacher, design a lesson flow comprising sections that helps students achieve the following learning outcomes:\nGlobal distribution of tectonic plates and types of plate boundaries\n\nThe title of the lesson is Geography Lesson and brief notes are: The lesson should follow a structured discussion-based learning sequence that includes:Introduction, Take a position, See perspectives, Refine understanding, Conclusion\n You should also consider: Design a lesson with notes given. Suggest 3 sections for this lesson. \n\nYour output should only be rich text, do not include hyperlinks, code snippets, mathematical formulas or xml.\nYour output should be a series of sections. For each section, provide (i) a title, (ii) notes about how a teacher might enact the section and other information that might be useful for the teacher when designing this section. You should also output a lesson description that describes the lesson to the student, the lesson description should be at most five sentences long."
+        }
+    ],
+    "tools": [
+        {
+            "type": "function",
+            "function": {
+                "name": "get_new_section_recommendations",
+                "description": "Evaluate and must provide a list of recommendations containing lesson description, section title and section notes. Richtext contents must be in HTML format.",
+                "parameters": {
+                    "type": "object",
+                    "definitions": {
+                        "richtext": {
+                            "type": "string",
+                            "description": "The richtext content in HTML"
+                        }
+                    },
+                    "properties": {
+                        "recommendations": {
+                            "type": "object",
+                            "description": "Recommendations",
+                            "properties": {
+                                "lessonDescription": {
+                                    "type": "object",
+                                    "description": "The recommended description",
+                                    "properties": {
+                                        "richtext": {
+                                            "$ref": "#/definitions/richtext"
+                                        }
+                                    },
+                                    "required": [
+                                        "richtext"
+                                    ]
+                                },
+                                "sectionRecommendations":{
+                                    "type": "array",
+                                    "description": "List of section recommendations",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {                                   
+                                            "sectionTitle": {
+                                                "type": "string",
+                                                "description": "The recommended section title"
+                                            },
+                                            "sectionNotes": {
+                                                "type": "object",
+                                                "description": "The recommended section notes",
+                                                "properties": {
+                                                    "richtext": {
+                                                        "$ref": "#/definitions/richtext"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "richtext"
+                                                ]
+                                            }
+                                        },
+                                        "required": [
+                                            "sectionTitle",
+                                            "sectionNotes"
+                                        ]
+                                    },
+                                    "minItems": 3
+                                }
+                            },
+                            "required": ["lessonDescription", "sectionRecommendations"]
+                        }
+                    },
+                    "required": [
+                        "recommendations"
+                    ]
+                }
+            }
+        }
+    ],
+    "tool_choice": {
+        "type": "function",
+        "function": {
+            "name": "get_new_section_recommendations"
+        }
+    },
+    "temperature": 0.7
+ }
+ 
