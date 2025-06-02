@@ -3,9 +3,9 @@ import AFA_eval_functions as AFA
 data = list()
 #test_name = input("Please enter the name of the test: ")               #uncomment this to unlock user input for test name
 #file_path = input("Please enter the file path of the test data: ")     #uncomment this to unlock user input for file path
-evaluation_record = AFA.start_new_record("4o_control")
+evaluation_record = AFA.start_new_record("4o_control_expanded")
 print("The refinement record has been created.")
-response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_BulkTagCheck.csv")
+response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_BulkTagCheck_expanded.csv")
 print("The response list has been created.")
 
 for scenario_dict in response_list:
