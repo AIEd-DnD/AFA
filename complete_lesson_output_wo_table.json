@@ -1,0 +1,86 @@
+{
+  "lesson_metadata": {
+    "title": "Introduction to Poetry",
+    "subject": "English",
+    "topic": "Poetic Techniques",
+    "level_grade": "Secondary 2",
+    "additional_instructions": "Focus on collaborative learning and scaffolding",
+    "lesson_structure": {
+      "num_sections": 3,
+      "max_activities_per_section": 1
+    },
+    "generation_timestamp": "Tue Jun  3 11:10:38 +08 2025"
+  },
+  "generation_process": {
+    "step_1_sections": {
+      "reasoning_summary": "Sample reasoning for sections...",
+      "generated_content": "Sample sections content..."
+    },
+    "step_2_activities": {
+      "reasoning_summary": "Sample reasoning for activities...",
+      "generated_content": "**SELECTED SLS TOOLS FOR THIS LESSON:**\n1. Interactive Thinking Tool – for annotation and highlighting poetic devices\n2. Discussion Board – for collaborative analysis and sharing insights\n3. Free Response Question – for creative writing and reflection\n4. Rubrics – for peer evaluation and structured feedback\n\n**RECOMMENDED KEY APPLICATIONS OF TECHNOLOGY (KAT):**\n1. Facilitate learning together – Using collaborative tools enables students to construct understanding collectively\n2. Embed scaffolding – Digital prompts and structured questions guide learners progressively\n\n**LESSON PLAN ACTIVITIES:**\n\nActivity 1: Exploring Poetic Techniques\nSection: Section 1: Discovering Poetic Techniques\nInteraction Type: Student-Content\nDuration: 15 minutes\nLearning Objectives:\n• Identify examples of simile, metaphor, personification and alliteration\n• Explain the literal and figurative meanings of each example\n\nInstructions:\n1. Open the curated poem in SLS\n2. Use the Interactive Thinking Tool to highlight one example of each device\n3. For each highlight, click the embedded tooltip and answer scaffolded prompts\n4. Be prepared to share one highlighted example aloud\n\nKAT Alignment:\nEmbed scaffolding – step-by-step prompts in the annotation tool guide identification\nFacilitate learning together – volunteers share highlights and build collective understanding\n\nSLS Tools:\nInteractive Thinking Tool\nTooltip\n\nData Analysis:\nMonitor Assignment Page and Heatmap to track completion\nSLS Learning Progress Dashboard to monitor responses\n\nTeaching Notes:\nModel one example live, demonstrate annotation workflow, circulate to support students\n\n---\n\nActivity 2: Analyzing Techniques in Context\nSection: Section 2: Analyzing Techniques in Context\nInteraction Type: Student-Student\nDuration: 20 minutes\nLearning Objectives:\n• Analyze how poetic techniques create imagery, mood and emphasis\n• Articulate the writer's purpose in using specific techniques\n\nInstructions:\n1. In assigned pairs, open the Discussion Board thread for your technique\n2. Respond to guiding questions about how the device shapes meaning\n3. Debate interpretations and co-author a summary\n4. Read another pair's post and leave constructive feedback\n\nKAT Alignment:\nEmbed scaffolding – targeted questions focus student reasoning\nFacilitate learning together – structured threads promote shared sense-making\n\nSLS Tools:\nDiscussion Board\n\nData Analysis:\nSLS Data Assistant to monitor post frequency and depth\nSLS Feedback Assistants to flag posts needing intervention\n\nTeaching Notes:\nAssign techniques evenly, monitor for off-track reasoning, highlight strong posts\n\n---\n\nActivity 3: Creating with Poetic Techniques\nSection: Section 3: Creating with Poetic Techniques\nInteraction Type: Student-Student\nDuration: 25 minutes\nLearning Objectives:\n• Apply at least two poetic techniques in original poetry\n• Reflect on how chosen techniques enhance meaning and style\n\nInstructions:\n1. Draft original poetic lines using the Free Response Question\n2. Exchange drafts with a partner and apply Rubrics for evaluation\n3. Review feedback and revise your lines accordingly\n4. Submit final version with reflection on feedback received\n\nKAT Alignment:\nEmbed scaffolding – rubric criteria guide composition and review\nFacilitate learning together – peer-review workflows foster collaborative improvement\n\nSLS Tools:\nFree Response Question\nRubrics\n\nData Analysis:\nSLS Learning Progress Dashboard to track submission cycles\nAnnotated Feedback Assistant to review peer feedback patterns\n\nTeaching Notes:\nShare model rubric assessment, remind students to cite techniques by name\n\n---",
+      "structured_activities": {
+        "selected_sls_tools": [
+          "1. Interactive Thinking Tool – for annotation and highlighting poetic devices",
+          "2. Discussion Board – for collaborative analysis and sharing insights",
+          "3. Free Response Question – for creative writing and reflection",
+          "4. Rubrics – for peer evaluation and structured feedback"
+        ],
+        "recommended_kat": [
+          "1. Facilitate learning together – Using collaborative tools enables students to construct understanding collectively",
+          "2. Embed scaffolding – Digital prompts and structured questions guide learners progressively"
+        ],
+        "activities": [
+          {
+            "title": "Activity 1: Exploring Poetic Techniques",
+            "section": "Section 1: Discovering Poetic Techniques",
+            "interaction_type": "Student-Content",
+            "duration": "15 minutes",
+            "learning_objectives": [
+              "Identify examples of simile, metaphor, personification and alliteration",
+              "Explain the literal and figurative meanings of each example"
+            ],
+            "instructions": "1. Open the curated poem in SLS\n2. Use the Interactive Thinking Tool to highlight one example of each device\n3. For each highlight, click the embedded tooltip and answer scaffolded prompts\n4. Be prepared to share one highlighted example aloud",
+            "kat_alignment": "Embed scaffolding – step-by-step prompts in the annotation tool guide identification\nFacilitate learning together – volunteers share highlights and build collective understanding",
+            "sls_tools": "Interactive Thinking Tool\nTooltip",
+            "data_analysis": "Monitor Assignment Page and Heatmap to track completion\nSLS Learning Progress Dashboard to monitor responses",
+            "teaching_notes": "Model one example live, demonstrate annotation workflow, circulate to support students"
+          },
+          {
+            "title": "Activity 2: Analyzing Techniques in Context",
+            "section": "Section 2: Analyzing Techniques in Context",
+            "interaction_type": "Student-Student",
+            "duration": "20 minutes",
+            "learning_objectives": [
+              "Analyze how poetic techniques create imagery, mood and emphasis",
+              "Articulate the writer's purpose in using specific techniques"
+            ],
+            "instructions": "1. In assigned pairs, open the Discussion Board thread for your technique\n2. Respond to guiding questions about how the device shapes meaning\n3. Debate interpretations and co-author a summary\n4. Read another pair's post and leave constructive feedback",
+            "kat_alignment": "Embed scaffolding – targeted questions focus student reasoning\nFacilitate learning together – structured threads promote shared sense-making",
+            "sls_tools": "Discussion Board",
+            "data_analysis": "SLS Data Assistant to monitor post frequency and depth\nSLS Feedback Assistants to flag posts needing intervention",
+            "teaching_notes": "Assign techniques evenly, monitor for off-track reasoning, highlight strong posts"
+          },
+          {
+            "title": "Activity 3: Creating with Poetic Techniques",
+            "section": "Section 3: Creating with Poetic Techniques",
+            "interaction_type": "Student-Student",
+            "duration": "25 minutes",
+            "learning_objectives": [
+              "Apply at least two poetic techniques in original poetry",
+              "Reflect on how chosen techniques enhance meaning and style"
+            ],
+            "instructions": "1. Draft original poetic lines using the Free Response Question\n2. Exchange drafts with a partner and apply Rubrics for evaluation\n3. Review feedback and revise your lines accordingly\n4. Submit final version with reflection on feedback received",
+            "kat_alignment": "Embed scaffolding – rubric criteria guide composition and review\nFacilitate learning together – peer-review workflows foster collaborative improvement",
+            "sls_tools": "Free Response Question\nRubrics",
+            "data_analysis": "SLS Learning Progress Dashboard to track submission cycles\nAnnotated Feedback Assistant to review peer feedback patterns",
+            "teaching_notes": "Share model rubric assessment, remind students to cite techniques by name"
+          }
+        ]
+      }
+    }
+  },
+  "errors": {
+    "activities_error": null
+  }
+}

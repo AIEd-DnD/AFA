@@ -1,6 +1,5 @@
 import json
 import os
-import argparse
 from openai import OpenAI
 from typing import Dict, List, Any
 from dotenv import load_dotenv
@@ -15,19 +14,10 @@ client = openai.OpenAI(api_key=openai_api_key)
 
 
 class LessonGenerator:
-    def __init__(self, use_reasoning=True):
+    def __init__(self):
         # Initialize OpenAI client
         # Make sure to set your OPENAI_API_KEY environment variable
         self.client = openai.OpenAI(api_key=openai_api_key)
-        self.use_reasoning = use_reasoning
-        self.reasoning_model = "o4-mini"
-        self.non_reasoning_model = "gpt-4o-mini-2024-07-18"
-        
-        # Display which mode is being used
-        if self.use_reasoning:
-            print(f"Using REASONING model: {self.reasoning_model}")
-        else:
-            print(f"Using NON-REASONING model: {self.non_reasoning_model}")
         
     def get_lesson_details(self) -> Dict[str, str]:
         """Get lesson details from user input"""
@@ -77,68 +67,8 @@ class LessonGenerator:
             "max_activities": max_activities
         }
     
-    def _make_api_call(self, prompt: str, step_name: str):
-        """Make API call with either reasoning or non-reasoning model"""
-        try:
-            if self.use_reasoning:
-                # Use reasoning model (o4-mini)
-                response = self.client.responses.create(
-                    model=self.reasoning_model,
-                    input=prompt,
-                    reasoning={"effort": "medium", "summary": "auto"},
-                    max_output_tokens=16000,
-                )
-                
-                print(f"REASONING SUMMARY ({step_name}):")
-                print("-" * 40)
-                # Extract reasoning summary from the response
-                reasoning_items = [item for item in response.output if item.type == 'reasoning']
-                if reasoning_items and reasoning_items[0].summary:
-                    for summary in reasoning_items[0].summary:
-                        print(summary.text)
-                else:
-                    print(f"The AI is reasoning through {step_name} internally...")
-                
-                reasoning_summary = reasoning_items[0].summary[0].text if reasoning_items and reasoning_items[0].summary else f"Internal reasoning by {self.reasoning_model} model"
-                output_text = response.output_text
-                
-            else:
-                # Use non-reasoning model (gpt-4o-mini-2024-07-18)
-                response = self.client.responses.create(
-                    model=self.non_reasoning_model,
-                    input=[{"role": "user", "content": prompt}],
-                    max_output_tokens=16000,
-                )
-                
-                print(f"MODEL OUTPUT ({step_name}):")
-                print("-" * 40)
-                print(f"Using {self.non_reasoning_model} without reasoning...")
-                
-                reasoning_summary = f"No reasoning - using {self.non_reasoning_model} model"
-                # Fix: Handle the response structure correctly for non-reasoning model
-                if hasattr(response, 'output_text'):
-                    output_text = response.output_text
-                elif hasattr(response, 'output') and response.output:
-                    # Handle list of ResponseOutputText objects
-                    if isinstance(response.output, list) and len(response.output) > 0:
-                        output_text = response.output[0].text
-                    else:
-                        output_text = str(response.output)
-                else:
-                    output_text = str(response)
-            
-            print(f"\n{step_name.upper()} GENERATED:")
-            print("-" * 40)
-            print(output_text)
-            
-            return output_text, reasoning_summary
-            
-        except Exception as e:
-            print(f"Error in API call for {step_name}: {e}")
-            return None, f"Error: {str(e)}"
-    
     def generate_sections(self, lesson_details: Dict[str, str]) -> Dict[str, Any]:
-        """Generate lesson sections using selected model with KAT framework"""
+        """Generate lesson sections using reasoning API with KAT framework"""
         print("\n" + "=" * 60)
         print("STEP 1: GENERATING LESSON SECTIONS")
         print("=" * 60)
@@ -192,23 +122,43 @@ class LessonGenerator:
         [Continue for all {lesson_details['num_sections']} sections]
         """
         
-        output_text, reasoning_summary = self._make_api_call(prompt, "sections")
-        
-        if output_text:
+        try:
+            response = self.client.responses.create(
+                model="o4-mini",
+                input=prompt,
+                reasoning={"effort": "medium", "summary": "auto"},
+                max_output_tokens=2500,
+            )
+            
+            print("REASONING SUMMARY:")
+            print("-" * 40)
+            # Extract reasoning summary from the response
+            reasoning_items = [item for item in response.output if item.type == 'reasoning']
+            if reasoning_items and reasoning_items[0].summary:
+                for summary in reasoning_items[0].summary:
+                    print(summary.text)
+            else:
+                print("The AI is reasoning through the lesson structure internally...")
+            
+            print("\nSECTIONS GENERATED:")
+            print("-" * 40)
+            print(response.output_text)
+            
             # Parse the response into structured format
             sections_data = {
                 "lesson_details": lesson_details,
-                "sections_response": output_text,
-                "reasoning_summary": reasoning_summary,
-                "model_used": self.reasoning_model if self.use_reasoning else self.non_reasoning_model
+                "sections_response": response.output_text,
+                "reasoning_summary": reasoning_items[0].summary[0].text if reasoning_items and reasoning_items[0].summary else "Internal reasoning by o4-mini model"
             }
             
             return sections_data
-        else:
-            return {"error": reasoning_summary}
+            
+        except Exception as e:
+            print(f"Error generating sections: {e}")
+            return {"error": str(e)}
     
     def generate_activities(self, sections_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Generate activities for each section using selected model with KAT framework"""
+        """Generate activities for each section using reasoning API with KAT framework"""
         print("\n" + "=" * 60)
         print("STEP 2: GENERATING ACTIVITIES FOR EACH SECTION")
         print("=" * 60)
@@ -287,21 +237,41 @@ class LessonGenerator:
         - Include all required components for each activity
         """
         
-        output_text, reasoning_summary = self._make_api_call(prompt, "activities")
-        
-        if output_text:
+        try:
+            response = self.client.responses.create(
+                model="o4-mini",
+                input=prompt,
+                reasoning={"effort": "medium", "summary": "auto"},
+                max_output_tokens=4500,
+            )
+            
+            print("REASONING SUMMARY:")
+            print("-" * 40)
+            # Extract reasoning summary from the response
+            reasoning_items = [item for item in response.output if item.type == 'reasoning']
+            if reasoning_items and reasoning_items[0].summary:
+                for summary in reasoning_items[0].summary:
+                    print(summary.text)
+            else:
+                print("The AI is reasoning through the activities design internally...")
+            
+            print("\nACTIVITIES GENERATED:")
+            print("-" * 40)
+            print(response.output_text)
+            
             # Parse the structured response into JSON format
-            structured_activities = self.parse_activities_to_json(output_text, lesson_details)
+            structured_activities = self.parse_activities_to_json(response.output_text, lesson_details)
             
             # Add activities data to existing structure
-            sections_data["activities_response"] = output_text
-            sections_data["activities_reasoning_summary"] = reasoning_summary
+            sections_data["activities_response"] = response.output_text
+            sections_data["activities_reasoning_summary"] = reasoning_items[0].summary[0].text if reasoning_items and reasoning_items[0].summary else "Internal reasoning by o4-mini model"
             sections_data["structured_activities"] = structured_activities
-            sections_data["activities_model_used"] = self.reasoning_model if self.use_reasoning else self.non_reasoning_model
             
             return sections_data
-        else:
-            sections_data["activities_error"] = reasoning_summary
+            
+        except Exception as e:
+            print(f"Error generating activities: {e}")
+            sections_data["activities_error"] = str(e)
             return sections_data
     
     def parse_activities_to_json(self, content: str, lesson_details: Dict[str, str]) -> Dict[str, Any]:
@@ -322,44 +292,32 @@ class LessonGenerator:
             line = lines[i].strip()
             
             # Parse SLS Tools
-            if "SELECTED SLS TOOLS" in line:
+            if line.startswith("**SELECTED SLS TOOLS"):
                 i += 1
-                while i < len(lines):
-                    line_content = lines[i].strip()
-                    if "RECOMMENDED KEY APPLICATIONS" in line_content or "**RECOMMENDED" in line_content:
-                        break
-                    if line_content and not line_content.startswith("**") and not line_content.startswith("["):
-                        structured_data["selected_sls_tools"].append(line_content)
+                while i < len(lines) and not lines[i].strip().startswith("**RECOMMENDED"):
+                    if lines[i].strip():
+                        structured_data["selected_sls_tools"].append(lines[i].strip())
                     i += 1
                 continue
             
             # Parse KAT
-            if "RECOMMENDED KEY APPLICATIONS" in line or "KEY APPLICATIONS OF TECHNOLOGY" in line:
+            if line.startswith("**RECOMMENDED KEY APPLICATIONS"):
                 i += 1
-                while i < len(lines):
-                    line_content = lines[i].strip()
-                    if "LESSON PLAN ACTIVITIES" in line_content or "**LESSON PLAN" in line_content:
-                        break
-                    if line_content and not line_content.startswith("**") and not line_content.startswith("["):
-                        structured_data["recommended_kat"].append(line_content)
+                while i < len(lines) and not lines[i].strip().startswith("**LESSON PLAN"):
+                    if lines[i].strip():
+                        structured_data["recommended_kat"].append(lines[i].strip())
                     i += 1
                 continue
             
-            # Parse Activities - Handle both "Activity X:" and "**Activity X:**" formats
-            activity_match = None
-            if line.startswith("Activity ") and (":" in line):
-                activity_match = line
-            elif line.startswith("**Activity ") and (":**" in line or line.endswith("**")):
-                activity_match = line.replace("**", "").strip()
-            
-            if activity_match:
+            # Parse Activities
+            if line.startswith("Activity "):
                 # Save previous activity if exists
-                if current_activity and current_activity.get("title"):
+                if current_activity:
                     structured_data["activities"].append(current_activity)
                 
                 # Start new activity
                 current_activity = {
-                    "title": activity_match,
+                    "title": line,
                     "section": "",
                     "interaction_type": "",
                     "duration": "",
@@ -371,154 +329,83 @@ class LessonGenerator:
                     "teaching_notes": ""
                 }
             
-            elif current_activity:
-                if line.startswith("Section:"):
-                    current_activity["section"] = line.replace("Section:", "").strip()
-                
-                elif line.startswith("Interaction Type:"):
-                    current_activity["interaction_type"] = line.replace("Interaction Type:", "").strip()
-                
-                elif line.startswith("Duration:"):
-                    current_activity["duration"] = line.replace("Duration:", "").strip()
-                
-                elif line.startswith("Learning Objectives:"):
+            elif line.startswith("Section:"):
+                current_activity["section"] = line.replace("Section:", "").strip()
+            
+            elif line.startswith("Interaction Type:"):
+                current_activity["interaction_type"] = line.replace("Interaction Type:", "").strip()
+            
+            elif line.startswith("Duration:"):
+                current_activity["duration"] = line.replace("Duration:", "").strip()
+            
+            elif line.startswith("Learning Objectives:"):
+                i += 1
+                while i < len(lines) and lines[i].strip().startswith("•"):
+                    current_activity["learning_objectives"].append(lines[i].strip()[1:].strip())
                     i += 1
-                    while i < len(lines):
-                        obj_line = lines[i].strip()
-                        if obj_line.startswith("•"):
-                            current_activity["learning_objectives"].append(obj_line[1:].strip())
-                        elif obj_line and not obj_line.startswith(("Instructions:", "KAT Alignment:", "SLS Tools:", "Data Analysis:", "Teaching Notes:", "Activity ", "---", "**Activity")):
-                            if obj_line.startswith("•"):
-                                current_activity["learning_objectives"].append(obj_line[1:].strip())
-                        else:
-                            break
-                        i += 1
-                    continue
-                
-                elif line.startswith("Instructions:"):
+                continue
+            
+            elif line.startswith("Instructions:"):
+                i += 1
+                instructions = []
+                while i < len(lines) and not lines[i].strip().startswith(("KAT Alignment:", "SLS Tools:", "Data Analysis:", "Teaching Notes:", "Activity ", "---")):
+                    if lines[i].strip():
+                        instructions.append(lines[i].strip())
                     i += 1
-                    instructions = []
-                    while i < len(lines):
-                        inst_line = lines[i].strip()
-                        if inst_line.startswith(("KAT Alignment:", "SLS Tools:", "Data Analysis:", "Teaching Notes:", "Activity ", "---", "**Activity")):
-                            break
-                        if inst_line:
-                            instructions.append(inst_line)
-                        i += 1
-                    current_activity["instructions"] = "\n".join(instructions)
-                    continue
-                
-                elif line.startswith("KAT Alignment:"):
+                current_activity["instructions"] = "\n".join(instructions)
+                continue
+            
+            elif line.startswith("KAT Alignment:"):
+                i += 1
+                kat_content = []
+                while i < len(lines) and not lines[i].strip().startswith(("SLS Tools:", "Data Analysis:", "Teaching Notes:", "Activity ", "---")):
+                    if lines[i].strip():
+                        kat_content.append(lines[i].strip())
                     i += 1
-                    kat_content = []
-                    while i < len(lines):
-                        kat_line = lines[i].strip()
-                        if kat_line.startswith(("SLS Tools:", "Data Analysis:", "Teaching Notes:", "Activity ", "---", "**Activity")):
-                            break
-                        if kat_line:
-                            kat_content.append(kat_line)
-                        i += 1
-                    current_activity["kat_alignment"] = "\n".join(kat_content)
-                    continue
-                
-                elif line.startswith("SLS Tools:"):
+                current_activity["kat_alignment"] = "\n".join(kat_content)
+                continue
+            
+            elif line.startswith("SLS Tools:"):
+                i += 1
+                sls_content = []
+                while i < len(lines) and not lines[i].strip().startswith(("Data Analysis:", "Teaching Notes:", "Activity ", "---")):
+                    if lines[i].strip():
+                        sls_content.append(lines[i].strip())
                     i += 1
-                    sls_content = []
-                    while i < len(lines):
-                        sls_line = lines[i].strip()
-                        if sls_line.startswith(("Data Analysis:", "Teaching Notes:", "Activity ", "---", "**Activity")):
-                            break
-                        if sls_line:
-                            sls_content.append(sls_line)
-                        i += 1
-                    current_activity["sls_tools"] = "\n".join(sls_content)
-                    continue
-                
-                elif line.startswith("Data Analysis:"):
+                current_activity["sls_tools"] = "\n".join(sls_content)
+                continue
+            
+            elif line.startswith("Data Analysis:"):
+                i += 1
+                data_content = []
+                while i < len(lines) and not lines[i].strip().startswith(("Teaching Notes:", "Activity ", "---")):
+                    if lines[i].strip():
+                        data_content.append(lines[i].strip())
                     i += 1
-                    data_content = []
-                    while i < len(lines):
-                        data_line = lines[i].strip()
-                        if data_line.startswith(("Teaching Notes:", "Activity ", "---", "**Activity")):
-                            break
-                        if data_line:
-                            data_content.append(data_line)
-                        i += 1
-                    current_activity["data_analysis"] = "\n".join(data_content)
-                    continue
-                
-                elif line.startswith("Teaching Notes:"):
+                current_activity["data_analysis"] = "\n".join(data_content)
+                continue
+            
+            elif line.startswith("Teaching Notes:"):
+                i += 1
+                notes_content = []
+                while i < len(lines) and not lines[i].strip().startswith(("Activity ", "---")):
+                    if lines[i].strip():
+                        notes_content.append(lines[i].strip())
                     i += 1
-                    notes_content = []
-                    while i < len(lines):
-                        notes_line = lines[i].strip()
-                        if notes_line.startswith(("Activity ", "---", "**Activity")) or (notes_line.startswith("**") and "Activity" not in notes_line):
-                            break
-                        if notes_line:
-                            notes_content.append(notes_line)
-                        i += 1
-                    current_activity["teaching_notes"] = "\n".join(notes_content)
-                    continue
+                current_activity["teaching_notes"] = "\n".join(notes_content)
+                continue
             
             i += 1
         
         # Don't forget the last activity
-        if current_activity and current_activity.get("title"):
+        if current_activity:
             structured_data["activities"].append(current_activity)
-        
-        # Clean up and validate data
-        for activity in structured_data["activities"]:
-            # Ensure section is properly assigned
-            if not activity["section"] and structured_data["activities"]:
-                # Try to infer section from activity number
-                try:
-                    activity_num = int(activity["title"].split()[1].rstrip(":"))
-                    section_num = ((activity_num - 1) // lesson_details.get('max_activities', 1)) + 1
-                    activity["section"] = f"Section {section_num}"
-                except:
-                    activity["section"] = "Section 1"
-        
-        # Sort activities by activity number to ensure proper order
-        def extract_activity_number(activity):
-            try:
-                title = activity.get("title", "")
-                import re
-                match = re.search(r'Activity\s*(\d+)', title, re.IGNORECASE)
-                if match:
-                    return int(match.group(1))
-                return 0
-            except:
-                return 0
-        
-        structured_data["activities"].sort(key=extract_activity_number)
-        
-        print(f"\nParsing Summary:")
-        print(f"- SLS Tools parsed: {len(structured_data['selected_sls_tools'])}")
-        print(f"- KAT items parsed: {len(structured_data['recommended_kat'])}")
-        print(f"- Activities parsed: {len(structured_data['activities'])}")
-        
-        # Debug: Show activity order and titles
-        print(f"- Activity order: {[extract_activity_number(act) for act in structured_data['activities']]}")
-        print(f"- Activity titles: {[act.get('title', 'No title')[:50] + '...' if len(act.get('title', '')) > 50 else act.get('title', 'No title') for act in structured_data['activities']]}")
         
         return structured_data
     
     def save_final_output(self, complete_data: Dict[str, Any]) -> str:
         """Save the complete lesson data to a JSON file"""
-        # Use different filenames based on reasoning mode
-        if self.use_reasoning:
-            filename = "reasoning_lesson_output.json"
-        else:
-            filename = "non_reasoning_lesson_output.json"
-        
-        # Ensure we have structured activities data
-        structured_activities = complete_data.get('structured_activities', {})
-        if not structured_activities and complete_data.get('activities_response'):
-            # Parse the activities response to create structured data
-            structured_activities = self.parse_activities_to_json(
-                complete_data['activities_response'], 
-                complete_data['lesson_details']
-            )
+        filename = "complete_lesson_output.json"
         
         # Structure the final output
         final_output = {
@@ -532,12 +419,7 @@ class LessonGenerator:
                     "num_sections": complete_data['lesson_details']['num_sections'],
                     "max_activities_per_section": complete_data['lesson_details']['max_activities']
                 },
-                "generation_timestamp": str(os.popen('date').read().strip()),
-                "models_used": {
-                    "sections_model": complete_data.get('model_used', 'unknown'),
-                    "activities_model": complete_data.get('activities_model_used', 'unknown'),
-                    "reasoning_enabled": self.use_reasoning
-                }
+                "generation_timestamp": str(os.popen('date').read().strip())
             },
             "generation_process": {
                 "step_1_sections": {
@@ -547,7 +429,7 @@ class LessonGenerator:
                 "step_2_activities": {
                     "reasoning_summary": complete_data.get('activities_reasoning_summary', ''),
                     "generated_content": complete_data.get('activities_response', ''),
-                    "structured_activities": structured_activities
+                    "structured_activities": complete_data.get('structured_activities', {})
                 }
             },
             "errors": {
@@ -562,11 +444,6 @@ class LessonGenerator:
             print(f"\n" + "=" * 60)
             print(f"FINAL OUTPUT SAVED TO: {filename}")
             print("=" * 60)
-            print(f"Model used: {self.reasoning_model if self.use_reasoning else self.non_reasoning_model}")
-            print(f"Reasoning enabled: {self.use_reasoning}")
-            print(f"Structured activities included: {len(structured_activities.get('activities', []))} activities")
-            print(f"SLS tools included: {len(structured_activities.get('selected_sls_tools', []))} tools")
-            print(f"KAT recommendations included: {len(structured_activities.get('recommended_kat', []))} items")
             
             return filename
             
@@ -576,21 +453,20 @@ class LessonGenerator:
     
     def generate_complete_lesson(self):
         """Main method to generate the complete lesson"""
-        model_description = f"REASONING ({self.reasoning_model})" if self.use_reasoning else f"NON-REASONING ({self.non_reasoning_model})"
-        print(f"LESSON GENERATOR WITH {model_description} MODEL")
-        print("This will generate sections and activities using the selected model.")
+        print("LESSON GENERATOR WITH REASONING API")
+        print("This will generate sections and activities with visible reasoning process.")
         print("Make sure your OPENAI_API_KEY environment variable is set.\n")
         
         # Step 1: Get lesson details
         lesson_details = self.get_lesson_details()
         
-        # Step 2: Generate sections with selected model
+        # Step 2: Generate sections with reasoning
         sections_data = self.generate_sections(lesson_details)
         if "error" in sections_data:
             print("Failed to generate sections. Exiting.")
             return
         
-        # Step 3: Generate activities with selected model
+        # Step 3: Generate activities with reasoning
         complete_data = self.generate_activities(sections_data)
         
         # Step 4: Save final output
@@ -598,34 +474,17 @@ class LessonGenerator:
         
         if output_file:
             print(f"\nLesson generation complete! Check {output_file} for the full results.")
-            print(f"\nSUMMARY OF {model_description} PROCESS:")
+            print("\nSUMMARY OF REASONING PROCESS:")
             print("-" * 40)
-            if self.use_reasoning:
-                print("1. SECTIONS: The AI reasoned through creating a logical flow of lesson sections")
-                print("2. ACTIVITIES: The AI analyzed each section and determined appropriate activities")
-                print("\nAll reasoning summaries are saved in the output file.")
-            else:
-                print("1. SECTIONS: Generated using standard GPT-4o-mini model")
-                print("2. ACTIVITIES: Generated using standard GPT-4o-mini model")
-                print("\nNo reasoning traces available for this model.")
+            print("1. SECTIONS: The AI reasoned through creating a logical flow of lesson sections")
+            print("2. ACTIVITIES: The AI analyzed each section and determined appropriate activities")
+            print("\nAll reasoning summaries are saved in the output file.")
         else:
             print("Failed to save final output.")
 
 def main():
     """Main function to run the lesson generator"""
-    parser = argparse.ArgumentParser(description="Run the lesson generator with or without reasoning.")
-    parser.add_argument("--reasoning", action="store_true", help="Use reasoning model (o4-mini)")
-    parser.add_argument("--non_reason", action="store_true", help="Use non-reasoning model (gpt-4o-mini-2024-07-18)")
-    args = parser.parse_args()
-
-    if args.reasoning and args.non_reason:
-        print("Error: Please specify either --reasoning or --non_reason, but not both.")
-        return
-
-    # Default to reasoning model if no arguments provided
-    use_reasoning = True if not args.non_reason else False
-    
-    generator = LessonGenerator(use_reasoning)
+    generator = LessonGenerator()
     generator.generate_complete_lesson()
 
 if __name__ == "__main__":
