@@ -237,6 +237,39 @@
             margin-bottom: 10px;
         }
 
+        .high-level-plan {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .teacher-feedback {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left: 5px solid #2196f3;
+            border-radius: 8px;
+            padding: 18px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.1);
+        }
+
+        .teacher-feedback.approved {
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+            border-left: 5px solid #4caf50;
+            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.1);
+        }
+
+        .plan-highlight {
+            background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
         .error-message {
             background: #f8d7da;
             color: #721c24;
@@ -418,8 +451,90 @@
         function generateProcessSection(process) {
             let html = '';
 
-            // Sections
-            if (process.step_1_sections) {
+            // High-Level Plan (Step 1)
+            if (process.step_1_high_level_plan) {
+                html += `
+                    <div class="section-header">🎯 Step 1: High-Level Lesson Plan</div>
+                    ${generateReasoningSection('High-Level Planning', process.step_1_high_level_plan.reasoning_summary)}
+                    
+                    <div class="high-level-plan">
+                        <div style="white-space: pre-wrap; line-height: 1.6;">
+                            ${formatContentWithPlanHighlights(process.step_1_high_level_plan.generated_content)}
+                        </div>
+                    </div>
+                `;
+                
+                // Teacher Feedback Section
+                if (process.step_1_high_level_plan.teacher_feedback && 
+                    process.step_1_high_level_plan.teacher_feedback !== 'No additional modifications requested.') {
+                    html += `
+                        <div class="teacher-feedback">
+                            <div style="color: #1976d2; font-weight: bold; margin-bottom: 8px;">👨‍🏫 Teacher Feedback & Modifications</div>
+                            <div style="font-style: italic;">"${process.step_1_high_level_plan.teacher_feedback}"</div>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="teacher-feedback approved">
+                            <div style="color: #2e7d32; font-weight: bold;">✅ Teacher Approval</div>
+                            <div style="color: #388e3c;">Plan approved without modifications</div>
+                        </div>
+                    `;
+                }
+            }
+
+            // Sections (Step 2)
+            if (process.step_2_sections) {
+                html += `
+                    <div class="section-header">📝 Step 2: Detailed Lesson Sections</div>
+                    ${generateReasoningSection('Sections Generation', process.step_2_sections.reasoning_summary)}
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; white-space: pre-wrap; line-height: 1.6;">
+                        ${formatContent(process.step_2_sections.generated_content)}
+                    </div>
+                `;
+            }
+
+            // Activities (Step 3)
+            if (process.step_3_activities) {
+                html += `
+                    <div class="section-header">🎯 Step 3: Detailed Activities & Lesson Plan</div>
+                    ${generateReasoningSection('Activities Generation', process.step_3_activities.reasoning_summary)}
+                `;
+                
+                // Debug: Check what data we have
+                console.log('Activities data:', process.step_3_activities);
+                console.log('Structured activities:', process.step_3_activities.structured_activities);
+                
+                // Check if we have properly structured activities data
+                if (process.step_3_activities.structured_activities && 
+                    process.step_3_activities.structured_activities.activities && 
+                    process.step_3_activities.structured_activities.activities.length > 0) {
+                    
+                    console.log('Using structured activities');
+                    html += generateStructuredActivitiesTable(process.step_3_activities.structured_activities);
+                    
+                } else {
+                    console.log('Using fallback text format - extracting from generated_content');
+                    // Try to extract and parse activities from the text response
+                    const extractedActivities = extractActivitiesFromText(process.step_3_activities.generated_content);
+                    
+                    if (extractedActivities.activities.length > 0) {
+                        console.log('Successfully extracted activities from text:', extractedActivities);
+                        html += generateStructuredActivitiesTable(extractedActivities);
+                    } else {
+                        console.log('Failed to extract activities, using raw text format');
+                        // Ultimate fallback to original text format
+                        html += `
+                            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                                ${parseAndFormatActivities(process.step_3_activities.generated_content)}
+                            </div>
+                        `;
+                    }
+                }
+            }
+
+            // Legacy support for old format (step_1_sections and step_2_activities)
+            if (process.step_1_sections && !process.step_1_high_level_plan) {
                 html += `
                     <div class="section-header">📝 Step 1: Lesson Sections</div>
                     ${generateReasoningSection('Sections Generation', process.step_1_sections.reasoning_summary)}
@@ -429,35 +544,25 @@
                 `;
             }
 
-            // Activities
-            if (process.step_2_activities) {
+            if (process.step_2_activities && !process.step_3_activities) {
                 html += `
                     <div class="section-header">🎯 Step 2: Activities & Lesson Plan</div>
                     ${generateReasoningSection('Activities Generation', process.step_2_activities.reasoning_summary)}
                 `;
                 
-                // Debug: Check what data we have
-                console.log('Activities data:', process.step_2_activities);
-                console.log('Structured activities:', process.step_2_activities.structured_activities);
-                
-                // Check if we have structured activities data
+                // Handle legacy activities format
                 if (process.step_2_activities.structured_activities && 
                     process.step_2_activities.structured_activities.activities && 
                     process.step_2_activities.structured_activities.activities.length > 0) {
                     
-                    console.log('Using structured activities');
                     html += generateStructuredActivitiesTable(process.step_2_activities.structured_activities);
                     
                 } else {
-                    console.log('Using fallback text format');
-                    // Try to extract and parse activities from the text response
                     const extractedActivities = extractActivitiesFromText(process.step_2_activities.generated_content);
                     
                     if (extractedActivities.activities.length > 0) {
-                        console.log('Extracted activities from text:', extractedActivities);
                         html += generateStructuredActivitiesTable(extractedActivities);
                     } else {
-                        // Ultimate fallback to original text format
                         html += `
                             <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
                                 ${parseAndFormatActivities(process.step_2_activities.generated_content)}
@@ -471,61 +576,88 @@
         }
 
         function extractActivitiesFromText(content) {
-            const lines = content.split('\n');
             const extractedData = {
                 selected_sls_tools: [],
                 recommended_kat: [],
                 activities: []
             };
             
-            let currentActivity = null;
-            let currentSection = '';
-            let i = 0;
+            console.log('Starting extraction from content');
             
-            while (i < lines.length) {
-                const line = lines[i].trim();
-                
-                // Extract SLS Tools
-                if (line.includes('SELECTED SLS TOOLS')) {
-                    i++;
-                    while (i < lines.length && !lines[i].includes('RECOMMENDED KEY APPLICATIONS')) {
-                        if (lines[i].trim() && !lines[i].startsWith('**') && !lines[i].startsWith('[')) {
-                            extractedData.selected_sls_tools.push(lines[i].trim());
+            // First, let's split by the main sections
+            const sections = content.split(/\*\*(SELECTED SLS TOOLS|CONFIRMED KEY APPLICATIONS|LESSON PLAN ACTIVITIES)/);
+            
+            // Find SLS Tools section
+            for (let i = 0; i < sections.length; i++) {
+                if (sections[i] && sections[i].includes('SELECTED SLS TOOLS')) {
+                    const slsSection = sections[i + 1];
+                    if (slsSection) {
+                        const lines = slsSection.split('\n');
+                        for (const line of lines) {
+                            const trimmed = line.trim();
+                            if (trimmed && trimmed.match(/^\d+\./) && trimmed.length > 10) {
+                                extractedData.selected_sls_tools.push(trimmed);
+                            }
                         }
-                        i++;
                     }
-                    continue;
+                    break;
                 }
-                
-                // Extract KAT
-                if (line.includes('RECOMMENDED KEY APPLICATIONS')) {
-                    i++;
-                    while (i < lines.length && !lines[i].includes('LESSON PLAN ACTIVITIES')) {
-                        if (lines[i].trim() && !lines[i].startsWith('**') && !lines[i].startsWith('[')) {
-                            extractedData.recommended_kat.push(lines[i].trim());
+            }
+            
+            // Find KAT section
+            for (let i = 0; i < sections.length; i++) {
+                if (sections[i] && (sections[i].includes('CONFIRMED KEY APPLICATIONS') || sections[i].includes('RECOMMENDED KEY APPLICATIONS'))) {
+                    const katSection = sections[i + 1];
+                    if (katSection) {
+                        const lines = katSection.split('\n');
+                        for (const line of lines) {
+                            const trimmed = line.trim();
+                            if (trimmed && trimmed.match(/^\d+\./) && trimmed.length > 10) {
+                                extractedData.recommended_kat.push(trimmed);
+                            }
                         }
-                        i++;
                     }
-                    continue;
+                    break;
                 }
+            }
+            
+            // Find and parse activities section
+            const activitiesMatch = content.match(/\*\*LESSON PLAN ACTIVITIES:\*\*(.*)/s);
+            if (activitiesMatch) {
+                const activitiesContent = activitiesMatch[1];
+                console.log('Found activities content');
                 
-                // Extract Activities - Handle both "Activity X:" and "**Activity X:**" formats
-                let activityMatch = null;
-                if (line.startsWith('Activity ') && line.includes(':')) {
-                    activityMatch = line;
-                } else if (line.startsWith('**Activity ') && (line.includes(':**') || line.endsWith('**'))) {
-                    activityMatch = line.replace(/\*\*/g, '').trim();
-                }
+                // Split by "---" or "Activity X:" patterns
+                const activityBlocks = activitiesContent.split(/(?=Activity\s+\d+:)|---/).filter(block => block.trim());
                 
-                if (activityMatch) {
-                    // Save previous activity
-                    if (currentActivity) {
-                        extractedData.activities.push(currentActivity);
+                console.log('Found', activityBlocks.length, 'activity blocks');
+                
+                activityBlocks.forEach((block, index) => {
+                    const lines = block.trim().split('\n');
+                    if (lines.length === 0) return;
+                    
+                    // Look for activity title in the first few lines
+                    let activityTitle = '';
+                    let startIndex = 0;
+                    
+                    for (let i = 0; i < Math.min(3, lines.length); i++) {
+                        const line = lines[i].trim();
+                        if (line.match(/^Activity\s+\d+:/i)) {
+                            activityTitle = line;
+                            startIndex = i + 1;
+                            break;
+                        }
                     }
                     
-                    // Start new activity
-                    currentActivity = {
-                        title: activityMatch,
+                    if (!activityTitle) {
+                        console.log('No activity title found in block', index);
+                        return;
+                    }
+                    
+                    console.log('Processing activity:', activityTitle);
+                    
+                    const activity = {
+                        title: activityTitle,
                         section: '',
                         interaction_type: '',
                         duration: '',
@@ -536,102 +668,91 @@
                         data_analysis: '',
                         teaching_notes: ''
                     };
-                }
-                
-                if (currentActivity) {
-                    if (line.startsWith('Section:')) {
-                        currentActivity.section = line.replace('Section:', '').trim();
-                    } else if (line.startsWith('Interaction Type:')) {
-                        currentActivity.interaction_type = line.replace('Interaction Type:', '').trim();
-                    } else if (line.startsWith('Duration:')) {
-                        currentActivity.duration = line.replace('Duration:', '').trim();
-                    } else if (line.startsWith('Learning Objectives:')) {
-                        i++;
-                        while (i < lines.length && lines[i].trim().startsWith('•')) {
-                            currentActivity.learning_objectives.push(lines[i].trim().substring(1).trim());
-                            i++;
-                        }
-                        continue;
-                    } else if (line.startsWith('Instructions:')) {
-                        i++;
-                        const instructions = [];
-                        while (i < lines.length && !lines[i].trim().startsWith(('KAT Alignment:', 'SLS Tools:', 'Data Analysis:', 'Teaching Notes:', 'Activity ', '---', '**Activity'))) {
-                            if (lines[i].trim()) {
-                                instructions.push(lines[i].trim());
+                    
+                    let currentField = '';
+                    let currentContent = [];
+                    
+                    for (let i = startIndex; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        
+                        if (line.startsWith('Section:')) {
+                            activity.section = line.replace('Section:', '').trim();
+                        } else if (line.startsWith('Interaction Type:')) {
+                            activity.interaction_type = line.replace('Interaction Type:', '').trim();
+                        } else if (line.startsWith('Duration:')) {
+                            activity.duration = line.replace('Duration:', '').trim();
+                        } else if (line === 'Learning Objectives:') {
+                            currentField = 'learning_objectives';
+                            currentContent = [];
+                        } else if (line === 'Instructions:') {
+                            if (currentField === 'learning_objectives') {
+                                activity.learning_objectives = currentContent.filter(l => l.startsWith('•')).map(l => l.substring(1).trim());
                             }
-                            i++;
-                        }
-                        currentActivity.instructions = instructions.join('\n');
-                        continue;
-                    } else if (line.startsWith('KAT Alignment:')) {
-                        i++;
-                        const kat = [];
-                        while (i < lines.length && !lines[i].trim().startsWith(('SLS Tools:', 'Data Analysis:', 'Teaching Notes:', 'Activity ', '---', '**Activity'))) {
-                            if (lines[i].trim()) {
-                                kat.push(lines[i].trim());
+                            currentField = 'instructions';
+                            currentContent = [];
+                        } else if (line === 'KAT Alignment:') {
+                            if (currentField === 'instructions') {
+                                activity.instructions = currentContent.join('\n');
                             }
-                            i++;
-                        }
-                        currentActivity.kat_alignment = kat.join('\n');
-                        continue;
-                    } else if (line.startsWith('SLS Tools:')) {
-                        i++;
-                        const tools = [];
-                        while (i < lines.length && !lines[i].trim().startsWith(('Data Analysis:', 'Teaching Notes:', 'Activity ', '---', '**Activity'))) {
-                            if (lines[i].trim()) {
-                                tools.push(lines[i].trim());
+                            currentField = 'kat_alignment';
+                            currentContent = [];
+                        } else if (line === 'SLS Tools:') {
+                            if (currentField === 'kat_alignment') {
+                                activity.kat_alignment = currentContent.join('\n');
                             }
-                            i++;
-                        }
-                        currentActivity.sls_tools = tools.join('\n');
-                        continue;
-                    } else if (line.startsWith('Data Analysis:')) {
-                        i++;
-                        const analysis = [];
-                        while (i < lines.length && !lines[i].trim().startsWith(('Teaching Notes:', 'Activity ', '---', '**Activity'))) {
-                            if (lines[i].trim()) {
-                                analysis.push(lines[i].trim());
+                            currentField = 'sls_tools';
+                            currentContent = [];
+                        } else if (line === 'Data Analysis:') {
+                            if (currentField === 'sls_tools') {
+                                activity.sls_tools = currentContent.join('\n');
                             }
-                            i++;
-                        }
-                        currentActivity.data_analysis = analysis.join('\n');
-                        continue;
-                    } else if (line.startsWith('Teaching Notes:')) {
-                        i++;
-                        const notes = [];
-                        while (i < lines.length && !lines[i].trim().startsWith(('Activity ', '---', '**Activity'))) {
-                            if (lines[i].trim()) {
-                                notes.push(lines[i].trim());
+                            currentField = 'data_analysis';
+                            currentContent = [];
+                        } else if (line === 'Teaching Notes:') {
+                            if (currentField === 'data_analysis') {
+                                activity.data_analysis = currentContent.join('\n');
                             }
-                            i++;
+                            currentField = 'teaching_notes';
+                            currentContent = [];
+                        } else if (line && !line.startsWith('---')) {
+                            currentContent.push(line);
                         }
-                        currentActivity.teaching_notes = notes.join('\n');
-                        continue;
                     }
-                }
-                
-                i++;
+                    
+                    // Save the last field
+                    if (currentField === 'teaching_notes') {
+                        activity.teaching_notes = currentContent.join('\n');
+                    } else if (currentField === 'data_analysis') {
+                        activity.data_analysis = currentContent.join('\n');
+                    } else if (currentField === 'sls_tools') {
+                        activity.sls_tools = currentContent.join('\n');
+                    } else if (currentField === 'kat_alignment') {
+                        activity.kat_alignment = currentContent.join('\n');
+                    } else if (currentField === 'instructions') {
+                        activity.instructions = currentContent.join('\n');
+                    } else if (currentField === 'learning_objectives') {
+                        activity.learning_objectives = currentContent.filter(l => l.startsWith('•')).map(l => l.substring(1).trim());
+                    }
+                    
+                    // Assign section if missing
+                    if (!activity.section) {
+                        const match = activity.title.match(/Activity\s*(\d+)/i);
+                        if (match) {
+                            const activityNum = parseInt(match[1]);
+                            const sectionNum = Math.ceil(activityNum / 2);
+                            activity.section = `Section ${sectionNum}`;
+                        }
+                    }
+                    
+                    extractedData.activities.push(activity);
+                    console.log('Added activity:', activity.title, 'for', activity.section);
+                });
             }
             
-            // Don't forget the last activity
-            if (currentActivity) {
-                extractedData.activities.push(currentActivity);
-            }
-            
-            // Assign sections to activities if missing
-            extractedData.activities.forEach((activity, index) => {
-                if (!activity.section) {
-                    // Try to infer section from activity number
-                    const match = activity.title.match(/Activity\s*(\d+)/i);
-                    if (match) {
-                        const activityNum = parseInt(match[1]);
-                        const sectionNum = Math.ceil(activityNum / 2); // Assuming 2 activities per section
-                        activity.section = `Section ${sectionNum}`;
-                    } else {
-                        activity.section = `Section ${Math.ceil((index + 1) / 2)}`;
-                    }
-                }
-            });
+            console.log('Extraction complete:');
+            console.log('- SLS Tools found:', extractedData.selected_sls_tools.length);
+            console.log('- KAT items found:', extractedData.recommended_kat.length);
+            console.log('- Activities found:', extractedData.activities.length);
             
             return extractedData;
         }
@@ -1072,6 +1193,18 @@
             return content
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/\n/g, '<br>');
+        }
+
+        function formatContentWithPlanHighlights(content) {
+            if (!content) return '';
+            return content
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                // Highlight KAT terms
+                .replace(/\b(Foster conceptual change|Support assessment for learning|Facilitate learning together|Develop metacognition|Provide differentiation|Embed scaffolding|Enable personalization|Increase motivation)\b/g, '<span class="plan-highlight">$1</span>')
+                // Highlight section headers
+                .replace(/^(LESSON OVERVIEW|RECOMMENDED KEY APPLICATIONS|PEDAGOGICAL APPROACH|HIGH-LEVEL SECTION BREAKDOWN|ASSESSMENT STRATEGY|POTENTIAL SLS TOOLS):/gm, '<strong style="color: #667eea; font-size: 1.1em;">$1:</strong>')
                 .replace(/\n/g, '<br>');
         }
 

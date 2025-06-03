@@ -137,16 +137,16 @@ class LessonGenerator:
             print(f"Error in API call for {step_name}: {e}")
             return None, f"Error: {str(e)}"
     
-    def generate_sections(self, lesson_details: Dict[str, str]) -> Dict[str, Any]:
-        """Generate lesson sections using selected model with KAT framework"""
+    def generate_high_level_plan(self, lesson_details: Dict[str, str]) -> Dict[str, Any]:
+        """Generate a high-level lesson plan based on KAT framework for teacher review"""
         print("\n" + "=" * 60)
-        print("STEP 1: GENERATING LESSON SECTIONS")
+        print("STEP 1: GENERATING HIGH-LEVEL LESSON PLAN")
         print("=" * 60)
         
         prompt = f"""
-        <Role>As an experienced education coach in Singapore proficient in e-Pedagogy, your role is to create a lesson plan that references the e-pedagogy framework and active learning principles. Before you generate a response, pause for a moment and remember to be creative.</Role>
+        <Role>As an experienced education coach in Singapore proficient in e-Pedagogy, your role is to create a high-level lesson plan outline that references the e-pedagogy framework and active learning principles. Focus on strategic planning using the KAT framework.</Role>
 
-        <Context>This is an explanation of how lessons are organized within the Student Learning Space. Each lesson consists of a module, which is usually 50-60 minutes long. Within each module, there can be multiple sections to break up the lesson. Each section consists of activities for students to attempt during the lesson. And each activity comprises of various components (text/media, MCQ/MRQ, Discussion Question, Poll, Free Response Question), which students would interact with during the lesson.</Context>
+        <Context>You are creating a strategic overview of a lesson before detailed planning. This high-level plan will help teachers understand the overall approach and make modifications before detailed activity generation.</Context>
 
         Using the following information:
 
@@ -158,11 +158,124 @@ class LessonGenerator:
         Number of activities per section: {lesson_details['max_activities']}
         Additional Instructions: {lesson_details['additional_instructions']}
 
-        Create a lesson plan that is closely aligned with learning outcomes for {lesson_details['topic']} at {lesson_details['level_grade']} level. 
+        Create a high-level lesson plan outline that focuses on strategic pedagogical decisions.
+
+        Your output should only be rich text, do not include hyperlinks, code snippets, mathematical formulas or xml.
+
+        Structure your response as follows:
+
+        **LESSON OVERVIEW:**
+        [Provide a comprehensive lesson overview of 3-4 sentences describing the main learning journey]
+
+        **RECOMMENDED KEY APPLICATIONS OF TECHNOLOGY (KAT):**
+        Select exactly 2 KAT from this list that are most relevant: Foster conceptual change; Support assessment for learning; Facilitate learning together; Develop metacognition; Provide differentiation; Embed scaffolding; Enable personalization; Increase motivation.
+
+        1. [First KAT] - [Detailed explanation of why this KAT is essential for this topic and how it will be implemented]
+        2. [Second KAT] - [Detailed explanation of why this KAT is essential for this topic and how it will be implemented]
+
+        **PEDAGOGICAL APPROACH:**
+        [Describe the overall pedagogical strategy, interaction patterns, and learning progression]
+
+        **HIGH-LEVEL SECTION BREAKDOWN:**
+        
+        Section 1: [Title and Purpose]
+        - Main Learning Focus: [What students will learn]
+        - Pedagogical Strategy: [How learning will be facilitated]
+        - KAT Implementation: [How the selected KAT will be applied]
+        
+        Section 2: [Title and Purpose]
+        - Main Learning Focus: [What students will learn]
+        - Pedagogical Strategy: [How learning will be facilitated]
+        - KAT Implementation: [How the selected KAT will be applied]
+
+        [Continue for all {lesson_details['num_sections']} sections]
+
+        **ASSESSMENT STRATEGY:**
+        [Describe how student learning will be monitored and assessed throughout the lesson]
+
+        **POTENTIAL SLS TOOLS RECOMMENDATION:**
+        [Suggest 3-4 SLS tools that align with the pedagogical approach and KAT implementation]
+        """
+        
+        output_text, reasoning_summary = self._make_api_call(prompt, "high-level planning")
+        
+        if output_text:
+            plan_data = {
+                "lesson_details": lesson_details,
+                "high_level_plan": output_text,
+                "plan_reasoning_summary": reasoning_summary,
+                "model_used": self.reasoning_model if self.use_reasoning else self.non_reasoning_model
+            }
+            
+            return plan_data
+        else:
+            return {"error": reasoning_summary}
+    
+    def get_teacher_feedback_on_plan(self, plan_data: Dict[str, Any]) -> str:
+        """Allow teacher to review and provide feedback on the high-level plan"""
+        print("\n" + "=" * 60)
+        print("HIGH-LEVEL PLAN REVIEW")
+        print("=" * 60)
+        print("Please review the high-level plan above.")
+        print("You can now provide additional instructions or modifications.")
+        print("These will be incorporated when generating detailed sections and activities.")
+        print("\nExamples of modifications you might want:")
+        print("- Adjust the pedagogical approach")
+        print("- Change the focus of specific sections")
+        print("- Add specific content requirements")
+        print("- Modify assessment strategies")
+        print("- Request different interaction patterns")
+        print("=" * 60)
+        
+        teacher_feedback = input("\nAdditional instructions or modifications (press Enter if no changes needed): ")
+        
+        if teacher_feedback.strip():
+            print(f"\n✓ Teacher feedback recorded: {teacher_feedback}")
+        else:
+            print("\n✓ No modifications requested - proceeding with original plan")
+            teacher_feedback = "No additional modifications requested."
+        
+        return teacher_feedback
+
+    def generate_sections(self, lesson_details: Dict[str, str], high_level_plan: str = "", teacher_feedback: str = "") -> Dict[str, Any]:
+        """Generate lesson sections using selected model with KAT framework and high-level plan"""
+        print("\n" + "=" * 60)
+        print("STEP 2: GENERATING DETAILED LESSON SECTIONS")
+        print("=" * 60)
+        
+        plan_context = ""
+        if high_level_plan:
+            plan_context = f"""
+        
+        IMPORTANT: Base your detailed sections on this approved high-level plan:
+        
+        {high_level_plan}
+        
+        Teacher's additional feedback/modifications:
+        {teacher_feedback}
+        
+        Ensure your detailed sections align with the pedagogical approach and KAT implementation outlined in the high-level plan above.
+        """
+        
+        prompt = f"""
+        <Role>As an experienced education coach in Singapore proficient in e-Pedagogy, your role is to create detailed lesson sections that implement the approved high-level plan and incorporate teacher feedback.</Role>
+
+        <Context>You are now creating detailed lesson sections based on a previously approved high-level plan. The sections should implement the pedagogical strategies and KAT framework outlined in the plan.</Context>
+
+        Using the following information:
+
+        Module title: {lesson_details['lesson_title']}
+        Subject: {lesson_details['subject']}
+        Topic: {lesson_details['topic']}
+        Level/Grade: {lesson_details['level_grade']}
+        Number of sections: {lesson_details['num_sections']}
+        Number of activities per section: {lesson_details['max_activities']}
+        Additional Instructions: {lesson_details['additional_instructions']}
+        {plan_context}
+
+        Create detailed lesson sections that implement the high-level plan. 
 
         IMPORTANT: You must create EXACTLY {lesson_details['num_sections']} sections, and each section will later have EXACTLY {lesson_details['max_activities']} activities.
-
-        First, recommend 2 Key Applications of Technology (KAT) from the following list that are most relevant to the topic and objectives of the lesson: Foster conceptual change; Support assessment for learning; Facilitate learning together; Develop metacognition; Provide differentiation; Embed scaffolding; Enable personalization; Increase motivation.
 
         Your output should only be rich text, do not include hyperlinks, code snippets, mathematical formulas or xml.
 
@@ -171,33 +284,36 @@ class LessonGenerator:
         **LESSON DESCRIPTION:**
         [Provide a lesson description of maximum 5 sentences that describes the lesson to the student]
 
-        **RECOMMENDED KEY APPLICATIONS OF TECHNOLOGY (KAT):**
-        1. [First KAT] - [Brief explanation of why it's relevant to this lesson]
-        2. [Second KAT] - [Brief explanation of why it's relevant to this lesson]
+        **CONFIRMED KEY APPLICATIONS OF TECHNOLOGY (KAT):**
+        [List the 2 KAT from the high-level plan and confirm their implementation]
 
-        **LESSON SECTIONS:**
+        **DETAILED LESSON SECTIONS:**
 
         Section 1: [Title]
         - Learning Objectives: [List specific learning objectives for this section]
-        - Description: [Brief description of how this section contributes to overall lesson outcomes]
-        - Teacher Notes: [Notes about how a teacher might enact the section]
-        - KAT Connection: [How this section connects to the recommended Key Applications of Technology]
+        - Description: [Detailed description implementing the high-level plan]
+        - Pedagogical Approach: [Specific teaching strategies to be used]
+        - Teacher Notes: [Implementation guidance for teachers]
+        - KAT Connection: [How this section implements the selected Key Applications of Technology]
 
         Section 2: [Title]
         - Learning Objectives: [List specific learning objectives for this section]
-        - Description: [Brief description of how this section contributes to overall lesson outcomes]
-        - Teacher Notes: [Notes about how a teacher might enact the section]
-        - KAT Connection: [How this section connects to the recommended Key Applications of Technology]
+        - Description: [Detailed description implementing the high-level plan]
+        - Pedagogical Approach: [Specific teaching strategies to be used]
+        - Teacher Notes: [Implementation guidance for teachers]
+        - KAT Connection: [How this section implements the selected Key Applications of Technology]
 
         [Continue for all {lesson_details['num_sections']} sections]
         """
         
-        output_text, reasoning_summary = self._make_api_call(prompt, "sections")
+        output_text, reasoning_summary = self._make_api_call(prompt, "detailed sections")
         
         if output_text:
             # Parse the response into structured format
             sections_data = {
                 "lesson_details": lesson_details,
+                "high_level_plan": high_level_plan,
+                "teacher_feedback": teacher_feedback,
                 "sections_response": output_text,
                 "reasoning_summary": reasoning_summary,
                 "model_used": self.reasoning_model if self.use_reasoning else self.non_reasoning_model
@@ -206,24 +322,42 @@ class LessonGenerator:
             return sections_data
         else:
             return {"error": reasoning_summary}
-    
+
     def generate_activities(self, sections_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Generate activities for each section using selected model with KAT framework"""
+        """Generate activities for each section using selected model with KAT framework and approved plan"""
         print("\n" + "=" * 60)
-        print("STEP 2: GENERATING ACTIVITIES FOR EACH SECTION")
+        print("STEP 3: GENERATING DETAILED ACTIVITIES")
         print("=" * 60)
         
         lesson_details = sections_data['lesson_details']
         sections_response = sections_data['sections_response']
+        high_level_plan = sections_data.get('high_level_plan', '')
+        teacher_feedback = sections_data.get('teacher_feedback', '')
+        
+        plan_context = ""
+        if high_level_plan:
+            plan_context = f"""
+        
+        IMPORTANT: Base your activities on this approved high-level plan and teacher feedback:
+        
+        HIGH-LEVEL PLAN:
+        {high_level_plan}
+        
+        TEACHER FEEDBACK:
+        {teacher_feedback}
+        
+        Ensure your activities implement the pedagogical strategies outlined in the plan.
+        """
         
         prompt = f"""
-        <Role>As an experienced education coach in Singapore proficient in e-Pedagogy, your role is to create detailed activities that reference the e-pedagogy framework and active learning principles. Before you generate a response, pause for a moment and remember to be creative.</Role>
+        <Role>As an experienced education coach in Singapore proficient in e-Pedagogy, your role is to create detailed activities that implement the approved high-level plan and detailed sections.</Role>
 
-        <Context>This is an explanation of how lessons are organized within the Student Learning Space. Each lesson consists of a module, which is usually 50-60 minutes long. Within each module, there can be multiple sections to break up the lesson. Each section consists of activities for students to attempt during the lesson. And each activity comprises of various components (text/media, MCQ/MRQ, Discussion Question, Poll, Free Response Question), which students would interact with during the lesson.</Context>
+        <Context>You are creating specific learning activities that implement the pedagogical strategies from the approved high-level plan and align with the detailed lesson sections.</Context>
 
-        Based on the following lesson sections that were generated:
+        Based on the following approved lesson sections:
         
         {sections_response}
+        {plan_context}
         
         Using the following information:
         Module title: {lesson_details['lesson_title']}
@@ -238,6 +372,7 @@ class LessonGenerator:
         1. You must create EXACTLY {lesson_details['max_activities']} activities for EACH of the {lesson_details['num_sections']} sections
         2. Total activities = {lesson_details['num_sections']} sections × {lesson_details['max_activities']} activities = {lesson_details['num_sections'] * lesson_details['max_activities']} activities
         3. Each activity must be clearly numbered (Activity 1, Activity 2, etc.)
+        4. Activities must implement the pedagogical approach from the high-level plan
 
         First, select NOT MORE than 4 unique SLS tools from this list for the overall lesson: Text/Media, Progressive Quiz, Auto-graded Quiz, Teacher-marked Quiz, Multiple-Choice/ Multiple-Response Question, Fill-in-the-blank Question, Click and Drop Question, Error Editing Question, Free Response Question, Audio Response Question, Rubrics, Tooltip, Interactive Thinking Tool, Poll, Discussion Board, Team Activities, Subgroups, Add Section Prerequisites, Set Differentiated Access, Gamification - Create Game Stories and Achievements, Gamification - Create Game Teams, Set Optional Activities and Quizzes, Speech Evaluation, Chinese Language E-Dictionary, Embed Canva, Embed Nearpod, Embed Coggle, Embed Genial.ly, Embed Quizizz, Embed Kahoot, Embed Google Docs, Embed Google Sheets, Embed Mentimeter, Embed YouTube Videos, Embed Padlet, Embed Gapminder, Embed GeoGebra, Feedback Assistant Mathematics (FA-Math), Speech Evaluation, Text-to-Speech, Embed Book Creator, Embed Simulations, Adaptive Learning System (ALS), Embed ArcGIS Storymap, Embed ArcGIS Digital Maps, Embed PhET Simulations, Embed Open Source Physics @ Singapore Simulations, Embed CK12 Simulations, Embed Desmos, Short Answer Feedback Assistant (ShortAnsFA), Gamification - Quiz leaderboard and ranking, Gamification - Create branches in game stories, Monitor Assignment Page, Insert Transcript for Video & Audio, Insert Student Tooltip, Add Notes to Audio or Video, Data Assistant, Annotated Feedback Assistant (AFA), Learning Assistant (LEA), SLS Digital Badges.
 
@@ -246,10 +381,10 @@ class LessonGenerator:
         Please structure your response in the following format:
 
         **SELECTED SLS TOOLS FOR THIS LESSON:**
-        [List the 4 selected SLS tools and briefly explain why each was chosen]
+        [List the 4 selected SLS tools and briefly explain why each was chosen based on the high-level plan]
 
-        **RECOMMENDED KEY APPLICATIONS OF TECHNOLOGY (KAT):**
-        [List the 2 recommended KAT and explain why they are relevant]
+        **CONFIRMED KEY APPLICATIONS OF TECHNOLOGY (KAT):**
+        [List the 2 KAT from the high-level plan and explain their implementation across activities]
 
         **LESSON PLAN ACTIVITIES:**
 
@@ -264,10 +399,10 @@ class LessonGenerator:
         • [Objective 2]
 
         Instructions:
-        [Detailed step-by-step instructions for students]
+        [Detailed step-by-step instructions for students implementing the pedagogical approach]
 
         KAT Alignment:
-        [How this activity aligns with the selected Key Applications of Technology]
+        [How this activity implements the selected Key Applications of Technology from the plan]
 
         SLS Tools:
         [List of specific SLS tools used in this activity]
@@ -276,7 +411,7 @@ class LessonGenerator:
         [Monitoring tools and methods for tracking learning progress]
 
         Teaching Notes:
-        [Implementation guidance for teachers]
+        [Implementation guidance for teachers based on the approved pedagogical approach]
 
         ---
 
@@ -285,9 +420,10 @@ class LessonGenerator:
         - Number activities sequentially (Activity 1, Activity 2, Activity 3, etc.)
         - Each activity must specify which section it belongs to
         - Include all required components for each activity
+        - Ensure activities implement the pedagogical strategies from the high-level plan
         """
         
-        output_text, reasoning_summary = self._make_api_call(prompt, "activities")
+        output_text, reasoning_summary = self._make_api_call(prompt, "detailed activities")
         
         if output_text:
             # Parse the structured response into JSON format
@@ -540,11 +676,16 @@ class LessonGenerator:
                 }
             },
             "generation_process": {
-                "step_1_sections": {
+                "step_1_high_level_plan": {
+                    "reasoning_summary": complete_data.get('plan_reasoning_summary', ''),
+                    "generated_content": complete_data.get('high_level_plan', ''),
+                    "teacher_feedback": complete_data.get('teacher_feedback', '')
+                },
+                "step_2_sections": {
                     "reasoning_summary": complete_data.get('reasoning_summary', ''),
                     "generated_content": complete_data.get('sections_response', '')
                 },
-                "step_2_activities": {
+                "step_3_activities": {
                     "reasoning_summary": complete_data.get('activities_reasoning_summary', ''),
                     "generated_content": complete_data.get('activities_response', ''),
                     "structured_activities": structured_activities
@@ -564,6 +705,8 @@ class LessonGenerator:
             print("=" * 60)
             print(f"Model used: {self.reasoning_model if self.use_reasoning else self.non_reasoning_model}")
             print(f"Reasoning enabled: {self.use_reasoning}")
+            print(f"High-level plan included: {'Yes' if complete_data.get('high_level_plan') else 'No'}")
+            print(f"Teacher feedback included: {'Yes' if complete_data.get('teacher_feedback') and complete_data.get('teacher_feedback') != 'No additional modifications requested.' else 'No'}")
             print(f"Structured activities included: {len(structured_activities.get('activities', []))} activities")
             print(f"SLS tools included: {len(structured_activities.get('selected_sls_tools', []))} tools")
             print(f"KAT recommendations included: {len(structured_activities.get('recommended_kat', []))} items")
@@ -575,38 +718,50 @@ class LessonGenerator:
             return ""
     
     def generate_complete_lesson(self):
-        """Main method to generate the complete lesson"""
+        """Main method to generate the complete lesson with high-level planning"""
         model_description = f"REASONING ({self.reasoning_model})" if self.use_reasoning else f"NON-REASONING ({self.non_reasoning_model})"
         print(f"LESSON GENERATOR WITH {model_description} MODEL")
-        print("This will generate sections and activities using the selected model.")
+        print("This will generate a high-level plan, then detailed sections and activities.")
+        print("You'll have the opportunity to review and modify the plan before detailed generation.")
         print("Make sure your OPENAI_API_KEY environment variable is set.\n")
         
         # Step 1: Get lesson details
         lesson_details = self.get_lesson_details()
         
-        # Step 2: Generate sections with selected model
-        sections_data = self.generate_sections(lesson_details)
+        # Step 2: Generate high-level plan
+        plan_data = self.generate_high_level_plan(lesson_details)
+        if "error" in plan_data:
+            print("Failed to generate high-level plan. Exiting.")
+            return
+        
+        # Step 3: Get teacher feedback on plan
+        teacher_feedback = self.get_teacher_feedback_on_plan(plan_data)
+        
+        # Step 4: Generate sections with selected model
+        sections_data = self.generate_sections(lesson_details, plan_data['high_level_plan'], teacher_feedback)
         if "error" in sections_data:
             print("Failed to generate sections. Exiting.")
             return
         
-        # Step 3: Generate activities with selected model
+        # Step 5: Generate activities with selected model
         complete_data = self.generate_activities(sections_data)
         
-        # Step 4: Save final output
+        # Step 6: Save final output
         output_file = self.save_final_output(complete_data)
         
         if output_file:
             print(f"\nLesson generation complete! Check {output_file} for the full results.")
             print(f"\nSUMMARY OF {model_description} PROCESS:")
             print("-" * 40)
+            print("1. HIGH-LEVEL PLAN: Generated strategic pedagogical framework with KAT selection")
+            print("2. TEACHER REVIEW: Incorporated teacher feedback and modifications")
             if self.use_reasoning:
-                print("1. SECTIONS: The AI reasoned through creating a logical flow of lesson sections")
-                print("2. ACTIVITIES: The AI analyzed each section and determined appropriate activities")
+                print("3. SECTIONS: The AI reasoned through creating detailed sections based on the plan")
+                print("4. ACTIVITIES: The AI analyzed sections and determined appropriate activities")
                 print("\nAll reasoning summaries are saved in the output file.")
             else:
-                print("1. SECTIONS: Generated using standard GPT-4o-mini model")
-                print("2. ACTIVITIES: Generated using standard GPT-4o-mini model")
+                print("3. SECTIONS: Generated detailed sections using standard model based on the plan")
+                print("4. ACTIVITIES: Generated activities using standard model based on the plan")
                 print("\nNo reasoning traces available for this model.")
         else:
             print("Failed to save final output.")
