@@ -950,43 +950,6 @@ def generate_output_filename(model_name, method, output_dir):
         
     return os.path.join(output_dir, f"{model_short}_{method}_{timestamp}.csv")
 
-def check_text_matching(annotated_response, raw_student_response):
-    """
-    Check if the annotated response matches the raw student response when tags are removed.
-    
-    Args:
-        annotated_response (str): The response with annotation tags
-        raw_student_response (str): The original student response
-        
-    Returns:
-        tuple: (is_match, warning_message)
-    """
-    # Strip all tags to get clean response
-    stripped_response = annotated_response
-    while "<tag id=" in stripped_response:
-        tag_start = stripped_response.find("<tag id=")
-        tag_end_of_opening = stripped_response.find(">", tag_start) + 1
-        closing_tag_start = stripped_response.find("</tag>", tag_end_of_opening)
-        closing_tag_end = closing_tag_start + 6  # Length of "</tag>"
-        
-        # Extract the content inside the tag
-        tagged_content = stripped_response[tag_end_of_opening:closing_tag_start]
-        
-        # Replace the entire tag and its content with just the content
-        stripped_response = stripped_response[:tag_start] + tagged_content + stripped_response[closing_tag_end:]
-    
-    # Normalize whitespace for comparison
-    stripped_response = ' '.join(stripped_response.split())
-    clean_raw_response = ' '.join(raw_student_response.split())
-    
-    is_match = stripped_response == clean_raw_response
-    
-    if not is_match:
-        warning_message = f"Text mismatch: Original and annotated passages differ when tags are removed. Original: '{clean_raw_response}' | Stripped annotated: '{stripped_response}'"
-        return False, warning_message
-    
-    return True, ""
-
 def process_csv_file(input_csv_path, model_name="gpt-4o-2024-08-06", method="single", enable_check=False):
     """
     Process a CSV file line by line and send each line to the API.
@@ -1080,11 +1043,6 @@ def process_csv_file(input_csv_path, model_name="gpt-4o-2024-08-06", method="sin
                 # Extract data from response
                 annotated_response = response_dict.get("annotated_response", "")
                 feedback_list = response_dict.get("feedback_list", [])
-                
-                # Always check text matching between original and annotated response
-                is_text_match, text_warning = check_text_matching(annotated_response, students_response)
-                if not is_text_match:
-                    warnings.append(text_warning)
                 
                 # Double check for tag count mismatch (even if already caught in the API response)
                 tag_count_in_response = annotated_response.count("<tag id=")
