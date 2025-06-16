@@ -3,9 +3,9 @@ import AFA_eval_functions as AFA
 data = list()
 #test_name = input("Please enter the name of the test: ")               #uncomment this to unlock user input for test name
 #file_path = input("Please enter the file path of the test data: ")     #uncomment this to unlock user input for file path
-evaluation_record = AFA.start_new_record("4o_control_expanded")
+evaluation_record = AFA.start_new_record("4o_control_with_evaluation_expanded")
 print("The refinement record has been created.")
-response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_BulkTagCheck_expanded.csv")
+response_list = AFA.csv_to_list_of_dicts("Dataset/AFA_BulkTagCheck.csv")
 print("The response list has been created.")
 
 for scenario_dict in response_list:
@@ -50,9 +50,37 @@ for scenario_dict in response_list:
         LLM_annotated_response, LLM_cards = AFA.extract_annotation_details_refinement(LLM_dict)
         if '</tag>' in LLM_annotated_response:
             status = True
+            number_of_cards = len(LLM_cards)
+            new_row.append(LLM_annotated_response)
+            new_row.append(LLM_cards)
+            new_row.append(status)
+            new_row.append(number_of_cards)
+            tag_count = LLM_annotated_response.count('</tag>')
+            if number_of_cards != tag_count:
+                match_status = False
+            else:
+                match_status = True
+            new_row.append(tag_count)
+            new_row.append(match_status)
         else:
             status = False
-        number_of_cards = len(LLM_cards)
+            correction_prompt = AFA.assemble_AFA_JSON_evaluation_prompt(students_response, full_LLM_response)
+            #correction_prompt = AFA.assemble_AFA_JSON_correction_prompt(full_LLM_response)
+            corrected_response = AFA.get_annotations(correction_prompt)
+            corrected_LLM_dict = AFA.string_to_dict(corrected_response)
+            corrected_LLM_annotated_response, corrected_LLM_cards = AFA.extract_annotation_details_refinement(corrected_LLM_dict)
+            number_of_cards = len(corrected_LLM_cards)
+            new_row.append(corrected_LLM_annotated_response)
+            new_row.append(corrected_LLM_cards)
+            new_row.append(status)
+            new_row.append(number_of_cards)
+            tag_count = corrected_LLM_annotated_response.count('</tag>')
+            if number_of_cards != tag_count:
+                match_status = False
+            else:
+                match_status = True
+            new_row.append(tag_count)
+            new_row.append(match_status)
     except Exception as exp:
         new_row.append(full_LLM_response)
         print(f"An error occurred while attempting to extract the annotated response and feedback list: {str(exp)}.")
@@ -61,11 +89,6 @@ for scenario_dict in response_list:
         new_row.append(0)
         data.append(new_row)
         continue
-    
-    new_row.append(LLM_annotated_response)
-    new_row.append(LLM_cards)
-    new_row.append(status)
-    new_row.append(number_of_cards)
 
     data.append(new_row)
 

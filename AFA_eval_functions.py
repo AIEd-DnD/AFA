@@ -24,7 +24,7 @@ def write_into_record(filename, data):
     print(f"CSV file '{filename}' has been created successfully.")
 
 def write_into_record_refinement(filename, data):
-    header = ['Subject','Level','Recipe','Error Tags','Suggested Answer','Rubrics','Question','Student Response','LLM Annotated Response','LLM Cards','Tagged?','Number of Cards']
+    header = ['Subject','Level','Recipe','Error Tags','Suggested Answer','Rubrics','Question','Student Response','LLM Annotated Response','LLM Cards','Originally Tagged?','Number of Cards','Number of Tags','Number Match?']
     with open(filename, 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(header)
@@ -88,6 +88,21 @@ def assemble_system_prompt(subject, level, question, recipe=" ", suggested_answe
      )
    
    return assembled_system_prompt
+
+def assemble_AFA_JSON_correction_prompt(JSON_object):
+   assembled_prompt = rsrc.AFA_JSON_correction_prompt.format(
+     JSON_object=JSON_object
+     )
+   
+   return assembled_prompt
+
+def assemble_AFA_JSON_evaluation_prompt(students_response, LLM_response):
+   assembled_prompt = rsrc.AFA_JSON_evaluation_prompt.format(
+     Example=rsrc.example,
+     Students_response=students_response,
+     LLM_response=LLM_response
+     )
+   return assembled_prompt
 
 def assemble_user_prompt(students_response):
    assembled_user_prompt = rsrc.user_prompt.format(

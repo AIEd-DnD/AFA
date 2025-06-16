@@ -213,6 +213,61 @@ user_prompt = """
 This is the student's response: <Student's response> {Students_response} </Student's response>
 """
 
+AFA_JSON_correction_prompt = """
+You are a data formatting assistant. You will receive a JSON object with two fields:
+
+1. `annotated_response`: A string of the student's unannotated response.
+2. `feedback_list`: A list of feedback items, where each item includes:
+   - `id`: a number (e.g., 1, 2, 3)
+   - `phrase`: the exact text from the response that needs to be wrapped in a tag
+   - `error_tag`: metadata on the error type
+   - `comment`: feedback for the student
+
+Your job is to:
+- Insert XML tags into the `annotated_response`, wrapping each phrase found in `feedback_list` with the format: `<tag id="x">phrase</tag>` where `x` is the given id.
+- Do not change the original response except for inserting the tags.
+- Ensure that the phrase you wrap in each tag matches the `phrase` field in `feedback_list` **exactly and completely**.
+- If a phrase occurs multiple times, only wrap the **first occurrence** unless specified otherwise.
+
+Return the final JSON object with both:
+- the updated `annotated_response` containing the `<tag id="x">...</tag>` tags
+- the unchanged `feedback_list`
+
+The output should be a valid JSON string.
+
+This is the JSON object: <JSON_obect>{JSON_object}</JSON_object>
+"""
+
+AFA_JSON_evaluation_prompt = """
+You are a strict evaluator of responses provided by an LLM. You must verify that the following two conditions are met:
+
+1. annotated_response must match student_response exactly, character for character, including all punctuation, whitespace, formatting (e.g. line breaks, markdown like ** or *), and casing. Even a single added or missing space, punctuation mark, or character (such as a period at the end) constitutes a failure.
+
+2. Every phrase in the feedback_list must appear once in the annotated_response and must be wrapped exactly in the format <tag id="x">phrase</tag>, where x matches the phrase's id in the list. Do not alter the phrase content or punctuation inside the tags.
+
+After checking both conditions:
+If both are met, return the exact annotated_response string including the feedback_list in the format of the example, with no explanation or formatting.
+If either condition fails, return a corrected annotated_response that satisfies both conditions exactly.
+
+<example>
+{Example}
+</example>
+
+This is the student response:
+<student_response>
+{Students_response}
+</student_response>
+
+This is the LLM response:
+<LLM_response>
+{LLM_response}
+</LLM_response>
+"""
+
+example = """
+{"annotated_response":"<tag id="1">It was a sunny Sunday morning , the sun shone brillantly in the clear blue sky . Sarah jumped out of bed and got ready to go out. She ran down the stairs and <tag id="2">quikly</tag> devoured her breakfast ." Mom , let's go ! " Sarah exclaimed . Sarah's Mother had promised Sarah that they would get to adopt a dog today . Sarah had saved up money from the previous <tag id="3">yer</tag> and will be using it to adopt a dog . Once they reached the adopting centre , Sarah and her mother were greeted with barks . Sarah skipped down the aisle of dog and <tag id="4">look</tag> at each of them but none of the dogs <tag id="5">seem</tag> to be catching her attention . Soon, Sarah noticed a dog that caught her attention . It had brown fur , <tag id="6">it's</tag> eyes were big and round and it was very skinny . The dog stared at Sarah as though asking her to take it home . Sarah <tag id="7">deceied</tag> to take the dog home. She placed her savings on the counter to pay. From that day onwards Sarah took great care of the dog.","feedback_list":[{"id":1,"phrase":"It was a sunny Sunday morning , the sun shone brillantly in the clear blue sky .","error_tag":[{"errorType":"LANGUAGE AND ORGANISATION"}],"comment":"Your opening sentence sets the scene well, but try to connect it more smoothly to the main action of your story."},{"id":2,"phrase":"quikly","error_tag":[{"errorType":"Spelling Error"}],"comment":"Check the spelling of 'quikly'. It should be 'quickly'."},{"id":3,"phrase":"yer","error_tag":[{"errorType":"Spelling Error"}],"comment":"The word 'yer' seems to be a typo. It should be 'year'."},{"id":4,"phrase":"look","error_tag":[{"errorType":"Verb Tense Error"}],"comment":"The verb 'look' should match the past tense used in the rest of your story. Consider using 'looked'."},{"id":5,"phrase":"seem","error_tag":[{"errorType":"Verb Tense Error"}],"comment":"The verb 'seem' should be in past tense to match the rest of your story. Try 'seemed'."},{"id":6,"phrase":"it's","error_tag":[{"errorType":"Grammar Error"}],"comment":"'It's' means 'it is'. You need the possessive form 'its' here."},{"id":7,"phrase":"deceied","error_tag":[{"errorType":"Spelling Error"}],"comment":"The word 'deceied' seems to be a typo. It should be 'decided'."}]}
+"""
+
 recipes = {"Default":" ",
            "Hint-based Feedback":"""Provide subtle hints or clues without giving direct answers, allowing students to arrive at the correct answer on their own.""",
            "Direct Answer":"""Provide specific text replacement for students to improve the text.""",
