@@ -9,9 +9,6 @@ import argparse
 from dotenv import load_dotenv
 from datetime import datetime
 import concurrent.futures
-import re
-import difflib
-import base64
 
 # Update path to find .env in parent directory
 dotenv_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env')
@@ -42,137 +39,11 @@ def assemble_user_prompt(students_response):
    
    return assembled_user_prompt
 
-def enhanced_strip_tags(annotated_response):
-    """
-    Enhanced function to strip tags while preserving exact original formatting.
-    Handles edge cases like nested quotes, special characters, and whitespace.
-    """
-    result = annotated_response
-    
-    # Pattern to match tags more precisely
-    tag_pattern = r'<tag\s+id\s*=\s*["\']?\d+["\']?\s*>(.*?)</tag>'
-    
-    # Replace all tags with their content
-    while re.search(tag_pattern, result, re.DOTALL):
-        result = re.sub(tag_pattern, r'\1', result, count=1)
-    
-    return result
-
-def validate_annotation_preservation(annotated_response, raw_student_response):
-    """
-    Validates that the annotated response preserves the original text exactly
-    when tags are removed, with enhanced Unicode support for Chinese characters.
-    
-    Returns:
-        is_valid (bool): True if validation passes
-        error_info (str): Error message if validation fails
-    """
-    try:
-        # Remove tags using the enhanced strip function
-        stripped_response = enhanced_strip_tags(annotated_response)
-        
-        # Calculate lengths using proper Unicode character counting
-        original_length = len(raw_student_response)
-        stripped_length = len(stripped_response)
-        
-        # For debugging Chinese character issues
-        print(f"DEBUG: Original length: {original_length}, Stripped length: {stripped_length}")
-        print(f"DEBUG: Original (first 100 chars): {repr(raw_student_response[:100])}")
-        print(f"DEBUG: Stripped (first 100 chars): {repr(stripped_response[:100])}")
-        
-        # Check if lengths match
-        if original_length != stripped_length:
-            error_msg = f"Length mismatch: original has {original_length} characters, stripped has {stripped_length} characters"
-            print(f"DEBUG: {error_msg}")
-            return False, error_msg
-        
-        # Check character-by-character comparison for exact match
-        if raw_student_response != stripped_response:
-            # Find the first difference
-            for i, (orig_char, stripped_char) in enumerate(zip(raw_student_response, stripped_response)):
-                if orig_char != stripped_char:
-                    error_msg = f"Character mismatch at position {i}: expected '{repr(orig_char)}', got '{repr(stripped_char)}'"
-                    print(f"DEBUG: {error_msg}")
-                    
-                    # Show context around the mismatch
-                    start_pos = max(0, i - 10)
-                    end_pos = min(len(raw_student_response), i + 10)
-                    print(f"DEBUG: Context - Original: {repr(raw_student_response[start_pos:end_pos])}")
-                    print(f"DEBUG: Context - Stripped: {repr(stripped_response[start_pos:end_pos])}")
-                    return False, error_msg
-            
-            # If no character differences found but strings don't match, there might be a subtle issue
-            error_msg = "Strings don't match but no character difference found - possible Unicode normalization issue"
-            print(f"DEBUG: {error_msg}")
-            return False, error_msg
-        
-        print("DEBUG: Validation passed - text preserved correctly")
-        return True, "Valid"
-        
-    except Exception as e:
-        error_msg = f"Validation error: {str(e)}"
-        print(f"DEBUG: {error_msg}")
-        return False, error_msg
-
-def get_annotations_with_validation(assembled_system_prompt, assembled_user_prompt, model="gpt-4o-2024-08-06", raw_student_response=None, max_retries=3):
-    """
-    Enhanced annotation function with validation and retry logic.
-    """
-    for attempt in range(max_retries):
-        try:
-            # Get annotations using the appropriate method
-            response = get_annotations_system_user(assembled_system_prompt, assembled_user_prompt, model)
-            
-            # Parse response
-            if isinstance(response, str):
-                response_dict = json.loads(response)
-            else:
-                response_dict = response
-            
-            annotated_response = response_dict.get("annotated_response", "")
-            
-            # Validate preservation
-            is_valid, error_info = validate_annotation_preservation(annotated_response, raw_student_response)
-            
-            if is_valid:
-                return response
-            else:
-                # Log the error
-                print(f"Attempt {attempt + 1}: Annotation preservation failed - {error_info}")
-                
-                # Modify prompt for retry with stronger constraints
-                if attempt < max_retries - 1:
-                    # Add stronger preservation instructions
-                    enhanced_user_prompt = assembled_user_prompt + f"""
-
-CRITICAL INSTRUCTION: The student's response MUST be preserved EXACTLY character-by-character. 
-Only add tags, do not modify ANY part of the text including:
-- Whitespace (spaces, tabs, newlines)
-- Punctuation
-- Capitalization
-- Special characters
-- Character encoding
-
-The original response has exactly {len(raw_student_response)} characters.
-After removing tags, your annotated response must also have exactly {len(raw_student_response)} characters."""
-                    
-                    assembled_user_prompt = enhanced_user_prompt
-                
-        except Exception as e:
-            print(f"Attempt {attempt + 1} failed with error: {e}")
-            if attempt == max_retries - 1:
-                raise
-    
-    # If all retries failed, return the last response with a warning
-    response_dict["validation_failed"] = True
-    response_dict["validation_error"] = error_info
-    return json.dumps(response_dict)
-
 def get_annotations_system_user(assembled_system_prompt, assembled_user_prompt, model="gpt-4o-2024-08-06"):
    if model.startswith("gpt"):  # Handle all OpenAI models
         response = client.chat.completions.create(
         model=model,
-        temperature = 0.0,  # Reduced from 0.1 for more deterministic output
+        temperature = 0.1,
         max_tokens = 16000,
         tools = rsrc.tools,
         tool_choice={"type": "function", "function": {"name": "get_annotated_feedback"}},
@@ -207,24 +78,7 @@ def get_annotations_system_user(assembled_system_prompt, assembled_user_prompt, 
         message_content = [
             {
                 "type": "text",
-                "text": assembled_system_prompt + assembled_user_prompt + """
-
-CRITICAL TAGGING INSTRUCTIONS FOR CLAUDE:
-1. You MUST place tags exactly where errors occur in the text, not at the beginning or end
-2. For Chinese text, identify specific incorrect words/phrases and tag them inline
-3. Examples:
-   - CORRECT: '小明在<tag id="1">课室</tag>里玩球' (tags "课室" where it appears)
-   - WRONG: '小明在课室里玩球<tag id="1">课室</tag>' (tags at end)
-   - WRONG: '<tag id="1">小明在课室里玩球</tag>' (tags entire text)
-
-4. Look for these common Chinese errors:
-   - Wrong characters: 课室→教室, 哪位→那位, 服满→充满
-   - Grammar errors: 一而三再而三→一而再再而三
-   - Missing characters: 不到钱→不道歉, 一后→以后
-
-5. If no errors exist, return empty feedback_list: []
-6. DO NOT create 613 or 1274 feedback items - create only what you actually tag
-"""
+                "text": assembled_system_prompt + assembled_user_prompt
             }
         ]
         
@@ -238,7 +92,7 @@ CRITICAL TAGGING INSTRUCTIONS FOR CLAUDE:
                 "properties": {
                   "annotated_response" : {
                     "type": "string",
-                    "description": "The student's response with tags (using unique running number ids) enclosing specific words or phrases IN PLACE where errors occur. Tags must be inserted exactly where the error appears in the original text, not at the end. For example: '小明在<tag id=\"1\">课室</tag>里玩球' not '小明在课室里玩球<tag id=\"1\">课室</tag>'. Preserve ALL original characters including Chinese characters, punctuation, and spacing exactly."
+                    "description": "The student's response with tags (using unique running number ids) enclosing specific words or phrases in the response. For example, 'The pig was <tag id=\"1\">fly</tag>. I <tag id=\"2\">is</tag> amazed."
                   },
                   "feedback_list": {
                     "type": "array",
@@ -247,11 +101,11 @@ CRITICAL TAGGING INSTRUCTIONS FOR CLAUDE:
                       "properties": {
                         "id": {
                           "type": "integer",
-                          "description": "tag id corresponding to the tag in annotated_response"
+                          "description": "tag id"
                         },
                         "phrase": {
                           "type": "string",
-                          "description": "the specific part of the sentence containing an error (exactly as it appears in the original text)"
+                          "description": "the specific part of the sentence containing an error"
                         },
                         "error_tag": {
                           "type": "array",
@@ -260,7 +114,7 @@ CRITICAL TAGGING INSTRUCTIONS FOR CLAUDE:
                             "properties": {
                                 "errorType": {
                                     "type": "string",
-                                    "description": "error type (use Chinese error types for Chinese text: 语言, 内容, 语法, 词汇, etc.)"
+                                    "description": "error type"
                                 }
                             }
                           },
@@ -268,7 +122,7 @@ CRITICAL TAGGING INSTRUCTIONS FOR CLAUDE:
                         },
                         "comment": {
                           "type": "string",
-                          "description": "a concise student-friendly explanation or suggestion (use Chinese for Chinese text)"
+                          "description": "a concise student-friendly explanation or suggestion"
                         }
                       }
                     }
@@ -281,21 +135,21 @@ CRITICAL TAGGING INSTRUCTIONS FOR CLAUDE:
         }
         
         api_params = {
-            "model": model,
-            "max_tokens": 16000,
-            "temperature": 0.0,
-            "tools": [claude_tool],
-            "messages": [
-                {
-                    "role": "user",
-                    "content": message_content
+                    "model": model,
+                    "max_tokens": 16000,  # Default token limit
+                    "temperature": 0.1,
+                    "tools": [claude_tool],
+                    "messages": [
+                        {
+                            "role": "user",
+                            "content": message_content
+                        }
+                    ],
+                    "tool_choice": {"type": "auto"}
                 }
-            ],
-            "tool_choice": {"type": "tool", "name": "get_annotated_feedback"}
-        }
         response = anthropic_client.messages.create(**api_params)
         
-        # Enhanced Claude response parsing with debug info
+        # Extract the tool calls from Claude's response format
         for content in response.content:
             if content.type == 'tool_use':
                 # Get the tool input
@@ -306,14 +160,10 @@ CRITICAL TAGGING INSTRUCTIONS FOR CLAUDE:
                     annotated_response = tool_input.get("annotated_response", "")
                     feedback_list = tool_input.get("feedback_list", [])
                     
-                    # Check for tag count mismatch with debug info
+                    # Check for tag count mismatch
                     tag_count = annotated_response.count("<tag id=")
                     if tag_count != len(feedback_list):
-                        warning_msg = f"Mismatch in tag count. Feedback list has {len(feedback_list)} items, but annotated response has {tag_count} tags."
-                        print(f"DEBUG: {warning_msg}")
-                        print(f"DEBUG: Feedback list length calculation: {len(feedback_list)}")
-                        print(f"DEBUG: Sample feedback items: {feedback_list[:3] if len(feedback_list) > 3 else feedback_list}")
-                        tool_input["warning"] = warning_msg
+                        tool_input["warning"] = f"Mismatch in tag count. Feedback list has {len(feedback_list)} items, but annotated response has {tag_count} tags."
                     
                     return tool_input
                 elif isinstance(tool_input, str):
@@ -322,41 +172,19 @@ CRITICAL TAGGING INSTRUCTIONS FOR CLAUDE:
                         annotated_response = parsed.get("annotated_response", "")
                         feedback_list = parsed.get("feedback_list", [])
                         
-                        # Check for tag count mismatch with debug info
+                        # Check for tag count mismatch
                         tag_count = annotated_response.count("<tag id=")
                         if tag_count != len(feedback_list):
-                            warning_msg = f"Mismatch in tag count. Feedback list has {len(feedback_list)} items, but annotated response has {tag_count} tags."
-                            print(f"DEBUG: {warning_msg}")
-                            print(f"DEBUG: Feedback list length calculation: {len(feedback_list)}")
-                            parsed["warning"] = warning_msg
+                            parsed["warning"] = f"Mismatch in tag count. Feedback list has {len(feedback_list)} items, but annotated response has {tag_count} tags."
                             return json.dumps(parsed)
-                    except Exception as e:
-                        # If there's an error parsing, log it and return the original string
-                        print(f"DEBUG: Error parsing Claude tool input: {e}")
+                    except Exception:
+                        # If there's an error parsing, just return the original string
                         pass
                 
                 return tool_input
-            elif content.type == 'text':
-                # Claude sometimes returns text instead of tool use
-                text_content = content.text
-                print(f"DEBUG: Claude returned text instead of tool use: {text_content[:200]}...")
                 
-                # Try to extract JSON from the text content
-                try:
-                    # Look for JSON-like content in the text
-                    import re
-                    json_match = re.search(r'\{.*\}', text_content, re.DOTALL)
-                    if json_match:
-                        json_str = json_match.group()
-                        parsed = json.loads(json_str)
-                        return json.dumps(parsed)
-                except Exception as e:
-                    print(f"DEBUG: Failed to extract JSON from text: {e}")
-                
-        # Fallback with more debug info
-        print(f"DEBUG: Claude response content types: {[content.type for content in response.content]}")
-        print(f"DEBUG: Full Claude response: {response}")
-        return json.dumps({"error": "No tool use found in Claude's response", "debug": "Check Claude response format"})
+        # Fallback if no tool use is found
+        return json.dumps({"error": "No tool use found in Claude's response"})
    else:
         raise ValueError(f"Unsupported model: {model}. Please use an OpenAI or Claude model.")
 
@@ -376,7 +204,7 @@ def get_annotations_split_system(assembled_system_prompt, assembled_user_prompt,
         # First call: Generate feedback list
         response1 = client.chat.completions.create(
             model=model,
-            temperature=0.0,  # Reduced for consistency
+            temperature=0.1,
             max_tokens=16000,
             tools=rsrc.tools_feedback_list,
             tool_choice={"type": "function", "function": {"name": "get_feedback_list"}},
@@ -396,93 +224,41 @@ def get_annotations_split_system(assembled_system_prompt, assembled_user_prompt,
         feedback_list_json = json.loads(response1.choices[0].message.tool_calls[0].function.arguments)
         feedback_list = feedback_list_json.get("feedback_list", [])
         
-        # Enhanced prompt for annotation with character preservation
-        enhanced_annotation_prompt = rsrc.system_prompt_annotated_response + f"""
-
-CRITICAL PRESERVATION RULES:
-1. The student's response has EXACTLY {len(raw_student_response)} characters
-2. You MUST preserve EVERY character including:
-   - All whitespace (spaces, tabs, newlines) 
-   - All punctuation marks
-   - All capitalization
-   - All special characters
-   - All escape sequences (backslashes, quotes, etc.)
-3. ONLY insert tags, do NOT modify ANY other part of the text
-4. After removing tags, the result must be IDENTICAL to the original
-5. DO NOT interpret, normalize, or "fix" any part of the text
-6. Preserve ALL escape sequences exactly as they appear (e.g., \\", \\', \\\\)
-
-IMPORTANT: The text may contain escape sequences like \\", \\', \\\\. These must be preserved EXACTLY as written.
-"""
-        
-        # Encode the raw student response in base64 to preserve exact characters
-        encoded_student_response = base64.b64encode(raw_student_response.encode('utf-8')).decode('ascii')
-        
-        # Create a special prompt that includes both the original text and base64 encoded version
-        annotation_user_prompt = f"""
-Here is the student's response that needs to be annotated:
-
-ORIGINAL TEXT (use this for annotation):
-{raw_student_response}
-
-BASE64 ENCODED VERSION (for exact character reference):
-{encoded_student_response}
-
-Here is the feedback list that identifies errors to tag:
-{json.dumps(feedback_list)}
-
-CRITICAL INSTRUCTIONS:
-1. Use ONLY the ORIGINAL TEXT above for creating your annotated response
-2. The BASE64 version is provided for exact character verification - decode it if needed to verify exact characters
-3. Preserve ALL characters exactly, including escape sequences like \\", \\', \\\\
-4. Only add <tag id="X">phrase</tag> markers - do not change any other characters
-5. The text between tags must be IDENTICAL to the original, character-by-character
-
-Please return the annotated response with appropriate tags inserted.
-"""
-        
         # Second call: Generate annotated response with RAW student response
         response2 = client.chat.completions.create(
             model=model,
-            temperature=0.0,
+            temperature=0.1,
             max_tokens=16000,
             tools=rsrc.tools_annotated_response,
             tool_choice={"type": "function", "function": {"name": "get_annotated_response"}},
             messages=[
-                {"role": "system", "content": enhanced_annotation_prompt},
-                {"role": "user", "content": annotation_user_prompt}
+                {"role": "system", "content": rsrc.system_prompt_annotated_response},
+                {"role": "user", "content": rsrc.user_prompt_annotated_response.format(
+                    Students_response=raw_student_response,
+                    Feedback_list=json.dumps(feedback_list)
+                )}
             ]
         )
         annotated_response_json = json.loads(response2.choices[0].message.tool_calls[0].function.arguments)
         annotated_response = annotated_response_json.get("annotated_response", "")
         
-        # Enhanced validation
-        is_valid, error_info = validate_annotation_preservation(annotated_response, raw_student_response)
-        
-        # Prepare result
-        result = {
-            "annotated_response": annotated_response,
-            "feedback_list": feedback_list
-        }
-        
-        # Add warnings if needed
-        warnings = []
-        
-        # Tag count validation
+        # Validate tag count
         tag_count_in_response = annotated_response.count("<tag id=")
         if tag_count_in_response != len(feedback_list):
             warning_msg = f"Mismatch in tag count. Feedback list has {len(feedback_list)} items, but annotated response has {tag_count_in_response} tags."
-            warnings.append(warning_msg)
             print(f"Warning: {warning_msg}")
-        
-        # Preservation validation
-        if not is_valid:
-            warning_msg = f"Text preservation error: {error_info}"
-            warnings.append(warning_msg)
-            print(f"Warning: {warning_msg}")
-        
-        if warnings:
-            result["warning"] = "; ".join(warnings)
+            # Add warning to result
+            result = {
+                "annotated_response": annotated_response,
+                "feedback_list": feedback_list,
+                "warning": warning_msg
+            }
+        else:
+            # Combine results
+            result = {
+                "annotated_response": annotated_response,
+                "feedback_list": feedback_list
+            }
         
         return json.dumps(result)
         
@@ -558,7 +334,7 @@ Please return the annotated response with appropriate tags inserted.
         api_params1 = {
             "model": model,
             "max_tokens": 16000,
-            "temperature": 0.0,  # Reduced for consistency
+            "temperature": 0.1,
             "tools": [claude_tool1],
             "messages": [
                 {
@@ -587,55 +363,13 @@ Please return the annotated response with appropriate tags inserted.
                 
         if not feedback_list:
             return json.dumps({"error": "No feedback list found in Claude's first response"})
-        
-        # Enhanced annotation prompt for Claude
-        enhanced_annotation_prompt = rsrc.system_prompt_annotated_response + f"""
-
-CRITICAL PRESERVATION RULES:
-1. The student's response has EXACTLY {len(raw_student_response)} characters
-2. You MUST preserve EVERY character including:
-   - All whitespace (spaces, tabs, newlines) 
-   - All punctuation marks
-   - All capitalization
-   - All special characters
-   - All escape sequences (backslashes, quotes, etc.)
-3. ONLY insert tags, do NOT modify ANY other part of the text
-4. After removing tags, the result must be IDENTICAL to the original
-5. DO NOT interpret, normalize, or "fix" any part of the text
-6. Preserve ALL escape sequences exactly as they appear (e.g., \\", \\', \\\\)
-
-IMPORTANT: The text may contain escape sequences like \\", \\', \\\\. These must be preserved EXACTLY as written.
-"""
-            
-        # Encode the raw student response in base64 to preserve exact characters
-        encoded_student_response = base64.b64encode(raw_student_response.encode('utf-8')).decode('ascii')
-        
-        # Create a special prompt that includes both the original text and base64 encoded version
-        annotation_user_prompt = f"""
-Here is the student's response that needs to be annotated:
-
-ORIGINAL TEXT (use this for annotation):
-{raw_student_response}
-
-BASE64 ENCODED VERSION (for exact character reference):
-{encoded_student_response}
-
-Here is the feedback list that identifies errors to tag:
-{json.dumps(feedback_list)}
-
-CRITICAL INSTRUCTIONS:
-1. Use ONLY the ORIGINAL TEXT above for creating your annotated response
-2. The BASE64 version is provided for exact character verification - decode it if needed to verify exact characters
-3. Preserve ALL characters exactly, including escape sequences like \\", \\', \\\\
-4. Only add <tag id="X">phrase</tag> markers - do not change any other characters
-5. The text between tags must be IDENTICAL to the original, character-by-character
-
-Please return the annotated response with appropriate tags inserted.
-"""
             
         # For Claude, combine system and user content into a single user message
         # Using the original student response directly from CSV for annotation
-        system_and_user_content = enhanced_annotation_prompt + "\n\n" + annotation_user_prompt
+        system_and_user_content = rsrc.system_prompt_annotated_response + "\n\n" + rsrc.user_prompt_annotated_response.format(
+            Students_response=raw_student_response,
+            Feedback_list=json.dumps(feedback_list)
+        )
         
         message_content2 = [
             {
@@ -663,7 +397,7 @@ Please return the annotated response with appropriate tags inserted.
         api_params2 = {
             "model": model,
             "max_tokens": 16000,
-            "temperature": 0.0,
+            "temperature": 0.1,
             "tools": [claude_tool2],
             "messages": [
                 {
@@ -692,34 +426,24 @@ Please return the annotated response with appropriate tags inserted.
                 
         if not annotated_response:
             return json.dumps({"error": "No annotated response found in Claude's second response"})
-        
-        # Enhanced validation
-        is_valid, error_info = validate_annotation_preservation(annotated_response, raw_student_response)
-        
-        # Prepare result
-        result = {
-            "annotated_response": annotated_response,
-            "feedback_list": feedback_list
-        }
-        
-        # Add warnings if needed
-        warnings = []
-        
-        # Tag count validation
+            
+        # Validate tag count
         tag_count_in_response = annotated_response.count("<tag id=")
         if tag_count_in_response != len(feedback_list):
             warning_msg = f"Mismatch in tag count. Feedback list has {len(feedback_list)} items, but annotated response has {tag_count_in_response} tags."
-            warnings.append(warning_msg)
             print(f"Warning: {warning_msg}")
-        
-        # Preservation validation
-        if not is_valid:
-            warning_msg = f"Text preservation error: {error_info}"
-            warnings.append(warning_msg)
-            print(f"Warning: {warning_msg}")
-        
-        if warnings:
-            result["warning"] = "; ".join(warnings)
+            # Add warning to result
+            result = {
+                "annotated_response": annotated_response,
+                "feedback_list": feedback_list,
+                "warning": warning_msg
+            }
+        else:
+            # Combine results
+            result = {
+                "annotated_response": annotated_response,
+                "feedback_list": feedback_list
+            }
         
         return json.dumps(result)
    else:
@@ -743,76 +467,34 @@ def get_annotations_split_reverse(assembled_system_prompt, assembled_user_prompt
                                                    if "<Student's response>" in assembled_user_prompt 
                                                    else assembled_user_prompt)
         
-        # Enhanced annotation prompt
-        enhanced_annotation_prompt = rsrc.system_prompt_annotated_response + f"""
-
-CRITICAL PRESERVATION RULES:
-1. The student's response has EXACTLY {len(students_response)} characters
-2. You MUST preserve EVERY character including:
-   - All whitespace (spaces, tabs, newlines) 
-   - All punctuation marks
-   - All capitalization
-   - All special characters
-   - All escape sequences (backslashes, quotes, etc.)
-3. ONLY insert tags, do NOT modify ANY other part of the text
-4. After removing tags, the result must be IDENTICAL to the original
-5. DO NOT interpret, normalize, or "fix" any part of the text
-6. Preserve ALL escape sequences exactly as they appear (e.g., \\", \\', \\\\)
-
-IMPORTANT: The text may contain escape sequences like \\", \\', \\\\. These must be preserved EXACTLY as written.
-"""
-        
-        # Encode the student response in base64 to preserve exact characters
-        encoded_student_response = base64.b64encode(students_response.encode('utf-8')).decode('ascii')
-        
-        # Create enhanced annotation prompt
-        annotation_task_prompt = f"""
-Here is the student's response that needs to be annotated:
-
-ORIGINAL TEXT (use this for annotation):
-{students_response}
-
-BASE64 ENCODED VERSION (for exact character reference):
-{encoded_student_response}
-
-Use the error types from the following list to guide your annotation:
-{assembled_system_prompt.split("Error list: ")[1].split("Additional Error type instructions")[0] if "Error list: " in assembled_system_prompt else ""}
-
-Please annotate the student's response by identifying errors and inserting tags around problematic phrases.
-
-<task>
-CRITICAL INSTRUCTIONS:
-1. Use ONLY the ORIGINAL TEXT above for creating your annotated response
-2. The BASE64 version is provided for exact character verification - decode it if needed to verify exact characters
-3. Preserve ALL characters exactly, including escape sequences like \\", \\', \\\\
-4. Only add <tag id="X">phrase</tag> markers - do not change any other characters
-5. The text between tags must be IDENTICAL to the original, character-by-character
-
-Analyze the student's response and identify errors based on the error types provided.
-Insert tags around phrases that contain errors: <tag id="1">error phrase</tag>
-Use ascending ID numbers starting from 1 for each tag.
-Return the student's response exactly as it is, with only the tags inserted.
-The text must be preserved character-by-character.
-</task>
-"""
-        
         # First call: Generate annotated response using error tags as guide
         response1 = client.chat.completions.create(
             model=model,
-            temperature=0.0,
+            temperature=0.1,
             max_tokens=16000,
             tools=rsrc.tools_annotated_response,
             tool_choice={"type": "function", "function": {"name": "get_annotated_response"}},
             messages=[
-                {"role": "system", "content": enhanced_annotation_prompt},
-                {"role": "user", "content": annotation_task_prompt}
+                {"role": "system", "content": rsrc.system_prompt_annotated_response},
+                {"role": "user", "content": f"""
+                Here is the student's response that needs to be annotated:
+                {students_response}
+                
+                Use the error types from the following list to guide your annotation:
+                {assembled_system_prompt.split("Error list: ")[1].split("Additional Error type instructions")[0] if "Error list: " in assembled_system_prompt else ""}
+                
+                Please annotate the student's response by identifying errors and inserting tags around problematic phrases.
+                <task>
+                Analyze the student's response and identify errors based on the error types provided.
+                Insert tags around phrases that contain errors: <tag id="1">error phrase</tag>
+                Use ascending ID numbers starting from 1 for each tag.
+                Return the student's response exactly as it is, with only the tags inserted.
+                </task>
+                """}
             ]
         )
         annotated_response_json = json.loads(response1.choices[0].message.tool_calls[0].function.arguments)
         annotated_response = annotated_response_json.get("annotated_response", "")
-        
-        # Validate preservation
-        is_valid, error_info = validate_annotation_preservation(annotated_response, students_response)
         
         # Count the tags to determine how many errors were identified
         tag_ids = []
@@ -835,11 +517,11 @@ The text must be preserved character-by-character.
             content_end = annotated_response.find('</tag>', content_start)
             phrase = annotated_response[content_start:content_end]
             tagged_phrases.append({"id": int(tag_id), "phrase": phrase})
-            
+        
         # Second call: Generate feedback list based on the annotated response
         response2 = client.chat.completions.create(
             model=model,
-            temperature=0.0,
+            temperature=0.1,
             max_tokens=16000,
             tools=rsrc.tools_feedback_list,
             tool_choice={"type": "function", "function": {"name": "get_feedback_list"}},
@@ -861,46 +543,379 @@ The text must be preserved character-by-character.
                 {json.dumps(tagged_phrases)}
                 
                 You MUST provide EXACTLY {len(tagged_phrases)} feedback items - one for each identified error.
-                """}
+                """} 
             ]
         )
-        
         feedback_list_json = json.loads(response2.choices[0].message.tool_calls[0].function.arguments)
         feedback_list = feedback_list_json.get("feedback_list", [])
         
-        # Prepare result
-        result = {
-            "annotated_response": annotated_response,
-            "feedback_list": feedback_list
-        }
-        
-        # Add warnings if needed
-        warnings = []
-        
-        # Tag count validation
-        tag_count_in_response = annotated_response.count("<tag id=")
-        if tag_count_in_response != len(feedback_list):
-            warning_msg = f"Mismatch in tag count. Feedback list has {len(feedback_list)} items, but annotated response has {tag_count_in_response} tags."
-            warnings.append(warning_msg)
+        # Validate tag count
+        if len(feedback_list) != len(tagged_phrases):
+            warning_msg = f"Mismatch in feedback count. Tagged phrases: {len(tagged_phrases)}, feedback items: {len(feedback_list)}"
             print(f"Warning: {warning_msg}")
-        
-        # Preservation validation
-        if not is_valid:
-            warning_msg = f"Text preservation error: {error_info}"
-            warnings.append(warning_msg)
-            print(f"Warning: {warning_msg}")
-        
-        if warnings:
-            result["warning"] = "; ".join(warnings)
+            # Add warning to result
+            result = {
+                "annotated_response": annotated_response,
+                "feedback_list": feedback_list,
+                "warning": warning_msg
+            }
+        else:
+            # Combine results
+            result = {
+                "annotated_response": annotated_response,
+                "feedback_list": feedback_list
+            }
         
         return json.dumps(result)
         
    elif model.startswith("claude"):
-        # Claude implementation would go here
-        # For now, just raise an error indicating it's not implemented
-        raise ValueError(f"Claude support not yet implemented for split_reverse method. Please use an OpenAI model.")
+        import anthropic
+        
+        anthropic_client = anthropic.Anthropic(api_key=anthropic_key, timeout=360.0)
+        
+        # Extract the student response from the user prompt if raw_student_response is not provided
+        students_response = raw_student_response or (assembled_user_prompt.split("<Student's response>")[1].split("</Student's response>")[0].strip() 
+                                                   if "<Student's response>" in assembled_user_prompt 
+                                                   else assembled_user_prompt)
+        
+        # First call: Generate annotated response using error tags as guide
+        error_types = assembled_system_prompt.split("Error list: ")[1].split("Additional Error type instructions")[0] if "Error list: " in assembled_system_prompt else ""
+        
+        # For Claude, combine system and user content into a single user message
+        system_and_user_content = rsrc.system_prompt_annotated_response + "\n\n" + f"""
+        Here is the student's response that needs to be annotated:
+        {students_response}
+        
+        Use the error types from the following list to guide your annotation:
+        {error_types}
+        
+        Please annotate the student's response by identifying errors and inserting tags around problematic phrases.
+        <task>
+        Analyze the student's response and identify errors based on the error types provided.
+        Insert tags around phrases that contain errors: <tag id="1">error phrase</tag>
+        Use ascending ID numbers starting from 1 for each tag.
+        Return the student's response exactly as it is, with only the tags inserted.
+        </task>
+        """
+        
+        message_content1 = [
+            {
+                "type": "text",
+                "text": system_and_user_content
+            }
+        ]
+        
+        claude_tool1 = {
+            "type": "custom",
+            "name": "get_annotated_response",
+            "description": "Apply annotation tags to a student response based on provided error types",
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "annotated_response": {
+                        "type": "string",
+                        "description": "The student's response with tags (using unique running number ids) enclosing specific words or phrases in the response"
+                    }
+                },
+                "required": ["annotated_response"]
+            }
+        }
+        
+        api_params1 = {
+            "model": model,
+            "max_tokens": 16000,
+            "temperature": 0.1,
+            "tools": [claude_tool1],
+            "messages": [
+                {
+                    "role": "user",
+                    "content": message_content1
+                }
+            ],
+            "tool_choice": {"type": "auto"}
+        }
+        
+        response1 = anthropic_client.messages.create(**api_params1)
+        
+        annotated_response = None
+        for content in response1.content:
+            if content.type == 'tool_use':
+                # Fix JSON parsing issue - check if input is already a dict or needs parsing
+                tool_input = content.input
+                if isinstance(tool_input, str):
+                    try:
+                        annotated_response = json.loads(tool_input).get("annotated_response", "")
+                    except json.JSONDecodeError:
+                        return json.dumps({"error": "Failed to parse annotated response from Claude's response"})
+                elif isinstance(tool_input, dict):
+                    annotated_response = tool_input.get("annotated_response", "")
+                break
+                
+        if not annotated_response:
+            return json.dumps({"error": "No annotated response found in Claude's first response"})
+        
+        # Extract the tagged phrases
+        tag_ids = []
+        current_pos = 0
+        while True:
+            tag_start = annotated_response.find('<tag id="', current_pos)
+            if tag_start == -1:
+                break
+            id_start = tag_start + 9  # Length of '<tag id="'
+            id_end = annotated_response.find('"', id_start)
+            tag_id = annotated_response[id_start:id_end]
+            tag_ids.append(tag_id)
+            current_pos = id_end
+        
+        tagged_phrases = []
+        for tag_id in tag_ids:
+            tag_start = annotated_response.find(f'<tag id="{tag_id}">')
+            content_start = tag_start + len(f'<tag id="{tag_id}">')
+            content_end = annotated_response.find('</tag>', content_start)
+            phrase = annotated_response[content_start:content_end]
+            tagged_phrases.append({"id": int(tag_id), "phrase": phrase})
+        
+        # Second call: Generate feedback list based on the annotated response
+        system_content = rsrc.system_prompt_feedback_list.format(
+            Subject=assembled_system_prompt.split("Subject=")[1].split(",")[0] if "Subject=" in assembled_system_prompt else "",
+            Level=assembled_system_prompt.split("Level=")[1].split(",")[0] if "Level=" in assembled_system_prompt else "",
+            Question=assembled_system_prompt.split("Question=")[1].split(",")[0] if "Question=" in assembled_system_prompt else "",
+            Model_answer=assembled_system_prompt.split("Model_answer=")[1].split(",")[0] if "Model_answer=" in assembled_system_prompt else "",
+            Rubrics=assembled_system_prompt.split("Rubrics=")[1].split(",")[0] if "Rubrics=" in assembled_system_prompt else "",
+            Error_types=assembled_system_prompt.split("Error_types=")[1].split(",")[0] if "Error_types=" in assembled_system_prompt else "",
+            Instructions=assembled_system_prompt.split("Instructions=")[1] if "Instructions=" in assembled_system_prompt else ""
+        )
+        
+        user_content = f"""
+        This is the student's response: <Student's response> {students_response} </Student's response>
+        
+        I have identified EXACTLY {len(tagged_phrases)} errors in the student's response.
+        Here are all the errors I've identified:
+        {json.dumps(tagged_phrases)}
+        
+        You MUST provide EXACTLY {len(tagged_phrases)} feedback items - one for each identified error.
+        """
+        
+        message_content2 = [
+            {
+                "type": "text",
+                "text": system_content + "\n\n" + user_content
+            }
+        ]
+        
+        claude_tool2 = {
+            "type": "custom",
+            "name": "get_feedback_list",
+            "description": "Generate a list of feedback items based on pre-identified errors in the student's response",
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "feedback_list": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "description": "tag id"
+                                },
+                                "phrase": {
+                                    "type": "string",
+                                    "description": "the specific part of the sentence containing an error"
+                                },
+                                "error_tag": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "errorType": {
+                                                "type": "string",
+                                                "description": "error type"
+                                            }
+                                        }
+                                    },
+                                    "description": "list of concise error category based on error types"
+                                },
+                                "comment": {
+                                    "type": "string",
+                                    "description": "a concise student-friendly explanation or suggestion"
+                                }
+                            }
+                        }
+                    }
+                },
+                "required": ["feedback_list"]
+            }
+        }
+        
+        api_params2 = {
+            "model": model,
+            "max_tokens": 16000,
+            "temperature": 0.1,
+            "tools": [claude_tool2],
+            "messages": [
+                {
+                    "role": "user",
+                    "content": message_content2
+                }
+            ],
+            "tool_choice": {"type": "auto"}
+        }
+        
+        response2 = anthropic_client.messages.create(**api_params2)
+        
+        feedback_list = None
+        for content in response2.content:
+            if content.type == 'tool_use':
+                # Fix JSON parsing issue - check if input is already a dict or needs parsing
+                tool_input = content.input
+                if isinstance(tool_input, str):
+                    try:
+                        feedback_list = json.loads(tool_input).get("feedback_list", [])
+                    except json.JSONDecodeError:
+                        return json.dumps({"error": "Failed to parse feedback list from Claude's response"})
+                elif isinstance(tool_input, dict):
+                    feedback_list = tool_input.get("feedback_list", [])
+                break
+                
+        if not feedback_list:
+            return json.dumps({"error": "No feedback list found in Claude's second response"})
+        
+        # Validate tag count
+        if len(feedback_list) != len(tagged_phrases):
+            warning_msg = f"Mismatch in feedback count. Tagged phrases: {len(tagged_phrases)}, feedback items: {len(feedback_list)}"
+            print(f"Warning: {warning_msg}")
+            # Add warning to result
+            result = {
+                "annotated_response": annotated_response,
+                "feedback_list": feedback_list,
+                "warning": warning_msg
+            }
+        else:
+            # Combine results
+            result = {
+                "annotated_response": annotated_response,
+                "feedback_list": feedback_list
+            }
+        
+        return json.dumps(result)
    else:
         raise ValueError(f"Unsupported model: {model}. Please use an OpenAI or Claude model.")
+
+def check_results(results_json, raw_student_response):
+    """
+    Check and fix the results from annotation functions:
+    1. Verify the annotated response matches the raw student response (except for tags)
+    2. Ensure the number of tags matches the number of items in the feedback list
+    
+    Args:
+        results_json (str): JSON string containing the results
+        raw_student_response (str): The original student response
+        
+    Returns:
+        str: JSON string with fixed/validated results
+    """
+    # Parse the JSON string to a dictionary
+    if isinstance(results_json, str):
+        results = json.loads(results_json)
+    else:
+        results = results_json  # Assume it's already a dictionary
+    
+    annotated_response = results.get("annotated_response", "")
+    feedback_list = results.get("feedback_list", [])
+    
+    # Step 1: Check if the annotated response matches the raw student response (sans tags)
+    # Strip all tags to get clean response
+    stripped_response = annotated_response
+    while "<tag id=" in stripped_response:
+        tag_start = stripped_response.find("<tag id=")
+        tag_end_of_opening = stripped_response.find(">", tag_start) + 1
+        closing_tag_start = stripped_response.find("</tag>", tag_end_of_opening)
+        closing_tag_end = closing_tag_start + 6  # Length of "</tag>"
+        
+        # Extract the content inside the tag
+        tagged_content = stripped_response[tag_end_of_opening:closing_tag_start]
+        
+        # Replace the entire tag and its content with just the content
+        stripped_response = stripped_response[:tag_start] + tagged_content + stripped_response[closing_tag_end:]
+    
+    # Clean up any extra whitespace
+    stripped_response = ' '.join(stripped_response.split())
+    clean_raw_response = ' '.join(raw_student_response.split())
+    
+    format_correct = stripped_response == clean_raw_response
+    if not format_correct:
+        print(f"Warning: The annotated response does not match the raw response.")
+        print(f"Stripped response: {stripped_response}")
+        print(f"Raw response: {clean_raw_response}")
+        
+        # Since this could be complex to fix automatically, we'll flag it but not attempt to fix
+        results["warning"] = f"The annotated response format does not match the original response."
+    
+    # Step 2: Check if the number of tags matches the feedback list length
+    tag_count = annotated_response.count("<tag id=")
+    feedback_count = len(feedback_list)
+    
+    if tag_count != feedback_count:
+        print(f"Mismatch in tag count. Found {tag_count} tags but {feedback_count} feedback items.")
+        
+        # Approach 1: If we have too many tags, remove extra ones (higher IDs first)
+        if tag_count > feedback_count:
+            # Extract all tags and their positions
+            tag_positions = []
+            position = 0
+            while True:
+                tag_start = annotated_response.find("<tag id=", position)
+                if tag_start == -1:
+                    break
+                    
+                # Find the tag ID
+                id_start = tag_start + 9  # Length of '<tag id="'
+                id_end = annotated_response.find('"', id_start)
+                tag_id = int(annotated_response[id_start:id_end])
+                
+                # Find the content and closing tag
+                tag_end_of_opening = annotated_response.find(">", tag_start) + 1
+                closing_tag_start = annotated_response.find("</tag>", tag_end_of_opening)
+                closing_tag_end = closing_tag_start + 6  # Length of "</tag>"
+                
+                # Save the tag info
+                tag_positions.append({
+                    "id": tag_id,
+                    "start": tag_start,
+                    "content_start": tag_end_of_opening,
+                    "content_end": closing_tag_start,
+                    "end": closing_tag_end
+                })
+                
+                position = closing_tag_end
+            
+            # Sort tags by ID in descending order so we remove highest IDs first
+            tag_positions.sort(key=lambda x: x["id"], reverse=True)
+            
+            # Remove excess tags
+            extra_tags = tag_count - feedback_count
+            modified_response = annotated_response
+            for i in range(extra_tags):
+                if i < len(tag_positions):
+                    tag = tag_positions[i]
+                    # Replace the entire tag with just the content
+                    modified_response = (
+                        modified_response[:tag["start"]] + 
+                        modified_response[tag["content_start"]:tag["content_end"]] + 
+                        modified_response[tag["end"]:]
+                    )
+            
+            # Update the annotated response
+            results["annotated_response"] = modified_response
+            results["warning"] = f"Fixed: Removed {extra_tags} excess tags to match feedback list length."
+        
+        # Approach 2: If we have too few tags, more complex - would need to know where to add them
+        # For now, we'll just flag this as an issue that needs manual correction
+        elif tag_count < feedback_count:
+            results["warning"] = f"The annotated response has fewer tags ({tag_count}) than feedback items ({feedback_count}). Manual correction needed."
+    
+    return json.dumps(results)
 
 def load_yaml_data(file_path):
     """Load data from a YAML file."""
@@ -935,91 +950,42 @@ def generate_output_filename(model_name, method, output_dir):
         
     return os.path.join(output_dir, f"{model_short}_{method}_{timestamp}.csv")
 
-def check_results(results_json, raw_student_response):
+def check_text_matching(annotated_response, raw_student_response):
     """
-    Check and fix results to ensure tag count matches feedback list count.
+    Check if the annotated response matches the raw student response when tags are removed.
     
     Args:
-        results_json (str): JSON string containing the results
-        raw_student_response (str): Original student response for validation
+        annotated_response (str): The response with annotation tags
+        raw_student_response (str): The original student response
         
     Returns:
-        str: Corrected JSON string
+        tuple: (is_match, warning_message)
     """
-    try:
-        # Parse the results
-        if isinstance(results_json, str):
-            results = json.loads(results_json)
-        else:
-            results = results_json
-            
-        annotated_response = results.get("annotated_response", "")
-        feedback_list = results.get("feedback_list", [])
+    # Strip all tags to get clean response
+    stripped_response = annotated_response
+    while "<tag id=" in stripped_response:
+        tag_start = stripped_response.find("<tag id=")
+        tag_end_of_opening = stripped_response.find(">", tag_start) + 1
+        closing_tag_start = stripped_response.find("</tag>", tag_end_of_opening)
+        closing_tag_end = closing_tag_start + 6  # Length of "</tag>"
         
-        # Count tags in annotated response
-        tag_count = annotated_response.count("<tag id=")
-        feedback_count = len(feedback_list)
+        # Extract the content inside the tag
+        tagged_content = stripped_response[tag_end_of_opening:closing_tag_start]
         
-        # If counts match, return as is
-        if tag_count == feedback_count:
-            return json.dumps(results) if isinstance(results_json, str) else results
-        
-        print(f"Fixing mismatch: {tag_count} tags vs {feedback_count} feedback items")
-        
-        # Extract tag IDs and their corresponding phrases
-        tag_pattern = r'<tag id="(\d+)">(.*?)</tag>'
-        matches = re.findall(tag_pattern, annotated_response)
-        
-        if len(matches) != tag_count:
-            print(f"Warning: Regex found {len(matches)} matches but counted {tag_count} tags")
-        
-        # Create a mapping of tag IDs to phrases
-        tag_phrases = {}
-        for tag_id, phrase in matches:
-            tag_phrases[int(tag_id)] = phrase
-        
-        # If we have more feedback than tags, trim the feedback list
-        if feedback_count > tag_count:
-            print(f"Trimming feedback list from {feedback_count} to {tag_count} items")
-            # Keep only feedback items that have corresponding tags
-            valid_feedback = []
-            for feedback_item in feedback_list:
-                if feedback_item.get("id") in tag_phrases:
-                    valid_feedback.append(feedback_item)
-            results["feedback_list"] = valid_feedback[:tag_count]
-        
-        # If we have more tags than feedback, create minimal feedback entries
-        elif tag_count > feedback_count:
-            print(f"Adding {tag_count - feedback_count} minimal feedback items")
-            existing_ids = {item.get("id") for item in feedback_list}
-            
-            for tag_id, phrase in tag_phrases.items():
-                if tag_id not in existing_ids:
-                    # Create a minimal feedback entry
-                    feedback_list.append({
-                        "id": tag_id,
-                        "phrase": phrase,
-                        "error_tag": [{"errorType": "Error"}],
-                        "comment": "Error identified"
-                    })
-            
-            results["feedback_list"] = feedback_list
-        
-        # Add a warning about the fix
-        existing_warning = results.get("warning", "")
-        fix_warning = f"Fixed tag count mismatch (was {feedback_count} feedback items for {tag_count} tags)"
-        
-        if existing_warning:
-            results["warning"] = f"{existing_warning}; {fix_warning}"
-        else:
-            results["warning"] = fix_warning
-        
-        return json.dumps(results) if isinstance(results_json, str) else results
-        
-    except Exception as e:
-        print(f"Error in check_results: {e}")
-        # Return original if fixing fails
-        return results_json
+        # Replace the entire tag and its content with just the content
+        stripped_response = stripped_response[:tag_start] + tagged_content + stripped_response[closing_tag_end:]
+    
+    # Normalize whitespace for comparison
+    stripped_response = ' '.join(stripped_response.split())
+    clean_raw_response = ' '.join(raw_student_response.split())
+    
+    is_match = stripped_response == clean_raw_response
+    
+    if not is_match:
+        warning_message = f"Text mismatch: Original and annotated passages differ when tags are removed. Original: '{clean_raw_response}' | Stripped annotated: '{stripped_response}'"
+        return False, warning_message
+    
+    return True, ""
 
 def process_csv_file(input_csv_path, model_name="gpt-4o-2024-08-06", method="single", enable_check=False):
     """
@@ -1115,57 +1081,10 @@ def process_csv_file(input_csv_path, model_name="gpt-4o-2024-08-06", method="sin
                 annotated_response = response_dict.get("annotated_response", "")
                 feedback_list = response_dict.get("feedback_list", [])
                 
-                # Enhanced Chinese character handling
-                try:
-                    # If feedback_list is a string, try to parse it as JSON
-                    if isinstance(feedback_list, str):
-                        feedback_list = json.loads(feedback_list)
-                    
-                    # Fix Unicode encoding issues in Chinese feedback
-                    if isinstance(feedback_list, list):
-                        for item in feedback_list:
-                            if isinstance(item, dict):
-                                # Ensure all string fields are properly decoded
-                                for key, value in item.items():
-                                    if isinstance(value, str):
-                                        # If it contains Unicode escape sequences, decode them
-                                        try:
-                                            decoded_value = value.encode().decode('unicode_escape').encode('latin1').decode('utf-8')
-                                            if decoded_value != value:
-                                                item[key] = decoded_value
-                                        except:
-                                            # If decoding fails, keep original value
-                                            pass
-                except Exception as e:
-                    print(f"Warning: Failed to process Chinese characters in feedback: {e}")
-                
-                # Chinese character count validation and fixing
-                if any(ord(char) > 127 for char in students_response):  # Contains non-ASCII (likely Chinese)
-                    tag_count_in_response = annotated_response.count("<tag id=")
-                    feedback_count = len(feedback_list)
-                    
-                    # If there's a massive mismatch (like 613 vs 5), likely a character counting bug
-                    if feedback_count > 100 and tag_count_in_response < 20:
-                        print(f"Detected Chinese character counting bug: {feedback_count} items vs {tag_count_in_response} tags")
-                        
-                        # Extract actual tagged phrases from annotated response
-                        import re
-                        tag_pattern = r'<tag id="(\d+)">(.*?)</tag>'
-                        matches = re.findall(tag_pattern, annotated_response, re.DOTALL)
-                        
-                        if len(matches) == tag_count_in_response:
-                            # Create corrected feedback list based on actual tags
-                            corrected_feedback = []
-                            for i, (tag_id, phrase) in enumerate(matches):
-                                corrected_feedback.append({
-                                    "id": int(tag_id),
-                                    "phrase": phrase,
-                                    "error_tag": [{"errorType": "语言"}],
-                                    "comment": f"错误已标识：{phrase}"
-                                })
-                            
-                            feedback_list = corrected_feedback
-                            warnings.append(f"Fixed Chinese character counting bug: reduced from {feedback_count} to {len(corrected_feedback)} items")
+                # Always check text matching between original and annotated response
+                is_text_match, text_warning = check_text_matching(annotated_response, students_response)
+                if not is_text_match:
+                    warnings.append(text_warning)
                 
                 # Double check for tag count mismatch (even if already caught in the API response)
                 tag_count_in_response = annotated_response.count("<tag id=")
@@ -1186,18 +1105,11 @@ def process_csv_file(input_csv_path, model_name="gpt-4o-2024-08-06", method="sin
                 # Join warnings into a single string
                 warnings_str = "; ".join(warnings) if warnings else ""
                 
-                # Ensure proper UTF-8 encoding for Chinese characters in JSON
-                try:
-                    feedback_json = json.dumps(feedback_list, ensure_ascii=False)
-                except Exception as e:
-                    print(f"Warning: Failed to encode Chinese characters in JSON: {e}")
-                    feedback_json = json.dumps(feedback_list)  # Fallback with ASCII encoding
-                
                 # Write to output CSV
                 csv_writer.writerow([
                     students_response,
                     annotated_response,
-                    feedback_json,
+                    json.dumps(feedback_list),
                     model_name,
                     method,
                     warnings_str,
