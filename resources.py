@@ -213,6 +213,110 @@ user_prompt = """
 This is the student's response: <Student's response> {Students_response} </Student's response>
 """
 
+joes_system_prompt = """
+<context>
+You are a diligent teacher identifying errors in a {Level} student response to give them feedback for a {Subject} question: {Question}.
+</context>
+
+<objective>
+Your objectives are:
+1. Use the content enclosed in the Feedback Reference Explanation XML tags to help you interpret the feedback references that you will receive.
+2. Use the content enclosed in the Feedback Reference XML tags to carefully analyse the student's response along the dimensions in the references.
+3. Based on the references, identify errors found in the student's response.
+4. Return the student's response exactly as sent and enclose the words or phrases in the student's response that contain the error with a unique tag and a running id number to the tag in the following format: 'annotated_response':'The pig was <tag id="1">fly</tag>. I <tag id="2">is</tag> amazed.'
+5. For each error, specify the unique id number of the tag, the exact word or phrase it encloses, the specific error type, and the comments.
+6. For the comments, it should be in the question's language, written in a student-friendly, concise manner in accordance to these additional instructions: <Instructions>{Instructions}</Instructions>. If the language is English, use British English spelling.
+7. If there are no errors, the error tag should tag the first word of the student's response and the error tag should be "No error".
+</objective>
+
+<Feedback Reference Explanation>
+1. Model answer: A series of sentences that expresses the main ideas expected to be in the student's response.
+2. Rubrics: Each rubric criterion in a set of rubrics is presented in the following structure: "[Dimension] - [Band Descriptor] - [Description]". [Dimension] refers to the name of the criterion being assessed; [Band Descriptor] is the label of the band; [Dimension Band Description] delineates the qualities of a student response that is in the band of [Band Descriptor] for that [Dimension].
+3. Error list: Each error in the error list is presented in the following structure: "[Error type] - [Error type Description]". [Error type] is the label of the error; [Error type Description] explains in detail the error expected in the student's response.
+</Feedback Reference Explanation>
+
+<Feedback Reference>
+<Model answer>Teacher's model answer: {Model_answer}</Model answer>
+<Rubrics>Rubrics: {Rubrics}
+Additional Rubric Instructions:
+a. always return error tag as the name of the dimension criteria.
+b. Each dimension criteria is independent of each other and identify parts of the student's response to be commented using different dimensions.
+c. Start with the first dimension of the rubric. Compare the student's response with the description of each grading band in the dimension and provide feedback.
+</Rubrics>
+<Error list>Error list: {Error_types}
+Additional Error type instructions:
+a. always return error type name in full, for example <example>[Error type]</example>.
+b. adhere strictly to the error list provided.
+</Error list>
+</Feedback Reference>
+
+After completing the task, double-check that you have tagged the student response with the appropriate error tags. If there are no errors, ensure that the first word is tagged.
+
+CRITICAL PRESERVATION RULES:
+1. You MUST preserve EVERY character including:
+- All whitespace (spaces, tabs, newlines)
+- All punctuation marks
+- All capitalization
+- All special characters
+- All escape sequences (backslashes, quotes, etc.)
+2. ONLY insert tags, do NOT modify ANY other part of the text
+3. After removing tags, the result must be IDENTICAL to the original
+4. DO NOT interpret, normalize, or "fix" any part of the text
+5. Preserve ALL escape sequences exactly as they appear (e.g., \\", \\', \\\\)
+QUOTE AND APOSTROPHE PRESERVATION - CRITICAL:
+- DO NOT convert straight quotes (") to curly quotes (")
+- DO NOT convert straight apostrophes (') to curly apostrophes (')
+- Keep ALL punctuation marks EXACTLY as they appear in the original
+- If the original has straight quotes/apostrophes, use straight quotes/
+apostrophes
+- If the original has curly quotes/apostrophes, use curly quotes/apostrophes
+- NO SMART PUNCTUATION CONVERSION ALLOWED
+CHINESE TEXT PROCESSING (if applicable):
+- DO NOT count individual Chinese characters as separate errors
+- Only identify actual linguistic errors (wrong words, grammar mistakes)
+- If you tag N phrases, create exactly N feedback items
+- DO NOT create hundreds of feedback items for Chinese text
+- Focus on meaningful errors, not character-by-character analysis
+CRITICAL ESCAPE SEQUENCE PRESERVATION:
+- If you see \\n in the text, keep it as \\n (two characters) - do NOT convert to
+actual newline
+- If you see \\t in the text, keep it as \\t (two characters) - do NOT convert to
+actual tab
+- If you see \\" in the text, keep it as \\" (two characters) - do NOT convert to
+just "
+- If you see \\' in the text, keep it as \\' (two characters) - do NOT convert to just
+'
+- If you see \\\\ in the text, keep it as \\\\ (two characters) - do NOT convert to
+single \
+- These are LITERAL ESCAPE SEQUENCES, not formatting instructions
+- Preserve the exact character count and sequence
+"""
+joes_user_prompt = """
+Here is the student's response that needs to be analyzed:
+
+ORIGINAL TEXT (analyze this text):
+{Students_response}
+
+CRITICAL INSTRUCTIONS FOR ANNOTATION:
+1.Use ONLY the ORIGINAL TEXT above for creating your annotated response
+2.Preserve ALL characters exactly, including escape sequences like \\", \\', \\\\, \\n, \\t
+3.CRITICAL RULE: If you see \\" in text, output \\" (2 chars) - NEVER convert to " (1 char)
+4.CRITICAL RULE: If you see \\' in text, output \\' (2 chars) - NEVER convert to ' (1 char)
+5.CRITICAL: If the original has \\n (backslash-n), keep it as \\n, NOT as actual newline
+6.Only add <tag id="X">phrase</tag> markers - do not change any other characters
+4.The text between tags must be IDENTICAL to the original, character-by-character
+
+QUOTE PRESERVATION REQUIREMENTS:
+- Keep straight quotes (") as straight quotes (")
+- Keep straight apostrophes (') as straight apostrophes (')
+- Do NOT use curly quotes (" ") or curly apostrophes (' ')
+- Copy punctuation marks EXACTLY from the original text
+
+{Students_response}
+
+Please analyze the student's response and provide feedback while preserving the text exactly.
+"""
+
 AFA_JSON_correction_prompt = """
 You are a data formatting assistant. You will receive a JSON object with two fields:
 
@@ -243,7 +347,7 @@ You are a strict evaluator of responses provided by an LLM. You must verify that
 
 1. annotated_response must match student_response exactly, character for character, including all punctuation, whitespace, formatting (e.g. line breaks, markdown like ** or *), and casing. Even a single added or missing space, punctuation mark, or character (such as a period at the end) constitutes a failure.
 
-2. Every phrase in the feedback_list must appear once in the annotated_response and must be wrapped exactly in the format <tag id="x">phrase</tag>, where x matches the phrase's id in the list. Do not alter the phrase content or punctuation inside the tags.
+2. Every phrase in the feedback_list must appear once in the annotated_response and must be wrapped exactly in the format <tag id="x">phrase</tag>, where x matches the phrase's id in the list. Make sure the end of the phrase is also enclosed with </tag>. Do not alter the phrase content or punctuation inside the tags.
 
 After checking both conditions:
 If both are met, return the exact annotated_response string including the feedback_list in the format of the example, with no explanation or formatting.
@@ -262,10 +366,12 @@ This is the LLM response:
 <LLM_response>
 {LLM_response}
 </LLM_response>
+
+Check that your return did not change the structure or formatting of student_response, and tagged all the phrases in feedback_list correctly in the format <tag id="x">phrase</tag>
 """
 
 example = """
-{"annotated_response":"<tag id="1">It was a sunny Sunday morning , the sun shone brillantly in the clear blue sky . Sarah jumped out of bed and got ready to go out. She ran down the stairs and <tag id="2">quikly</tag> devoured her breakfast ." Mom , let's go ! " Sarah exclaimed . Sarah's Mother had promised Sarah that they would get to adopt a dog today . Sarah had saved up money from the previous <tag id="3">yer</tag> and will be using it to adopt a dog . Once they reached the adopting centre , Sarah and her mother were greeted with barks . Sarah skipped down the aisle of dog and <tag id="4">look</tag> at each of them but none of the dogs <tag id="5">seem</tag> to be catching her attention . Soon, Sarah noticed a dog that caught her attention . It had brown fur , <tag id="6">it's</tag> eyes were big and round and it was very skinny . The dog stared at Sarah as though asking her to take it home . Sarah <tag id="7">deceied</tag> to take the dog home. She placed her savings on the counter to pay. From that day onwards Sarah took great care of the dog.","feedback_list":[{"id":1,"phrase":"It was a sunny Sunday morning , the sun shone brillantly in the clear blue sky .","error_tag":[{"errorType":"LANGUAGE AND ORGANISATION"}],"comment":"Your opening sentence sets the scene well, but try to connect it more smoothly to the main action of your story."},{"id":2,"phrase":"quikly","error_tag":[{"errorType":"Spelling Error"}],"comment":"Check the spelling of 'quikly'. It should be 'quickly'."},{"id":3,"phrase":"yer","error_tag":[{"errorType":"Spelling Error"}],"comment":"The word 'yer' seems to be a typo. It should be 'year'."},{"id":4,"phrase":"look","error_tag":[{"errorType":"Verb Tense Error"}],"comment":"The verb 'look' should match the past tense used in the rest of your story. Consider using 'looked'."},{"id":5,"phrase":"seem","error_tag":[{"errorType":"Verb Tense Error"}],"comment":"The verb 'seem' should be in past tense to match the rest of your story. Try 'seemed'."},{"id":6,"phrase":"it's","error_tag":[{"errorType":"Grammar Error"}],"comment":"'It's' means 'it is'. You need the possessive form 'its' here."},{"id":7,"phrase":"deceied","error_tag":[{"errorType":"Spelling Error"}],"comment":"The word 'deceied' seems to be a typo. It should be 'decided'."}]}
+{"annotated_response":"<tag id="1">It was a sunny Sunday morning , the sun shone brillantly in the clear blue sky </tag>. Sarah jumped out of bed and got ready to go out. She ran down the stairs and <tag id="2">quikly</tag> devoured her breakfast ." Mom , let's go ! " Sarah exclaimed . Sarah's Mother had promised Sarah that they would get to adopt a dog today . Sarah had saved up money from the previous <tag id="3">yer</tag> and will be using it to adopt a dog .","feedback_list":[{"id":1,"phrase":"It was a sunny Sunday morning , the sun shone brillantly in the clear blue sky .","error_tag":[{"errorType":"LANGUAGE AND ORGANISATION"}],"comment":"Your opening sentence sets the scene well, but try to connect it more smoothly to the main action of your story."},{"id":2,"phrase":"quikly","error_tag":[{"errorType":"Spelling Error"}],"comment":"Check the spelling of 'quikly'. It should be 'quickly'."},{"id":3,"phrase":"yer","error_tag":[{"errorType":"Spelling Error"}],"comment":"The word 'yer' seems to be a typo. It should be 'year'."}]}
 """
 
 recipes = {"Default":" ",

@@ -1,6 +1,7 @@
 import openai
 import testbed_resources as rsrc
 import ast
+import re
 import os
 import csv
 from dotenv import load_dotenv
@@ -18,31 +19,31 @@ def start_new_record(file_name):
 
 def write_into_record_refinement(filename, data):
     header = ['Subject','Level','Recipe','Error Tags','Suggested Answer','Rubrics','Question','Student Response','LLM Annotated Response','LLM Cards','Tagged?','Number of Cards']
-    with open(filename, 'w', newline='') as file:
+    with open(filename, 'w', newline='', encoding='utf-8-sig') as file:
         writer = csv.writer(file)
         writer.writerow(header)
         writer.writerows(data)
     print(f"CSV file '{filename}' has been created successfully.")
 
 def write_into_record_refinement_SA(filename, data):
-    header = ['Subject','Level','Recipe','Suggested Answer','Question','Student Response','LLM Annotated Response','LLM Cards','Tagged?','Number of Cards']
-    with open(filename, 'w', newline='') as file:
+    header = ['Subject','Level','Recipe','Suggested Answer','Question','Student Response','Initial LLM Annotated Response','Initial LLM Cards','Initial Tagging Status','Unmodified Response','Initial No. of Cards','Initial No. of Open Tags','Initial No. of Close Tags','Matching Number of Tags', 'Matching Number of Cards','Final LLM Annotated Response','Final LLM Cards','Final Tagging Status','Final Unmodified Response','Final No. of Cards','Final No. of Open Tags','Final No. of Close Tags', 'Final Matching Number of Tags', 'Final Matching Number of Cards', 'Displayed']
+    with open(filename, 'w', newline='', encoding='utf-8-sig') as file:
         writer = csv.writer(file)
         writer.writerow(header)
         writer.writerows(data)
     print(f"CSV file '{filename}' has been created successfully.")
 
 def write_into_record_refinement_Rubrics(filename, data):
-    header = ['Subject','Level','Recipe','Rubrics','Question','Student Response','LLM Annotated Response','LLM Cards','Tagged?','Number of Cards']
-    with open(filename, 'w', newline='') as file:
+    header = ['Subject','Level','Recipe','Rubrics','Question','Student Response','Initial LLM Annotated Response','Initial LLM Cards','Initial Tagging Status','Unmodified Response','Initial No. of Cards','Initial No. of Open Tags','Initial No. of Close Tags','Matching Number of Tags', 'Matching Number of Cards','Final LLM Annotated Response','Final LLM Cards','Final Tagging Status','Final Unmodified Response','Final No. of Cards','Final No. of Open Tags','Final No. of Close Tags', 'Final Matching Number of Tags', 'Final Matching Number of Cards', 'Displayed']
+    with open(filename, 'w', newline='', encoding='utf-8-sig') as file:
         writer = csv.writer(file)
         writer.writerow(header)
         writer.writerows(data)
     print(f"CSV file '{filename}' has been created successfully.")
 
 def write_into_record_refinement_Error_tags(filename, data):
-    header = ['Subject','Level','Recipe','Error Tags','Question','Student Response','LLM Annotated Response','LLM Cards','Tagged?','Number of Cards']
-    with open(filename, 'w', newline='') as file:
+    header = ['Subject','Level','Recipe','Error Tags','Question','Student Response','Initial LLM Annotated Response','Initial LLM Cards','Initial Tagging Status','Unmodified Response','Initial No. of Cards','Initial No. of Open Tags','Initial No. of Close Tags','Matching Number of Tags', 'Matching Number of Cards','Final LLM Annotated Response','Final LLM Cards','Final Tagging Status','Final Unmodified Response','Final No. of Cards','Final No. of Open Tags','Final No. of Close Tags', 'Final Matching Number of Tags', 'Final Matching Number of Cards', 'Displayed']
+    with open(filename, 'w', newline='', encoding='utf-8-sig') as file:
         writer = csv.writer(file)
         writer.writerow(header)
         writer.writerows(data)
@@ -51,7 +52,7 @@ def write_into_record_refinement_Error_tags(filename, data):
 #These functions extract the parameters from the csv file
 def csv_to_list_of_dicts(file_path):
     result = list()
-    with open(file_path, 'r', encoding='utf-8') as csvfile:
+    with open(file_path, 'r', encoding='utf-8-sig') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             result.append(row)
@@ -213,3 +214,7 @@ def extract_annotation_details_refinement(LLM_dict):
     LLM_annotated_response = LLM_dict['annotated_response']
     LLM_cards = LLM_dict['feedback_list']
     return LLM_annotated_response, LLM_cards
+
+def strip_tags(text):
+    # This regex replaces tags like <tag id="1"> and </tag> with an empty string
+    return re.sub(r'</?tag[^>]*>', '', text)

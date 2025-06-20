@@ -3,6 +3,7 @@ import resources as rsrc
 import ast
 import os
 import csv
+import re
 from dotenv import load_dotenv
 from datetime import datetime
 
@@ -17,15 +18,15 @@ def start_new_record(file_name):
 
 def write_into_record(filename, data):
     header = ['Subject','Level','Recipe','Error Tags','Suggested Answer','Rubrics','Question','Student Response','LLM Annotated Response','Gold Annotated Response','LLM Cards','Gold Cards','Identification TP Cards','Gold Identification Common Cards','Identification TP Count','Common Gold Count','TP+FP (Total LLM)','TP+FN (Total Gold)','Precision','Recall','F05 Score']
-    with open(filename, 'w', newline='') as file:
+    with open(filename, 'w', newline='', encoding='utf-8-sig') as file:
         writer = csv.writer(file)
         writer.writerow(header)
         writer.writerows(data)
     print(f"CSV file '{filename}' has been created successfully.")
 
 def write_into_record_refinement(filename, data):
-    header = ['Subject','Level','Recipe','Error Tags','Suggested Answer','Rubrics','Question','Student Response','LLM Annotated Response','LLM Cards','Originally Tagged?','Number of Cards','Number of Tags','Number Match?']
-    with open(filename, 'w', newline='') as file:
+    header = ['Subject','Level','Recipe','Error Tags','Suggested Answer','Rubrics','Question','Student Response','Initial LLM Annotated Response','Initial LLM Cards','Initial Tagging Status','Unmodified Response','Initial No. of Cards','Initial No. of Open Tags','Initial No. of Close Tags','Matching Number of Tags', 'Matching Number of Cards','Final LLM Annotated Response','Final LLM Cards','Final Tagging Status','Final Unmodified Response','Final No. of Cards','Final No. of Open Tags','Final No. of Close Tags', 'Final Matching Number of Tags', 'Final Matching Number of Cards', 'Displayed']
+    with open(filename, 'w', newline='', encoding='utf-8-sig') as file:
         writer = csv.writer(file)
         writer.writerow(header)
         writer.writerows(data)
@@ -33,7 +34,7 @@ def write_into_record_refinement(filename, data):
 
 def csv_to_list_of_dicts(file_path):
     result = list()
-    with open(file_path, 'r', encoding='utf-8') as csvfile:
+    with open(file_path, 'r', encoding='utf-8-sig') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             result.append(row)
@@ -77,7 +78,7 @@ def assemble_prompt(subject, level, question, students_response, recipe=" ", sug
    return assembled_prompt
 
 def assemble_system_prompt(subject, level, question, recipe=" ", suggested_answer=" ", rubrics=" ", error_tags=" "):
-   assembled_system_prompt = rsrc.system_prompt.format(
+   assembled_system_prompt = rsrc.joes_system_prompt.format(
      Subject=subject,
      Level=level,
      Question=question,
@@ -105,7 +106,7 @@ def assemble_AFA_JSON_evaluation_prompt(students_response, LLM_response):
    return assembled_prompt
 
 def assemble_user_prompt(students_response):
-   assembled_user_prompt = rsrc.user_prompt.format(
+   assembled_user_prompt = rsrc.joes_user_prompt.format(
      Students_response=students_response 
      )
    
@@ -182,6 +183,10 @@ def first_identification_checker(LLM_cards, gold_cards):
 
     #print(len(LLM_TP_first_identification))
     return LLM_TP_first_identification, gold_common_first_identification, LLM_identification_counter, gold_identification_counter
+
+def strip_tags(text):
+    # This regex replaces tags like <tag id="1"> and </tag> with an empty string
+    return re.sub(r'</?tag[^>]*>', '', text)
 
 def tag_removal(annotated_response, annotation_card_list):
     cleaned_text = annotated_response.replace('</tag>', '', len(annotation_card_list))
