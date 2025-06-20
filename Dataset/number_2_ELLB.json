@@ -1,0 +1,2152 @@
+{
+    "code": "ok",
+    "data": [
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311826,
+            "uuid": "987efd46-83ab-44f7-9db9-1ddd84b303c7",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163080,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 70,
+                        "end": 71,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": ""
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Punctuation",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 70,
+            "note": "Consider adding a punctuation mark. Suggestion(s):, -"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311827,
+            "uuid": "b0b89c7b-c44b-4ffa-bc31-03d22b570635",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163081,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 77,
+                        "end": 84,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "clounds"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Replace: Spelling",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 77,
+            "note": "Consider if the spelling of the highlighted word is accurate. Suggestions:, clouds"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311828,
+            "uuid": "056c828b-ee76-4f60-b261-ff17d566118f",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163082,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 135,
+                        "end": 148,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "and beautiful"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Remove: Word/Phrase",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 135,
+            "note": "Consider removing the highlighted word/phrase., "
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311829,
+            "uuid": "7f893281-79d9-410d-8d0f-06b961ba06cd",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163083,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 255,
+                        "end": 258,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "had"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Replace: Verb Tense",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 255,
+            "note": "Consider changing the tense of the highlighted verb. Suggestion(s):, has"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311830,
+            "uuid": "aa46d198-0110-4014-a7e0-6237dffcafb1",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163084,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 471,
+                        "end": 472,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": ""
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Punctuation",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 471,
+            "note": "Consider adding a punctuation mark. Suggestion(s):, ,"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311831,
+            "uuid": "702b66d3-67e1-4cc2-80df-5b8d8a85e199",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163085,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 478,
+                        "end": 481,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "was"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Replace: Subject-Verb Agreement",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 478,
+            "note": "Consider if the highlighted verb agrees with the subject. Suggestion(s):, were"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311832,
+            "uuid": "1f0260fd-82ea-4653-adfc-d687d30b1c04",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163086,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 497,
+                        "end": 508,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "immediately"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Remove: Adverb",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 497,
+            "note": "Consider removing the highlighted adverb., "
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311833,
+            "uuid": "2d8d72da-08e8-4be3-82dd-c6eae4c7bb5f",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163087,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 569,
+                        "end": 573,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "that"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Remove: Preposition",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 569,
+            "note": "Consider removing the highlighted preposition., "
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311834,
+            "uuid": "d6e7c420-f8ba-4ea1-aee5-62c31ddad115",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163088,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 591,
+                        "end": 599,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "malaysia"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Replace: Capitalisation",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 591,
+            "note": "Consider changing the capitalisation of the highlighted word. Suggestion(s):, Malaysia"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311835,
+            "uuid": "22957dea-694f-4246-b042-670315159596",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163089,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 674,
+                        "end": 685,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "immediately"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Remove: Adverb",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 674,
+            "note": "Consider removing the highlighted adverb., "
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311836,
+            "uuid": "4fbe92f2-c080-4a16-b3ee-a01b355e9a1c",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163090,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 725,
+                        "end": 733,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "malaysia"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Replace: Capitalisation",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 725,
+            "note": "Consider changing the capitalisation of the highlighted word. Suggestion(s):, Malaysia"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311837,
+            "uuid": "4a69e0e9-775f-43c0-8c65-60b8cbd75f6e",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163091,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 748,
+                        "end": 750,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "at"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Replace: Preposition",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 748,
+            "note": "Consider changing the highlighted preposition. Suggestion(s):, in"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311838,
+            "uuid": "131b8ea9-2efb-4710-92ad-d5359122f2bd",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163092,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 751,
+                        "end": 754,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "the"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Remove: Determiner",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 751,
+            "note": "Consider removing the highlighted determiner., "
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311839,
+            "uuid": "8c5df030-9203-4c9f-b3d7-52c39695b8ed",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163093,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 763,
+                        "end": 764,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": ""
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Punctuation",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 763,
+            "note": "Consider adding a punctuation mark. Suggestion(s):, ,"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311840,
+            "uuid": "a820d348-e989-4be9-84b1-6665eb481a09",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163094,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 784,
+                        "end": 789,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "about"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Remove: Preposition",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 784,
+            "note": "Consider removing the highlighted preposition., "
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311841,
+            "uuid": "5f668aaa-f328-4528-bad3-5badfcc9f000",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163095,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 863,
+                        "end": 864,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": ""
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Punctuation",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 863,
+            "note": "Consider adding a punctuation mark. Suggestion(s):, ,"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311842,
+            "uuid": "3a30cbc1-c225-4b20-a81d-434ff555e45c",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163096,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 875,
+                        "end": 876,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": ""
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Determiner",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 875,
+            "note": "Consider adding a determiner. Suggestion(s):,  the "
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311843,
+            "uuid": "bb04cbc5-8adc-452f-85c8-facba7b15eef",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163097,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 889,
+                        "end": 890,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": ""
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Punctuation",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 889,
+            "note": "Consider adding a punctuation mark. Suggestion(s):, ,"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311844,
+            "uuid": "8d3c1a51-5789-4c1a-88c3-9d58fdb2b735",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163098,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 963,
+                        "end": 964,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": ""
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Verb Tense",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 963,
+            "note": "Consider adding word(s) to change the tense of this verb. Suggestion(s):,  would "
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311845,
+            "uuid": "53490cf6-6df4-413a-87c8-03de2cfa53e9",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163099,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 966,
+                        "end": 967,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": ""
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Determiner",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 966,
+            "note": "Consider adding a determiner. Suggestion(s):,  a "
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311846,
+            "uuid": "625fa96d-cc60-47f6-a68d-3319f5df9d15",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163100,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1035,
+                        "end": 1036,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": ""
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Punctuation",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1035,
+            "note": "Consider adding a punctuation mark. Suggestion(s):, ,"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311847,
+            "uuid": "7153b9c8-58c0-47cc-8710-2ae514d8a41d",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163101,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1073,
+                        "end": 1074,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": ""
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Punctuation",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1073,
+            "note": "Consider adding a punctuation mark. Suggestion(s):, ,"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311848,
+            "uuid": "12f0aac6-c29e-41af-a740-c023566b34b2",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163102,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1081,
+                        "end": 1089,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "suddenly"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Remove: Adverb",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1081,
+            "note": "Consider removing the highlighted adverb., "
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311849,
+            "uuid": "7b65e742-855d-4688-9db5-b2e38b2b39a6",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163103,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1112,
+                        "end": 1113,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": ""
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Pronoun",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1112,
+            "note": "Consider adding a pronoun. Suggestion(s):,  it "
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311850,
+            "uuid": "a7ca52d2-23d0-453e-a809-24c1dad24785",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163104,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1115,
+                        "end": 1118,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "the"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Replace: Capitalisation",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1115,
+            "note": "Consider changing the capitalisation of the highlighted word. Suggestion(s):, The"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311851,
+            "uuid": "16d6aac1-5b79-40b7-b3d8-ec1d22273327",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163105,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1137,
+                        "end": 1140,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "and"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Remove: Conjunction",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1137,
+            "note": "Consider removing the highlighted conjunction., "
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311852,
+            "uuid": "18a3e5ab-d177-4cd7-9831-71a9cf9e8f39",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163106,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1214,
+                        "end": 1215,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": ""
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Punctuation",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1214,
+            "note": "Consider adding a punctuation mark. Suggestion(s):, ,"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311853,
+            "uuid": "c1b5ffe7-0bd9-4475-ac5a-c8e179accc35",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163107,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1226,
+                        "end": 1235,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "patiently"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Remove: Adverb",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1226,
+            "note": "Consider removing the highlighted adverb., "
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311854,
+            "uuid": "ec8e48ee-12ef-4811-9416-ab76824f34ad",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163108,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1273,
+                        "end": 1276,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "had"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Remove: Verb Tense",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1273,
+            "note": "Consider removing the highlighted word(s) to change the verb tense., "
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311855,
+            "uuid": "07f60200-3aad-42ac-8a1c-99dce0b3bd88",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163109,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1298,
+                        "end": 1389,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "After waiting for a long time in the queue, my parents and I had a rest and had our dinner."
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Sentence: Long",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1298,
+            "note": "Consider if the highlighted sentence should be shortened."
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311856,
+            "uuid": "47d209f6-9536-4020-b08a-a4dabb6faf99",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163110,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1398,
+                        "end": 1399,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": ""
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Determiner",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1398,
+            "note": "Consider adding a determiner. Suggestion(s):,  a "
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311857,
+            "uuid": "df88b2ba-17b6-4dcc-a062-b5a96586e721",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163111,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1509,
+                        "end": 1517,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "malaysia"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Replace: Capitalisation",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1509,
+            "note": "Consider changing the capitalisation of the highlighted word. Suggestion(s):, Malaysia"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311858,
+            "uuid": "d3bdb411-29e4-4ee4-9826-35e2e13d14f3",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163112,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1530,
+                        "end": 1531,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": ""
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Punctuation",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1530,
+            "note": "Consider adding a punctuation mark. Suggestion(s):, ,"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311859,
+            "uuid": "91ec0693-3923-47cd-a200-886f86ee241e",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163113,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1537,
+                        "end": 1540,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "was"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Replace: Subject-Verb Agreement",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1537,
+            "note": "Consider if the highlighted verb agrees with the subject. Suggestion(s):, were"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311860,
+            "uuid": "a2b71515-c541-4d88-8b04-452b3ba8cb4d",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163114,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1557,
+                        "end": 1559,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": "my"
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Punctuation",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1557,
+            "note": "Consider adding a punctuation mark. Suggestion(s):, . My"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311861,
+            "uuid": "2ae43bf5-c259-4a96-bbea-0c66065a16aa",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163115,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1603,
+                        "end": 1604,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": ""
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Punctuation",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1603,
+            "note": "Consider adding a punctuation mark. Suggestion(s):, ,"
+        },
+        {
+            "resourceUuid": null,
+            "resourceType": null,
+            "annotationResourceId": 1080577258,
+            "annotationResourceType": "QUESTION_ANSWER",
+            "id": 23311862,
+            "uuid": "7089cdf1-64d8-4c4e-9c53-300ece374d82",
+            "anchor": "QN_460739915_SA",
+            "data": {
+                "highlighterId": 1736669163116,
+                "highlighterClass": "assess-2",
+                "highlighterSelectors": [
+                    {
+                        "type": "TEXT_POSITION_SELECTOR",
+                        "start": 1647,
+                        "end": 1648,
+                        "top": null,
+                        "left": null
+                    }
+                ],
+                "tooltipData": null,
+                "highlightedContent": ""
+            },
+            "title": null,
+            "type": "TEXT_ANNOTATION",
+            "groupingId": 84605784,
+            "creatorName": "System Admin",
+            "ownerId": 625303,
+            "ownerType": "USER",
+            "teacherEditable": true,
+            "allowComment": true,
+            "outdated": false,
+            "notifyStudents": false,
+            "createdBy": 1,
+            "createdDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedDate": [
+                2025,
+                1,
+                12,
+                15,
+                20,
+                46
+            ],
+            "modifiedBy": 1,
+            "modifiedByName": "System Admin",
+            "keywords": "Add: Punctuation",
+            "appFeatureId": 9,
+            "audioFilePath": null,
+            "indexPosition": 1647,
+            "note": "Consider adding a punctuation mark. Suggestion(s):, ,"
+        }
+    ],
+    "timestamp": "1736666448"
+}

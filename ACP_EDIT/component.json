@@ -1,0 +1,324 @@
+{
+    "model": "gpt-3.5-turbo-1106",
+    "messages": [
+        {
+            "role": "user",
+            "content": "As an experienced Secondary 1 Chemistry teacher, design strictly 6 components for an activity or quiz that helps students achieve the following learning outcomes: 7.1(a) describe the meanings of the terms acid and alkali in terms of the ions they produce in aqueous solution and their effects on Universal Indicator  The title of the activity is What are Acids and Alkalines? and brief notes are In this activity, students will explore the definitions of acids and alkalines, and how they are related to the production of ions in aqueous solutions. The teacher can provide a brief introduction to the topic, and then present students with a series of questions and tasks to complete, such as: Define the terms 'acid' and 'alkali' in your own words. Explain how acids and alkalines are related to the production of ions in aqueous solutions. Describe the effects of acids and alkalines on Universal Indicator. The teacher can encourage students to work in pairs or small groups to discuss and answer the questions, and then facilitate a class discussion to ensure that all students understand the key concepts..  You should also consider: Generate components to introduce and test the student's understanding  Students are expected to spend 20 minutes  on this activity or quiz. Return strictly 6 components for this activity or quiz. The components should be based on the information in   There are only five types of components: 1. A paragraph of text to help students understand the learning outcomes. The text can include explanations and examples to make it easier for students to understand the learning outcomes. 2. A multiple choice question with four options of which only one option is correct 3. A free response question which includes suggested answers 4. A poll which is a multiple choice question with four options but no correct answer 5. A discussion question which invites students to respond with their opinion Your output should only be rich text, do not include hyperlinks, code snippets, mathematical formulas or xml. The first component is an activity description that describes the activity to the student. The second component should be instructions to students on how to complete the activity. The rest of the components can be either text, multiple choice question, free response question, poll or discussion question. For each paragraph of text, provide (i) the required text, which can include tables or lists. For each multiple choice question, provide (i) the question, (ii) one correct answer, (iii) feedback for why the correct answer answers the question (iv) three distractors which are incorrect answers, (v) feedback for each distractor explaining why the distractor is incorrect and what the correct answer should be (vi) suggested time needed for a student to complete the question (vii) total marks for the question. For each free response question, provide (i) the question, (ii) total marks for the question, (iii) suggested answer, which is a comprehensive list of creditworthy points, where one point is to be awarded one mark, up to the total marks for the question, (iv) suggested time needed for a student to complete the question. For each poll, provide (i) a question, (ii) at least two options in response to the question. For each discussion question, provide (i) the discussion topic, (ii) a free response question for students to respond to.  Return the response in JSON format. Here is an example of ideal formatting for the recommendation: <recommendation>{\\\"recommendations\\\":{\\\"activityRecommendation\\\":{\\\"activityDescription\\\":{\\\"richtext\\\":\\\"<p>Description</p>\\\"},\\\"activityInstruction\\\":{\\\"richtext\\\":\\\"<p>Instruction</p>\\\"}},\\\"componentRecommendations\\\":[{\\\"text\\\":{\\\"richtext\\\":\\\"<p>text content</p>\\\"}},{\\\"multipleChoiceQuestion\\\":{\\\"question\\\":{\\\"richtext\\\":\\\"<p>question content</p>\\\"},\\\"answers\\\":[{\\\"richtext\\\":\\\"<p>answer</p>\\\"}],\\\"distractors\\\":[{\\\"richtext\\\":\\\"<p>distractor 1</p>\\\"},{\\\"richtext\\\":\\\"<p>distractor 2</p>\\\"},{\\\"richtext\\\":\\\"<p>distractor 3</p>\\\"}],\\\"duration\\\":60,\\\"totalMarks\\\":1}},{\\\"freeResponseQuestion\\\":{\\\"question\\\":{\\\"richtext\\\":\\\"<p>question content</p>\\\"},\\\"totalMarks\\\":5,\\\"duration\\\":120}},{\\\"poll\\\":{\\\"question\\\":{\\\"richtext\\\":\\\"<p>poll content</p>\\\"},\\\"options\\\":[{\\\"richtext\\\":\\\"<p>option 1</p>\\\"},{\\\"richtext\\\":\\\"<p>option 2</p>\\\"},{\\\"richtext\\\":\\\"<p>option 3</p>\\\"}]}},{\\\"discussionQuestion\\\":{\\\"topic\\\":\\\"disucssion topic\\\",\\\"question\\\":{\\\"richtext\\\":\\\"<p>discussion content</p>\\\"}}}]}}</recommendation>"
+        },
+        {
+            "role": "assistant",
+            "content": "<recommendation>"
+        }
+    ],
+    "tools": [
+        {
+            "type": "function",
+            "function": {
+                "name": "get_new_component_recommendations",
+                "description": "Evaluate and must provide a list of recommendations. Richtext contents must be in HTML format. The response must be a valid JSON",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "recommendations": {
+                            "type": "object",
+                            "description": "Activity Recommendation",
+                            "properties": {
+                                "activityRecommendation": {
+                                    "$ref": "#/definitions/activityRecommendation"
+                                },
+                                "componentRecommendations": {
+                                    "type": "array",
+                                    "description": "List of component recommendations",
+                                    "minItems": 7,
+                                    "items": {
+                                        "anyOf": [
+                                            {
+                                                "$ref": "#/definitions/multipleChoiceQuestionRecommendation"
+                                            },
+                                            {
+                                                "$ref": "#/definitions/freeResponseQuestionRecommendation"
+                                            },
+                                            {
+                                                "$ref": "#/definitions/pollRecommendation"
+                                            },
+                                            {
+                                                "$ref": "#/definitions/discussionQuestionRecommendation"
+                                            },
+                                            {
+                                                "$ref": "#/definitions/textRecommendation"
+                                            }
+                                        ]
+                                    }
+                                }
+                            },
+                            "required": [
+                                "componentRecommendations",
+                                "activityRecommendation"
+                            ]
+                        }
+                    },
+                    "definitions": {
+                        "richtext": {
+                            "type": "string",
+                            "description": "The richtext content in HTML"
+                        },
+                        "marks": {
+                            "type": "number",
+                            "description": "the number of marks allocated to the question or answer."
+                        },
+                        "duration": {
+                            "type": "number",
+                            "description": "Time given for an activity in seconds"
+                        },
+                        "activityRecommendation": {
+                            "type": "object",
+                            "description": "A recommended activity description and instruction",
+                            "properties": {
+                                "activityDescription": {
+                                    "type": "object",
+                                    "properties": {
+                                        "richtext": {
+                                            "$ref": "#/definitions/richtext"
+                                        }
+                                    },
+                                    "required": [
+                                        "richtext"
+                                    ]
+                                },
+                                "activityInstruction": {
+                                    "type": "object",
+                                    "properties": {
+                                        "richtext": {
+                                            "$ref": "#/definitions/richtext"
+                                        }
+                                    },
+                                    "required": [
+                                        "richtext"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "activityDescription",
+                                "activityInstruction"
+                            ]
+                        },
+                        "textRecommendation": {
+                            "type": "object",
+                            "description": "A recommended text paragraph",
+                            "properties": {
+                                "text": {
+                                    "type": "object",
+                                    "properties": {
+                                        "richtext": {
+                                            "$ref": "#/definitions/richtext"
+                                        }
+                                    },
+                                    "required": [
+                                        "richtext"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "text"
+                            ]
+                        },
+                        "multipleChoiceQuestionRecommendation": {
+                            "type": "object",
+                            "description": "A recommended multiple choice question",
+                            "properties": {
+                                "multipleChoiceQuestion": {
+                                    "type": "object",
+                                    "properties": {
+                                        "question": {
+                                            "type": "object",
+                                            "description": "The content of a question.",
+                                            "properties": {
+                                                "richtext": {
+                                                    "$ref": "#/definitions/richtext"
+                                                }
+                                            },
+                                            "required": [
+                                                "richtext"
+                                            ]
+                                        },
+                                        "answers": {
+                                            "type": "array",
+                                            "description": "The list of correct answers",
+                                            "items": {
+                                                "type": "object",
+                                                "description": "A correct answer",
+                                                "properties": {
+                                                    "richtext": {
+                                                        "$ref": "#/definitions/richtext"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "richtext"
+                                                ]
+                                            }
+                                        },
+                                        "distractors": {
+                                            "type": "array",
+                                            "description": "The list of distractors / incorrect answers",
+                                            "items": {
+                                                "type": "object",
+                                                "description": "A distractor / incorrect answer",
+                                                "properties": {
+                                                    "richtext": {
+                                                        "$ref": "#/definitions/richtext"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "richtext"
+                                                ]
+                                            }
+                                        },
+                                        "duration": {
+                                            "$ref": "#/definitions/duration"
+                                        },
+                                        "totalMarks": {
+                                            "$ref": "#/definitions/marks"
+                                        }
+                                    },
+                                    "required": [
+                                        "question",
+                                        "answers",
+                                        "distractors",
+                                        "duration",
+                                        "totalMarks"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "multipleChoiceQuestion"
+                            ]
+                        },
+                        "freeResponseQuestionRecommendation": {
+                            "type": "object",
+                            "description": "A recommended free response question",
+                            "properties": {
+                                "freeResponseQuestion": {
+                                    "type": "object",
+                                    "properties": {
+                                        "question": {
+                                            "type": "object",
+                                            "description": "The content of the question.",
+                                            "properties": {
+                                                "richtext": {
+                                                    "$ref": "#/definitions/richtext"
+                                                }
+                                            },
+                                            "required": [
+                                                "richtext"
+                                            ]
+                                        },
+                                        "totalMarks": {
+                                            "$ref": "#/definitions/marks"
+                                        },
+                                        "duration": {
+                                            "$ref": "#/definitions/duration"
+                                        }
+                                    },
+                                    "required": [
+                                        "question",
+                                        "totalMarks",
+                                        "duration"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "freeResponseQuestion"
+                            ]
+                        },
+                        "pollRecommendation": {
+                            "type": "object",
+                            "description": "A recommended poll",
+                            "properties": {
+                                "poll": {
+                                    "type": "object",
+                                    "properties": {
+                                        "question": {
+                                            "type": "object",
+                                            "description": "The content of the question.",
+                                            "properties": {
+                                                "richtext": {
+                                                    "$ref": "#/definitions/richtext"
+                                                }
+                                            },
+                                            "required": [
+                                                "richtext"
+                                            ]
+                                        },
+                                        "options": {
+                                            "type": "array",
+                                            "description": "The options / responses of the poll",
+                                            "items": {
+                                                "type": "object",
+                                                "description": "An option / response",
+                                                "properties": {
+                                                    "richtext": {
+                                                        "$ref": "#/definitions/richtext"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "richtext"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "question",
+                                        "options"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "poll"
+                            ]
+                        },
+                        "discussionQuestionRecommendation": {
+                            "type": "object",
+                            "description": "A recommended discussion question",
+                            "properties": {
+                                "discussionQuestion": {
+                                    "type": "object",
+                                    "properties": {
+                                        "topic": {
+                                            "type": "string",
+                                            "description": "The discussion topic"
+                                        },
+                                        "question": {
+                                            "type": "object",
+                                            "description": "The content of the question.",
+                                            "properties": {
+                                                "richtext": {
+                                                    "$ref": "#/definitions/richtext"
+                                                }
+                                            },
+                                            "required": [
+                                                "richtext"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "topic",
+                                        "question"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "discussionQuestion"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "recommendations"
+                    ]
+                }
+            }
+        }
+    ],
+    "temperature": 0.7,
+    "top_p": 0,
+    "max_tokens": 4000
+}

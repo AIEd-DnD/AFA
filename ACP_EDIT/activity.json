@@ -1,0 +1,115 @@
+{
+    "model": "gpt-3.5-turbo-1106",
+    "messages": [
+        {
+            "role": "user",
+            "content": "As an experienced Secondary 4 Geography teacher, design a segment of a lesson that helps students achieve the following learning outcomes:\nGlobal distribution of tectonic plates and types of plate boundaries \n\nThe title of the section is Introduction and brief notes are Introduce the concept of tectonic plates and their distribution worldwide. Use visuals such as maps, diagrams, and satellite images to illustrate the global distribution of tectonic plates. Discuss the significance of understanding plate boundaries in the context of natural disasters and geological phenomena. \n\nYou should also consider:\n\nStudents are expected to spend 30 minutes on this segment. Suggest a mix of 3 activities or quizzes for this segment. The activities and quizzes should help students understand the information in tectonic plates. A quiz is a series of questions that students need to attempt, while an activity comprises of text, questions and other tasks for a student to complete.\n\nYour output should only be rich text, do not include hyperlinks, code snippets, mathematical formulas or xml.\n\n Your first output is a section description that describes the section to the student, the activity description should be at most five sentences long.\nYour next outputs should be a series of activities or quizzes. For each activity or quiz, provide (i) a title, (ii) a description of the activity or quiz which summarises its objectives for the student, (iii) instructions for the activity or quiz that students should follow, (iv) other useful notes about the activity or quiz and details about how a teacher might enact it, (v) suggested time needed for a student to complete the activity or quiz. "
+        }
+    ],
+    "tools": [
+        {
+            "type": "function",
+            "function": {
+                "name": "get_new_activity_recommendations",
+                "description": "Evaluate and must provide a list of recommendations containing section description, activity type, title, notes and duration. Richtext contents must be in HTML format.",
+                "parameters": {
+                    "type": "object",
+                    "definitions": {
+                        "richtext": {
+                            "type": "string",
+                            "description": "The richtext content in HTML"
+                        }
+                    },
+                    "properties": {
+                        "recommendations": {
+                            "type": "object",
+                            "description": "Recommendations",
+                            "properties": {
+                                "sectionDescription": {
+                                    "type": "object",
+                                    "description": "The recommended section description",
+                                    "properties": {
+                                        "richtext": {
+                                            "$ref": "#/definitions/richtext"
+                                        }
+                                    },
+                                    "required": [
+                                        "richtext"
+                                    ]
+                                },
+                                "activityRecommendations": {
+                                    "type": "array",
+                                    "description": "List of activity recommendations",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "activityType": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "activity",
+                                                    "quiz"
+                                                ],
+                                                "description": "The recommended activity type"
+                                            },
+                                            "activityTitle": {
+                                                "type": "string",
+                                                "description": "The recommended activity title"
+                                            },
+                                            "activityNotes": {
+                                                "type": "object",
+                                                "description": "The recommended activity notes",
+                                                "properties": {
+                                                    "richtext": {
+                                                        "$ref": "#/definitions/richtext"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "richtext"
+                                                ]
+                                            },
+                                            "activityDuration": {
+                                                "type": "object",
+                                                "description": "The recommended duration given for an activity in seconds",
+                                                "properties": {
+                                                    "seconds": {
+                                                        "type": "number",
+                                                        "description": "Seconds allocated for an activity"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "seconds"
+                                                ]
+                                            }
+                                        },
+                                        "required": [
+                                            "activityType",
+                                            "activityTitle",                                           
+                                            "activityNotes",
+                                            "activityDuration"
+                                        ]
+                                    },
+                                    "minItems": 3
+                                }
+                            },
+                            "required": [
+                                "sectionDescription",
+                                "activityRecommendations"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "recommendations"
+                    ]
+                }
+            }
+        }
+    ],
+    "tool_choice": {
+        "type": "function",
+        "function": {
+            "name": "get_new_activity_recommendations"
+        }
+    },
+    "temperature": 0.7
+ }
+ 
