@@ -11,6 +11,8 @@ from datetime import datetime
 import concurrent.futures
 import re
 import base64
+import time
+import signal
 
 # Update path to find .env in parent directory
 dotenv_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env')
@@ -83,44 +85,6 @@ def validate_annotation_preservation(annotated_response, raw_student_response):
         if original_length != stripped_length:
             error_msg = f"Length mismatch: original has {original_length} characters, stripped has {stripped_length} characters"
             print(f"DEBUG: {error_msg}")
-            
-            # Enhanced character difference analysis
-            if abs(original_length - stripped_length) <= 10:  # Only for small differences
-                print("DEBUG: Analyzing character differences...")
-                
-                # Common escape sequence transformations
-                escape_sequences = {
-                    '\\\\': '\\',     # Double backslash to single
-                    '\\n': '\n',      # Literal \n to newline
-                    '\\t': '\t',      # Literal \t to tab
-                    '\\"': '"',       # Escaped quote to quote
-                    "\\'": "'",       # Escaped apostrophe to apostrophe
-                    '\\r': '\r',      # Literal \r to carriage return
-                }
-                
-                # Check for specific transformations
-                for escaped, actual in escape_sequences.items():
-                    if escaped in raw_student_response and actual in stripped_response:
-                        count_original = raw_student_response.count(escaped)
-                        # Check if the difference matches the transformation
-                        expected_diff = count_original * (len(escaped) - len(actual))
-                        if expected_diff == (original_length - stripped_length):
-                            print(f"DEBUG: Identified transformation: '{escaped}' -> '{actual}' ({count_original} occurrences)")
-                            print(f"DEBUG: This accounts for the {expected_diff} character difference")
-                            break
-                
-                # Check for quote transformations
-                straight_quotes = ['"', "'"]
-                curly_quotes = ['"', '"', ''', ''']
-                
-                for straight in straight_quotes:
-                    for curly in curly_quotes:
-                        if straight in raw_student_response and curly in stripped_response:
-                            count_straight = raw_student_response.count(straight)
-                            count_curly = stripped_response.count(curly)
-                            if count_straight > 0 and count_curly > 0:
-                                print(f"DEBUG: Possible quote transformation: '{straight}' -> '{curly}'")
-            
             return False, error_msg
         
         # Check character-by-character comparison for exact match
@@ -216,14 +180,21 @@ CHINESE TEXT PROCESSING RULES:
 - DO NOT create feedback for every character in the text
 - Focus on meaningful errors, not character-by-character analysis
 
-CRITICAL CHARACTER PRESERVATION - CLAUDE OFTEN FAILS HERE:
+CRITICAL CHARACTER PRESERVATION:
 - DO NOT convert straight quotes (") to curly quotes (" ")
 - DO NOT convert straight apostrophes (') to curly apostrophes (' ')
-- CRITICAL: If you see \\" in text, keep it as \\" - DO NOT convert to "
-- CRITICAL: If you see \\' in text, keep it as \\' - DO NOT convert to '
 - Keep ALL punctuation exactly as it appears in the original text
 - Preserve ALL whitespace, capitalization, and special characters exactly
 - Only add tags - do NOT modify any existing characters
+
+ESCAPE SEQUENCE PRESERVATION FOR CLAUDE - ABSOLUTELY CRITICAL:
+- If the original text contains \\", you MUST preserve it as \\" (do NOT convert to ")
+- If the original text contains \\', you MUST preserve it as \\' (do NOT convert to ')
+- If the original text contains \\\\, you MUST preserve it as \\\\ (do NOT convert to \\)
+- If the original text contains \\n, you MUST preserve it as \\n (do NOT convert to newline)
+- ANY escape sequence in the original MUST be preserved exactly
+- DO NOT normalize, interpret, or "fix" escape sequences
+- These are part of the student's original writing and must be preserved for accurate analysis
 """
             }
         ]
@@ -238,7 +209,7 @@ CRITICAL CHARACTER PRESERVATION - CLAUDE OFTEN FAILS HERE:
                 "properties": {
                   "annotated_response" : {
                     "type": "string",
-                    "description": "The student's response with tags (using unique running number ids) enclosing specific words or phrases IN PLACE where errors occur. Tags must be inserted exactly where the error appears in the original text, not at the end. For example: '小明在<tag id=\"1\">课室</tag>里玩球' not '小明在课室里玩球<tag id=\"1\">课室</tag>'. Preserve ALL original characters including Chinese characters, punctuation, and spacing exactly. CRITICAL: Do NOT convert straight quotes (\") to curly quotes or straight apostrophes (') to curly apostrophes. Keep punctuation exactly as it appears in the original."
+                    "description": "The student's response with tags (using unique running number ids) enclosing specific words or phrases IN PLACE where errors occur. Tags must be inserted exactly where the error appears in the original text, not at the end. For example: '小明在<tag id=\"1\">课室</tag>里玩球' not '小明在课室里玩球<tag id=\"1\">课室</tag>'. Preserve ALL original characters including Chinese characters, punctuation, and spacing exactly. CRITICAL: Do NOT convert straight quotes (\") to curly quotes or straight apostrophes (') to curly apostrophes. Keep punctuation exactly as it appears in the original. ESCAPE SEQUENCES: If the original contains \\\" preserve as \\\", if \\' preserve as \\', if \\\\ preserve as \\\\. Do NOT normalize escape sequences."
                   },
                   "feedback_list": {
                     "type": "array",
@@ -360,10 +331,14 @@ CRITICAL CHARACTER PRESERVATION - CLAUDE OFTEN FAILS HERE:
    else:
         raise ValueError(f"Unsupported model: {model}. Please use an OpenAI or Claude model.")
 
-def get_annotations_single_call(assembled_system_prompt, assembled_user_prompt, model="gpt-4o-2024-08-06", enable_char_validation=True, raw_student_response=None, max_retries=3):
+def timeout_handler(signum, frame):
+    """Handle timeout for API calls."""
+    raise TimeoutError("API call timed out")
+
+def get_annotations_single_call(assembled_system_prompt, assembled_user_prompt, model="gpt-4o-2024-08-06", enable_char_validation=True, raw_student_response=None, max_retries=3, timeout_seconds=120):
     """
     Single call annotation function with optional character validation and enhanced prompting.
-    
+   
     Args:
         assembled_system_prompt: The formatted system prompt
         assembled_user_prompt: The formatted user prompt
@@ -371,6 +346,7 @@ def get_annotations_single_call(assembled_system_prompt, assembled_user_prompt, 
         enable_char_validation: Whether to perform character preservation validation
         raw_student_response: The original student response for validation
         max_retries: Number of retries if validation fails (now always 1)
+        timeout_seconds: Timeout for API calls in seconds (default 120)
     """
     try:
         # Enhanced system prompt with preservation rules (same for both w and wo)
@@ -396,6 +372,15 @@ QUOTE AND APOSTROPHE PRESERVATION - CRITICAL:
 - If the original has curly quotes/apostrophes, use curly quotes/apostrophes
 - NO SMART PUNCTUATION CONVERSION ALLOWED
 
+ESCAPE SEQUENCE PRESERVATION - ABSOLUTELY CRITICAL:
+- If the original text contains \\", you MUST preserve it as \\" (do NOT convert to ")
+- If the original text contains \\', you MUST preserve it as \\' (do NOT convert to ')
+- If the original text contains \\\\, you MUST preserve it as \\\\ (do NOT convert to \\)
+- If the original text contains \\n, you MUST preserve it as \\n (do NOT convert to newline)
+- ANY escape sequence in the original MUST be preserved exactly
+- DO NOT normalize, interpret, or "fix" escape sequences
+- These are part of the student's original writing and must be preserved for accurate analysis
+
 CHINESE TEXT PROCESSING (if applicable):
 - DO NOT count individual Chinese characters as separate errors
 - Only identify actual linguistic errors (wrong words, grammar mistakes)
@@ -403,28 +388,15 @@ CHINESE TEXT PROCESSING (if applicable):
 - DO NOT create hundreds of feedback items for Chinese text
 - Focus on meaningful errors, not character-by-character analysis
 
-CRITICAL ESCAPE SEQUENCE PRESERVATION - THIS IS THE #1 SOURCE OF ERRORS:
-- If you see \\" in the text, it MUST remain as \\" (backslash + quote = 2 characters)
-- Do NOT convert \\" to " (this removes 1 character and breaks preservation)
-- If you see \\' in the text, it MUST remain as \\' (backslash + apostrophe = 2 characters)  
-- Do NOT convert \\' to ' (this removes 1 character and breaks preservation)
-- If you see \\n in the text, keep it as \\n (two characters) - do NOT convert to actual newline
-- If you see \\t in the text, keep it as \\t (two characters) - do NOT convert to actual tab
-- If you see \\\\ in the text, keep it as \\\\ (two characters) - do NOT convert to single \
-
-QUOTE PRESERVATION EXAMPLES:
-- Original: 'He said \\"Hello\\" to me' → Keep: 'He said \\"Hello\\" to me' (NOT: 'He said "Hello" to me')
-- Original: 'It\\'s time to go' → Keep: 'It\\'s time to go' (NOT: 'It's time to go')
-
-These are LITERAL ESCAPE SEQUENCES, not formatting instructions
-Character count must be preserved EXACTLY
+IMPORTANT: The text may contain escape sequences like \\", \\', \\\\. These must be preserved EXACTLY as written.
+The student may have written these intentionally or accidentally - either way, preserve them for accurate feedback analysis.
 """
         
         # Enhanced user prompt - different based on char validation mode
         if enable_char_validation and raw_student_response:
             # Mode "w" - WITH base64 encoding and character counting
             encoded_student_response = base64.b64encode(raw_student_response.encode('utf-8')).decode('ascii')
-            
+        
             enhanced_user_prompt = f"""
 Here is the student's response that needs to be analyzed:
 
@@ -438,11 +410,8 @@ CRITICAL INSTRUCTIONS FOR ANNOTATION:
 1. The student's response has EXACTLY {len(raw_student_response)} characters
 2. Use ONLY the ORIGINAL TEXT above for creating your annotated response
 3. The BASE64 version is provided for exact character verification - decode it if needed to verify exact characters
-4. Preserve ALL characters exactly, including escape sequences like \\", \\', \\\\, \\n, \\t
-5. CRITICAL RULE: If you see \\" in text, output \\" (2 chars) - NEVER convert to " (1 char)
-6. CRITICAL RULE: If you see \\' in text, output \\' (2 chars) - NEVER convert to ' (1 char)
-7. CRITICAL: If the original has \\n (backslash-n), keep it as \\n, NOT as actual newline
-8. Only add <tag id="X">phrase</tag> markers - do not change any other characters
+4. Preserve ALL characters exactly, including escape sequences like \\", \\', \\\\
+5. Only add <tag id="X">phrase</tag> markers - do not change any other characters
 6. The text between tags must be IDENTICAL to the original, character-by-character
 7. After removing tags, your annotated response must have exactly {len(raw_student_response)} characters
 
@@ -451,6 +420,12 @@ QUOTE PRESERVATION REQUIREMENTS:
 - Keep straight apostrophes (') as straight apostrophes (')
 - Do NOT use curly quotes (" ") or curly apostrophes (' ')
 - Copy punctuation marks EXACTLY from the original text
+
+ESCAPE SEQUENCE PRESERVATION REQUIREMENTS:
+- If you see \\" in the original, write \\" in your response (NOT ")
+- If you see \\' in the original, write \\' in your response (NOT ')
+- If you see \\\\ in the original, write \\\\ in your response (NOT \\)
+- Do NOT interpret or normalize escape sequences - copy them exactly
 
 {assembled_user_prompt.split('Students_response')[1] if 'Students_response' in assembled_user_prompt else ''}
 
@@ -466,11 +441,8 @@ ORIGINAL TEXT (analyze this text):
 
 CRITICAL INSTRUCTIONS FOR ANNOTATION:
 1. Use ONLY the ORIGINAL TEXT above for creating your annotated response
-2. Preserve ALL characters exactly, including escape sequences like \\", \\', \\\\, \\n, \\t
-3. CRITICAL RULE: If you see \\" in text, output \\" (2 chars) - NEVER convert to " (1 char)
-4. CRITICAL RULE: If you see \\' in text, output \\' (2 chars) - NEVER convert to ' (1 char)
-5. CRITICAL: If the original has \\n (backslash-n), keep it as \\n, NOT as actual newline
-6. Only add <tag id="X">phrase</tag> markers - do not change any other characters
+2. Preserve ALL characters exactly, including escape sequences like \\", \\', \\\\
+3. Only add <tag id="X">phrase</tag> markers - do not change any other characters
 4. The text between tags must be IDENTICAL to the original, character-by-character
 
 QUOTE PRESERVATION REQUIREMENTS:
@@ -479,13 +451,27 @@ QUOTE PRESERVATION REQUIREMENTS:
 - Do NOT use curly quotes (" ") or curly apostrophes (' ')
 - Copy punctuation marks EXACTLY from the original text
 
+ESCAPE SEQUENCE PRESERVATION REQUIREMENTS:
+- If you see \\" in the original, write \\" in your response (NOT ")
+- If you see \\' in the original, write \\' in your response (NOT ')
+- If you see \\\\ in the original, write \\\\ in your response (NOT \\)
+- Do NOT interpret or normalize escape sequences - copy them exactly
+
 {assembled_user_prompt.split('Students_response')[1] if 'Students_response' in assembled_user_prompt else ''}
 
 Please analyze the student's response and provide feedback while preserving the text exactly.
 """
         
-        # Get annotations using the working system_user function
-        response = get_annotations_system_user(enhanced_system_prompt, enhanced_user_prompt, model)
+        # Set up timeout for API call
+        signal.signal(signal.SIGALRM, timeout_handler)
+        signal.alarm(timeout_seconds)
+        
+        try:
+            # Get annotations using the working system_user function
+            response = get_annotations_system_user(enhanced_system_prompt, enhanced_user_prompt, model)
+        finally:
+            # Cancel the alarm
+            signal.alarm(0)
         
         # Parse response for validation - ALWAYS validate for both w and wo modes
         if raw_student_response:
@@ -498,7 +484,7 @@ Please analyze the student's response and provide feedback while preserving the 
             
             # Validate preservation for both modes
             is_valid, error_info = validate_annotation_preservation(annotated_response, raw_student_response)
-            
+        
             if not is_valid:
                 # Store validation error but don't retry (for both w and wo modes)
                 response_dict["validation_failed"] = True
@@ -522,7 +508,7 @@ def generate_output_filename(model_name, char_mode, output_dir):
         model_short = "claude"
     else:
         model_short = "model"
-    
+        
     char_suffix = "with_char" if char_mode == "w" else "wo_char"
         
     return os.path.join(output_dir, f"{model_short}_single_{char_suffix}_{timestamp}.csv")
@@ -629,6 +615,20 @@ def process_csv_file(input_csv_path, model_name="gpt-4o-2024-08-06", char_mode="
     # Determine if character validation should be enabled
     enable_char_validation = (char_mode == "w")
     
+    # Initialize counters for statistics
+    total_rows = 0
+    successful_rows = 0
+    failed_rows = 0
+    empty_rows = 0
+    retry_success_rows = 0
+    
+    # Count total rows first for progress tracking
+    with open(input_csv_path, 'r', encoding='utf-8') as count_file:
+        csv_count_reader = csv.DictReader(count_file)
+        total_csv_rows = sum(1 for _ in csv_count_reader)
+    
+    print(f"📊 Found {total_csv_rows} rows to process in {os.path.basename(input_csv_path)}")
+    
     # Open input and output CSV files
     with open(input_csv_path, 'r', encoding='utf-8') as input_file, \
          open(output_csv_path, 'w', encoding='utf-8', newline='') as output_file:
@@ -641,46 +641,100 @@ def process_csv_file(input_csv_path, model_name="gpt-4o-2024-08-06", char_mode="
         csv_writer.writerow(["students_response", "annotated_response", "feedback_list", "model", "char_validation", "warnings", "model_details"])
         
         # Process each row
-        for row in csv_reader:
-            try:
-                # Extract data from row
-                subject = row.get("subject", "")
-                level = row.get("level", "")
-                question = row.get("question", "")
-                students_response = row.get("students_response", "")
-                recipe = row.get("recipe", "")
-                suggested_answer = row.get("suggested_answer", "")
-                rubrics = row.get("rubrics", "")
-                error_tags = row.get("error_tags", "")
-                
-                # Assemble prompts
-                system_prompt = assemble_system_prompt(
-                    subject, level, question, recipe, suggested_answer, rubrics, error_tags
-                )
-                user_prompt = assemble_user_prompt(students_response)
-                
-                # Track warnings
-                warnings = []
-                
-                # Get annotations using single call
-                response = get_annotations_single_call(
-                    system_prompt, 
-                    user_prompt, 
-                    model=model_name,
-                    enable_char_validation=enable_char_validation,
-                    raw_student_response=students_response
-                )
-                
-                # Always run check_results to fix any issues
-                response = check_results(response, students_response)
-                
-                # Parse JSON response
-                response_dict = {}
-                if isinstance(response, str):
-                    if response.startswith("No") and "Claude" in response:
-                        raise Exception(response)
-                    try:
-                        response_dict = json.loads(response)
+        for row_index, row in enumerate(csv_reader, start=1):
+            total_rows += 1
+            max_retries = 2
+            retry_count = 0
+            row_processed = False
+            
+            while retry_count <= max_retries and not row_processed:
+                try:
+                    # Extract data from row
+                    subject = row.get("subject", "")
+                    level = row.get("level", "")
+                    question = row.get("question", "")
+                    students_response = row.get("students_response", "")
+                    recipe = row.get("recipe", "")
+                    suggested_answer = row.get("suggested_answer", "")
+                    rubrics = row.get("rubrics", "")
+                    error_tags = row.get("error_tags", "")
+                    
+                    # Skip empty rows
+                    if not students_response.strip():
+                        print(f"Row {row_index}: Skipping empty student response")
+                        csv_writer.writerow([
+                            "",
+                            "Empty student response",
+                            "[]",
+                            model_name,
+                            char_mode,
+                            "Empty student response - skipped",
+                            model_name
+                        ])
+                        row_processed = True
+                        empty_rows += 1
+                        break
+                    
+                    # Assemble prompts
+                    system_prompt = assemble_system_prompt(
+                        subject, level, question, recipe, suggested_answer, rubrics, error_tags
+                    )
+                    user_prompt = assemble_user_prompt(students_response)
+                    
+                    # Track warnings
+                    warnings = []
+                    
+                    # Get annotations using single call with timeout protection
+                    print(f"Row {row_index}/{total_csv_rows}: Processing with {model_name} (attempt {retry_count + 1}/{max_retries + 1})...")
+                    
+                    # Adjust timeout based on text length and type
+                    text_length = len(students_response)
+                    is_chinese = any(ord(char) > 127 for char in students_response)
+                    
+                    if is_chinese and text_length > 800:
+                        timeout_seconds = 180  # 3 minutes for long Chinese text
+                    elif is_chinese:
+                        timeout_seconds = 120  # 2 minutes for Chinese text
+                    elif text_length > 1000:
+                        timeout_seconds = 90   # 1.5 minutes for long English text
+                    else:
+                        timeout_seconds = 60   # 1 minute for normal text
+                    
+                    print(f"Row {row_index}: Using {timeout_seconds}s timeout ({'Chinese' if is_chinese else 'English'} text, {text_length} chars)")
+                    
+                    # Track processing time
+                    start_time = time.time()
+                    
+                    response = get_annotations_single_call(
+                        system_prompt, 
+                        user_prompt, 
+                        model=model_name,
+                        enable_char_validation=enable_char_validation,
+                        raw_student_response=students_response,
+                        timeout_seconds=timeout_seconds
+                    )
+                    
+                    # Always run check_results to fix any issues
+                    response = check_results(response, students_response)
+                    
+                    # Parse JSON response
+                    response_dict = {}
+                    if isinstance(response, str):
+                        if response.startswith("No") and "Claude" in response:
+                            raise Exception(response)
+                        try:
+                            response_dict = json.loads(response)
+                            if "error" in response_dict:
+                                warnings.append(response_dict["error"])
+                            if "warning" in response_dict:
+                                warnings.append(response_dict["warning"])
+                            # Capture validation errors if present
+                            if response_dict.get("validation_failed", False) and "validation_error" in response_dict:
+                                warnings.append(f"Character validation failed: {response_dict['validation_error']}")
+                        except json.JSONDecodeError as e:
+                            raise Exception(f"Failed to parse JSON response: {e}, Response: {response[:100]}...")
+                    elif isinstance(response, dict):
+                        response_dict = response
                         if "error" in response_dict:
                             warnings.append(response_dict["error"])
                         if "warning" in response_dict:
@@ -688,121 +742,176 @@ def process_csv_file(input_csv_path, model_name="gpt-4o-2024-08-06", char_mode="
                         # Capture validation errors if present
                         if response_dict.get("validation_failed", False) and "validation_error" in response_dict:
                             warnings.append(f"Character validation failed: {response_dict['validation_error']}")
-                    except json.JSONDecodeError as e:
-                        raise Exception(f"Failed to parse JSON response: {e}, Response: {response[:100]}...")
-                elif isinstance(response, dict):
-                    response_dict = response
-                    if "error" in response_dict:
-                        warnings.append(response_dict["error"])
-                    if "warning" in response_dict:
-                        warnings.append(response_dict["warning"])
-                    # Capture validation errors if present
-                    if response_dict.get("validation_failed", False) and "validation_error" in response_dict:
-                        warnings.append(f"Character validation failed: {response_dict['validation_error']}")
-                else:
-                    raise Exception(f"Unexpected response type: {type(response)}")
-                
-                # Extract data from response
-                annotated_response = response_dict.get("annotated_response", "")
-                feedback_list = response_dict.get("feedback_list", [])
-                
-                # Enhanced Chinese character handling
-                try:
-                    if isinstance(feedback_list, str):
-                        feedback_list = json.loads(feedback_list)
+                    else:
+                        raise Exception(f"Unexpected response type: {type(response)}")
                     
-                    # Fix Unicode encoding issues in Chinese feedback
-                    if isinstance(feedback_list, list):
-                        for item in feedback_list:
-                            if isinstance(item, dict):
-                                for key, value in item.items():
-                                    if isinstance(value, str):
-                                        try:
-                                            decoded_value = value.encode().decode('unicode_escape').encode('latin1').decode('utf-8')
-                                            if decoded_value != value:
-                                                item[key] = decoded_value
-                                        except:
-                                            pass
-                except Exception as e:
-                    print(f"Warning: Failed to process Chinese characters in feedback: {e}")
-                
-                # Chinese character count validation and fixing
-                if any(ord(char) > 127 for char in students_response):  # Contains non-ASCII (likely Chinese)
-                    tag_count_in_response = annotated_response.count("<tag id=")
-                    feedback_count = len(feedback_list)
+                    # Extract data from response
+                    annotated_response = response_dict.get("annotated_response", "")
+                    feedback_list = response_dict.get("feedback_list", [])
                     
-                    # If there's a massive mismatch (like 613 vs 5), likely a character counting bug
-                    if feedback_count > 100 and tag_count_in_response < 20:
-                        print(f"Detected Chinese character counting bug: {feedback_count} items vs {tag_count_in_response} tags")
+                    # Enhanced Chinese character handling
+                    try:
+                        if isinstance(feedback_list, str):
+                            feedback_list = json.loads(feedback_list)
                         
-                        # Extract actual tagged phrases from annotated response
-                        tag_pattern = r'<tag id="(\d+)">(.*?)</tag>'
-                        matches = re.findall(tag_pattern, annotated_response, re.DOTALL)
+                        # Fix Unicode encoding issues in Chinese feedback
+                        if isinstance(feedback_list, list):
+                            for item in feedback_list:
+                                if isinstance(item, dict):
+                                    for key, value in item.items():
+                                        if isinstance(value, str):
+                                            try:
+                                                decoded_value = value.encode().decode('unicode_escape').encode('latin1').decode('utf-8')
+                                                if decoded_value != value:
+                                                    item[key] = decoded_value
+                                            except:
+                                                pass
+                    except Exception as e:
+                        print(f"Row {row_index}: Warning - Failed to process Chinese characters in feedback: {e}")
+                    
+                    # Chinese character count validation and fixing
+                    if any(ord(char) > 127 for char in students_response):  # Contains non-ASCII (likely Chinese)
+                        tag_count_in_response = annotated_response.count("<tag id=")
+                        feedback_count = len(feedback_list)
                         
-                        if len(matches) == tag_count_in_response:
-                            # Create corrected feedback list based on actual tags
-                            corrected_feedback = []
-                            for i, (tag_id, phrase) in enumerate(matches):
-                                corrected_feedback.append({
-                                    "id": int(tag_id),
-                                    "phrase": phrase,
-                                    "error_tag": [{"errorType": "语言"}],
-                                    "comment": f"错误已标识：{phrase}"
-                                })
+                        # If there's a massive mismatch (like 613 vs 5), likely a character counting bug
+                        if feedback_count > 100 and tag_count_in_response < 20:
+                            print(f"Row {row_index}: Detected Chinese character counting bug: {feedback_count} items vs {tag_count_in_response} tags")
                             
-                            feedback_list = corrected_feedback
-                            warnings.append(f"Fixed Chinese character counting bug: reduced from {feedback_count} to {len(corrected_feedback)} items")
-                
-                # Final tag count check
-                tag_count_in_response = annotated_response.count("<tag id=")
-                if tag_count_in_response != len(feedback_list) and not any("Mismatch in tag count" in warning for warning in warnings):
-                    warning_msg = f"Mismatch in tag count. Feedback list has {len(feedback_list)} items, but annotated response has {tag_count_in_response} tags."
-                    warnings.append(warning_msg)
-                    print(f"Warning: {warning_msg}")
-                
-                # Get a friendly model name for display
-                model_details = model_name
-                if model_name.startswith("gpt-4o"):
-                    model_details = "GPT-4o"
-                elif model_name.startswith("claude"):
-                    model_details = "Claude 4 Sonnet"
-                
-                # Join warnings into a single string
-                warnings_str = "; ".join(warnings) if warnings else ""
-                
-                # Ensure proper UTF-8 encoding for Chinese characters in JSON
-                try:
-                    feedback_json = json.dumps(feedback_list, ensure_ascii=False)
+                            # Extract actual tagged phrases from annotated response
+                            tag_pattern = r'<tag id="(\d+)">(.*?)</tag>'
+                            matches = re.findall(tag_pattern, annotated_response, re.DOTALL)
+                            
+                            if len(matches) == tag_count_in_response:
+                                # Create corrected feedback list based on actual tags
+                                corrected_feedback = []
+                                for i, (tag_id, phrase) in enumerate(matches):
+                                    corrected_feedback.append({
+                                        "id": int(tag_id),
+                                        "phrase": phrase,
+                                        "error_tag": [{"errorType": "语言"}],
+                                        "comment": f"错误已标识：{phrase}"
+                                    })
+                                
+                                feedback_list = corrected_feedback
+                                warnings.append(f"Fixed Chinese character counting bug: reduced from {feedback_count} to {len(corrected_feedback)} items")
+                    
+                    # Final tag count check
+                    tag_count_in_response = annotated_response.count("<tag id=")
+                    if tag_count_in_response != len(feedback_list) and not any("Mismatch in tag count" in warning for warning in warnings):
+                        warning_msg = f"Mismatch in tag count. Feedback list has {len(feedback_list)} items, but annotated response has {tag_count_in_response} tags."
+                        warnings.append(warning_msg)
+                        print(f"Row {row_index}: Warning - {warning_msg}")
+                    
+                    # Get a friendly model name for display
+                    model_details = model_name
+                    if model_name.startswith("gpt-4o"):
+                        model_details = "GPT-4o"
+                    elif model_name.startswith("claude"):
+                        model_details = "Claude 4 Sonnet"
+                    
+                    # Add retry information to warnings if this wasn't the first attempt
+                    if retry_count > 0:
+                        warnings.append(f"Succeeded on retry {retry_count + 1}")
+                    
+                    # Join warnings into a single string
+                    warnings_str = "; ".join(warnings) if warnings else ""
+                    
+                    # Ensure proper UTF-8 encoding for Chinese characters in JSON
+                    try:
+                        feedback_json = json.dumps(feedback_list, ensure_ascii=False)
+                    except Exception as e:
+                        print(f"Row {row_index}: Warning - Failed to encode Chinese characters in JSON: {e}")
+                        feedback_json = json.dumps(feedback_list)
+                    
+                    # Write to output CSV
+                    csv_writer.writerow([
+                        students_response,
+                        annotated_response,
+                        feedback_json,
+                        model_name,
+                        char_mode,
+                        warnings_str,
+                        model_details
+                    ])
+                    
+                    # Calculate processing time
+                    end_time = time.time()
+                    processing_time = end_time - start_time
+                    
+                    print(f"Row {row_index}: ✅ Successfully processed with {model_name}, char_validation={enable_char_validation} ({processing_time:.1f}s)")
+                    row_processed = True
+                    successful_rows += 1
+                    
+                    # Track if this was a retry success
+                    if retry_count > 0:
+                        retry_success_rows += 1
+                    
+                except TimeoutError as e:
+                    retry_count += 1
+                    error_msg = f"API call timed out after {timeout_seconds}s"
+                    
+                    if retry_count <= max_retries:
+                        print(f"Row {row_index}: ⏰ Attempt {retry_count} timed out after {timeout_seconds}s")
+                        print(f"Row {row_index}: 🔄 Retrying with longer timeout... (attempt {retry_count + 1}/{max_retries + 1})")
+                        
+                        # Increase timeout for retry
+                        timeout_seconds = min(timeout_seconds * 1.5, 300)  # Max 5 minutes
+                        time.sleep(2)  # Wait before retry
+                    else:
+                        print(f"Row {row_index}: ❌ FAILED after {max_retries + 1} attempts due to timeout")
+                        print(f"Row {row_index}: 📝 Writing timeout error row and continuing to next row...")
+                        
+                        # Write error row with timeout information
+                        csv_writer.writerow([
+                            row.get("students_response", ""),
+                            f"TIMEOUT after {max_retries + 1} attempts (max {timeout_seconds}s per attempt)",
+                            "[]",
+                            model_name,
+                            char_mode,
+                            f"Timeout after {max_retries + 1} attempts: {error_msg}",
+                            model_name
+                        ])
+                        row_processed = True
+                        failed_rows += 1
+                        
                 except Exception as e:
-                    print(f"Warning: Failed to encode Chinese characters in JSON: {e}")
-                    feedback_json = json.dumps(feedback_list)
-                
-                # Write to output CSV
-                csv_writer.writerow([
-                    students_response,
-                    annotated_response,
-                    feedback_json,
-                    model_name,
-                    char_mode,
-                    warnings_str,
-                    model_details
-                ])
-                
-                print(f"Processed row with model {model_name}, char_validation={enable_char_validation}, student response: {students_response[:30]}...")
-                
-            except Exception as e:
-                print(f"Error processing row with {model_name}, char_validation={enable_char_validation}: {e}")
-                # Write error row
-                csv_writer.writerow([
-                    row.get("students_response", ""),
-                    f"Error: {str(e)}",
-                    "[]",
-                    model_name,
-                    char_mode,
-                    str(e),
-                    model_name
-                ])
+                    retry_count += 1
+                    error_msg = str(e)
+                    
+                    if retry_count <= max_retries:
+                        print(f"Row {row_index}: ⚠️ Attempt {retry_count} failed with error: {error_msg}")
+                        print(f"Row {row_index}: 🔄 Retrying... (attempt {retry_count + 1}/{max_retries + 1})")
+                        
+                        # Add a small delay before retry to avoid rate limiting
+                        time.sleep(1)
+                    else:
+                        print(f"Row {row_index}: ❌ FAILED after {max_retries + 1} attempts. Final error: {error_msg}")
+                        print(f"Row {row_index}: 📝 Writing error row and continuing to next row...")
+                        
+                        # Write error row with retry information
+                        csv_writer.writerow([
+                            row.get("students_response", ""),
+                            f"FAILED after {max_retries + 1} attempts. Error: {error_msg}",
+                            "[]",
+                            model_name,
+                            char_mode,
+                            f"Failed after {max_retries + 1} attempts: {error_msg}",
+                            model_name
+                        ])
+                        row_processed = True
+                        failed_rows += 1
     
+    # Print processing summary
+    print(f"\n{'='*60}")
+    print(f"PROCESSING SUMMARY - {model_name} ({'with' if enable_char_validation else 'without'} char validation)")
+    print(f"{'='*60}")
+    print(f"📊 Total rows processed: {total_rows}")
+    print(f"✅ Successful rows: {successful_rows} ({successful_rows/total_rows*100:.1f}%)")
+    print(f"🔄 Success after retry: {retry_success_rows} ({retry_success_rows/total_rows*100:.1f}%)")
+    print(f"❌ Failed rows: {failed_rows} ({failed_rows/total_rows*100:.1f}%)")
+    print(f"⚪ Empty rows skipped: {empty_rows} ({empty_rows/total_rows*100:.1f}%)")
+    print(f"{'='*60}")
     print(f"Processing complete. Output saved to: {output_csv_path}")
     return output_csv_path
 

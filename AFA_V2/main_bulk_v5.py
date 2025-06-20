@@ -83,44 +83,6 @@ def validate_annotation_preservation(annotated_response, raw_student_response):
         if original_length != stripped_length:
             error_msg = f"Length mismatch: original has {original_length} characters, stripped has {stripped_length} characters"
             print(f"DEBUG: {error_msg}")
-            
-            # Enhanced character difference analysis
-            if abs(original_length - stripped_length) <= 10:  # Only for small differences
-                print("DEBUG: Analyzing character differences...")
-                
-                # Common escape sequence transformations
-                escape_sequences = {
-                    '\\\\': '\\',     # Double backslash to single
-                    '\\n': '\n',      # Literal \n to newline
-                    '\\t': '\t',      # Literal \t to tab
-                    '\\"': '"',       # Escaped quote to quote
-                    "\\'": "'",       # Escaped apostrophe to apostrophe
-                    '\\r': '\r',      # Literal \r to carriage return
-                }
-                
-                # Check for specific transformations
-                for escaped, actual in escape_sequences.items():
-                    if escaped in raw_student_response and actual in stripped_response:
-                        count_original = raw_student_response.count(escaped)
-                        # Check if the difference matches the transformation
-                        expected_diff = count_original * (len(escaped) - len(actual))
-                        if expected_diff == (original_length - stripped_length):
-                            print(f"DEBUG: Identified transformation: '{escaped}' -> '{actual}' ({count_original} occurrences)")
-                            print(f"DEBUG: This accounts for the {expected_diff} character difference")
-                            break
-                
-                # Check for quote transformations
-                straight_quotes = ['"', "'"]
-                curly_quotes = ['"', '"', ''', ''']
-                
-                for straight in straight_quotes:
-                    for curly in curly_quotes:
-                        if straight in raw_student_response and curly in stripped_response:
-                            count_straight = raw_student_response.count(straight)
-                            count_curly = stripped_response.count(curly)
-                            if count_straight > 0 and count_curly > 0:
-                                print(f"DEBUG: Possible quote transformation: '{straight}' -> '{curly}'")
-            
             return False, error_msg
         
         # Check character-by-character comparison for exact match
@@ -216,11 +178,9 @@ CHINESE TEXT PROCESSING RULES:
 - DO NOT create feedback for every character in the text
 - Focus on meaningful errors, not character-by-character analysis
 
-CRITICAL CHARACTER PRESERVATION - CLAUDE OFTEN FAILS HERE:
+CRITICAL CHARACTER PRESERVATION:
 - DO NOT convert straight quotes (") to curly quotes (" ")
 - DO NOT convert straight apostrophes (') to curly apostrophes (' ')
-- CRITICAL: If you see \\" in text, keep it as \\" - DO NOT convert to "
-- CRITICAL: If you see \\' in text, keep it as \\' - DO NOT convert to '
 - Keep ALL punctuation exactly as it appears in the original text
 - Preserve ALL whitespace, capitalization, and special characters exactly
 - Only add tags - do NOT modify any existing characters
@@ -403,21 +363,7 @@ CHINESE TEXT PROCESSING (if applicable):
 - DO NOT create hundreds of feedback items for Chinese text
 - Focus on meaningful errors, not character-by-character analysis
 
-CRITICAL ESCAPE SEQUENCE PRESERVATION - THIS IS THE #1 SOURCE OF ERRORS:
-- If you see \\" in the text, it MUST remain as \\" (backslash + quote = 2 characters)
-- Do NOT convert \\" to " (this removes 1 character and breaks preservation)
-- If you see \\' in the text, it MUST remain as \\' (backslash + apostrophe = 2 characters)  
-- Do NOT convert \\' to ' (this removes 1 character and breaks preservation)
-- If you see \\n in the text, keep it as \\n (two characters) - do NOT convert to actual newline
-- If you see \\t in the text, keep it as \\t (two characters) - do NOT convert to actual tab
-- If you see \\\\ in the text, keep it as \\\\ (two characters) - do NOT convert to single \
-
-QUOTE PRESERVATION EXAMPLES:
-- Original: 'He said \\"Hello\\" to me' → Keep: 'He said \\"Hello\\" to me' (NOT: 'He said "Hello" to me')
-- Original: 'It\\'s time to go' → Keep: 'It\\'s time to go' (NOT: 'It's time to go')
-
-These are LITERAL ESCAPE SEQUENCES, not formatting instructions
-Character count must be preserved EXACTLY
+IMPORTANT: The text may contain escape sequences like \\", \\', \\\\. These must be preserved EXACTLY as written.
 """
         
         # Enhanced user prompt - different based on char validation mode
@@ -438,11 +384,8 @@ CRITICAL INSTRUCTIONS FOR ANNOTATION:
 1. The student's response has EXACTLY {len(raw_student_response)} characters
 2. Use ONLY the ORIGINAL TEXT above for creating your annotated response
 3. The BASE64 version is provided for exact character verification - decode it if needed to verify exact characters
-4. Preserve ALL characters exactly, including escape sequences like \\", \\', \\\\, \\n, \\t
-5. CRITICAL RULE: If you see \\" in text, output \\" (2 chars) - NEVER convert to " (1 char)
-6. CRITICAL RULE: If you see \\' in text, output \\' (2 chars) - NEVER convert to ' (1 char)
-7. CRITICAL: If the original has \\n (backslash-n), keep it as \\n, NOT as actual newline
-8. Only add <tag id="X">phrase</tag> markers - do not change any other characters
+4. Preserve ALL characters exactly, including escape sequences like \\", \\', \\\\
+5. Only add <tag id="X">phrase</tag> markers - do not change any other characters
 6. The text between tags must be IDENTICAL to the original, character-by-character
 7. After removing tags, your annotated response must have exactly {len(raw_student_response)} characters
 
@@ -466,11 +409,8 @@ ORIGINAL TEXT (analyze this text):
 
 CRITICAL INSTRUCTIONS FOR ANNOTATION:
 1. Use ONLY the ORIGINAL TEXT above for creating your annotated response
-2. Preserve ALL characters exactly, including escape sequences like \\", \\', \\\\, \\n, \\t
-3. CRITICAL RULE: If you see \\" in text, output \\" (2 chars) - NEVER convert to " (1 char)
-4. CRITICAL RULE: If you see \\' in text, output \\' (2 chars) - NEVER convert to ' (1 char)
-5. CRITICAL: If the original has \\n (backslash-n), keep it as \\n, NOT as actual newline
-6. Only add <tag id="X">phrase</tag> markers - do not change any other characters
+2. Preserve ALL characters exactly, including escape sequences like \\", \\', \\\\
+3. Only add <tag id="X">phrase</tag> markers - do not change any other characters
 4. The text between tags must be IDENTICAL to the original, character-by-character
 
 QUOTE PRESERVATION REQUIREMENTS:
