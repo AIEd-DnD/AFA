@@ -476,9 +476,6 @@ CHARACTER COUNT VERIFICATION:
 QUOTE PRESERVATION REQUIREMENTS:
 - Copy punctuation marks EXACTLY from the original text
 
-
-{assembled_user_prompt.split('Students_response')[1] if 'Students_response' in assembled_user_prompt else ''}
-
 Please analyze the student's response and provide feedback while preserving the text exactly.
 """
         else:
@@ -521,8 +518,6 @@ CORRECT EXAMPLES:
 ✅ Your output: 'She said \\"Hello\\" to me' (keep \\" as \\")
 ✅ If original has: 'It\\'s a nice day'  
 ✅ Your output: 'It\\'s a nice day' (keep \\' as \\')
-
-{assembled_user_prompt.split('Students_response')[1] if 'Students_response' in assembled_user_prompt else ''}
 
 Please analyze the student's response and provide feedback while preserving the text exactly.
 """
