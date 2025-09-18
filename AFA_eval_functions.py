@@ -112,6 +112,17 @@ def assemble_user_prompt(students_response):
    
    return assembled_user_prompt
 
+def get_annotations_gpt5(assembled_prompt):
+   response = client.chat.completions.create(
+     model="gpt-5-2025-08-07",
+     reasoning_effort="minimal",
+     max_completion_tokens = 32000,
+     tools = rsrc.tools,
+     tool_choice={"type": "function", "function": {"name": "get_annotated_feedback"}},
+     messages = [{"role": "user", "content": assembled_prompt}]
+   )
+   return response.choices[0].message.tool_calls[0].function.arguments
+
 def get_annotations(assembled_prompt):
    response = client.chat.completions.create(
      model="gpt-4o-2024-08-06",
@@ -125,6 +136,18 @@ def get_annotations(assembled_prompt):
      messages = [{"role": "user", "content": assembled_prompt}]
    )
    return response.choices[0].message.tool_calls[0].function.arguments
+
+def get_annotations_system_user_gpt5(assembled_system_prompt, assembled_user_prompt):
+   response = client.chat.completions.create(
+     model="gpt-5-2025-08-07",
+     reasoning_effort="minimal",
+     max_completion_tokens = 32000, #max tokens is only available to gpt models, default max tokens is 4000. this parameter is being deprecated in favour of max_completion_tokens
+     tools = rsrc.tools,
+     tool_choice={"type": "function", "function": {"name": "get_annotated_feedback"}},
+     messages = [{"role":"system","content":assembled_system_prompt},{"role": "user", "content": assembled_user_prompt}]
+   )
+   return response.choices[0].message.tool_calls[0].function.arguments
+
 
 def get_annotations_system_user(assembled_system_prompt, assembled_user_prompt):
    response = client.chat.completions.create(
